@@ -1,4 +1,5 @@
 const path = require("path");
+const vuxLoader = require("vux-loader");
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
@@ -26,7 +27,6 @@ module.exports = {
     config.resolve.alias.set("@", resolve("src"));
     //打包文件带hash
     config.output.filename("[name].[hash].js").end();
-
     //为了补删除换行而加的配置
     config.module
       .rule("vue")
@@ -37,11 +37,31 @@ module.exports = {
         options.compilerOptions.preserveWhitespace = true;
         return options;
       });
-  },
-  configureWebpack: {
-    externals: {
-      BMap: "BMap"
+    // vuxLoader.merge(config, {
+    //   // options: {},
+    //   plugins: ["vux-ui"]
+    // });
+    if (process.env.NODE_ENV === "production") {
+      // 为生产环境修改配置...
+    } else {
+      // 为开发环境修改配置...
     }
+  },
+  // configureWebpack: {
+  //   externals: {
+  //     BMap: "BMap"
+  //   }
+  // },
+  configureWebpack: config => {
+    require("vux-loader").merge(config, {
+      options: {},
+      plugins: ["vux-ui"]
+    });
+    return {
+      externals: {
+        BMap: "BMap"
+      }
+    };
   },
   css: {
     loaderOptions: {

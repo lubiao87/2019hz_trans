@@ -1,7 +1,9 @@
 <template>
   <div class="base-box">
     <div class="base-container flex flex-middle">
-      <span class="head-back" v-if="showBack" @click="goBack"></span>
+      <span class="head-back" v-if="showBack" @click="goBack">
+        <x-icon type="ios-arrow-left" size="30"></x-icon>
+      </span>
       <span class="head-title table-cell">{{ title }}</span>
       <span class="head-slot">
         <slot name="head-right"></slot>
@@ -11,9 +13,13 @@
 </template>
 
 <script>
-// import {  } from 'vux'
+// import { Group, Cell } from "vux";
 export default {
   name: "B-Head",
+  // components: {
+  //   Group,
+  //   Cell
+  // },
   props: {
     title: {
       type: String
@@ -41,6 +47,7 @@ export default {
 .base-box {
   width: 100%;
   height: 60px;
+  border-bottom: 1px solid #ccc;
   // background: #4c9ffb;
   @include bg_color($background-color-theme);
   .base-container {
@@ -51,14 +58,17 @@ export default {
       left: 30px;
       display: inline-block;
       width: 20px;
-      height: 26px;
-      background: url("../../assets/images/return.png") no-repeat center;
+      height: 28px;
+      line-height: 28px;
+      font-size: 28px;
+      color: #666;
+      // background: url("../../assets/images/return.png") no-repeat center;
       background-size: 100%;
     }
     .head-title {
       font-size: $font_medium_s;
-      font-weight: 500;
-      color: #fefefe;
+      font-weight: bold;
+      color: #666;
     }
     .head-slot {
       position: absolute;
