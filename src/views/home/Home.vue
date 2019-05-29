@@ -1,6 +1,5 @@
 <template>
   <div>
-    sdfwe sfsdf
     <div id="allmap" class="allmap"></div>
   </div>
 </template>
