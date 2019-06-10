@@ -21,6 +21,22 @@ export default new Router({
       },
       component: () =>
         import(/* webpackChunkName: "about" */ "@/views/test/About.vue")
+    },
+    {
+      path: "/mapArea",
+      name: "mapArea",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/olmap/mapArea.vue")
+    },
+    {
+      path: "/chatOnline",
+      name: "chatOnline",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/chat-online/chat_online.vue")
     }
   ]
 });

@@ -46,12 +46,12 @@
   );
 
   if (doc.readyState === "complete") {
-    doc.body.style.fontSize = "0.5rem";
+    doc.body.style.fontSize = "16px";
   } else {
     doc.addEventListener(
       "DOMContentLoaded",
       function(e) {
-        doc.body.style.fontSize = "0.5rem";
+        doc.body.style.fontSize = "16px";
       },
       false
     );

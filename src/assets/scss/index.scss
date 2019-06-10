@@ -1,0 +1,298 @@
+@import "./mixin";
+@import "./variable";
+
+$font_default_size:$font_medium_s;
+$backgroud:$background-color-theme;
+// 总体body
+body {
+  height: 100%;
+  width: 100%;
+  -webkit-user-select:none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-family: PingFang-SC-Medium Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  font-size: $font_default_size;
+  overflow-x: hidden !important;
+  -webkit-overflow-scrolling : touch !important;
+  // position: fixed;
+  // left: 0;
+  // top: 0;
+}
+
+html {
+  height: 100%;
+  -webkit-font-smoothing:antialiased;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol {
+  /*We will be adding our own margin to these elements as needed.*/
+  margin: 0;
+  /*You'll want to set font-size as needed.*/
+  font-size: 0.1rem;
+  /*No bold for h tags unless you want it*/
+  font-weight: 400;
+  padding: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+button {
+  border: 0;
+  outline:none;
+}
+
+input,
+fieldset {
+  appearance: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  /*inputs and fieldset defaults to having a min-width equal to its content in Chrome and Firefox (https://code.google.com/p/chromium/issues/detail?id=560762), we may not want that*/
+  min-width: 0;
+  /*Reset the font size and family*/
+  font-size: 0.1rem;
+  font-family: inherit;
+}
+
+/* Switching user-select on for inputs and contenteditable specifically for Safari (see bug link above)*/
+input[type],
+[contenteditable] {
+  user-select: text;
+}
+
+/* For IE, we want to remove the default cross ('X') that appears in input fields when a user starts typing - Make sure you add your own! */
+input::-ms-clear {
+  display: none;
+}
+
+/*This switches the default outline off when an input receives focus (really important for users tabbing through with a keyboard) so ensure you put something decent in for your input focus instead!!*/
+input:focus {
+  outline: 0;
+}
+
+input[type="number"] {
+  /*Mozilla shows the spinner UI on number inputs unless we use this:*/
+  -moz-appearance: textfield;
+}
+
+/*Removes the little spinner controls for number type inputs (WebKit browsers/forks only)*/
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+}
+
+.clearfix:after {
+  content: ".";
+  display: block;
+  height: 0;
+  clear: both;
+  visibility: hidden
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+.no-padding {
+  padding: 0px !important;
+}
+
+
+a:focus,
+a:active {
+  outline: none;
+}
+
+a,
+a:focus,
+a:hover {
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+}
+
+div:focus {
+  outline: none;
+}
+
+// 边框1px
+@media (-webkit-device-pixel-ratio: 2) {
+  .border-1px:after{
+    height: 1px;
+    content: '';
+    width: 100%;
+    border-bottom: 1px solid $border-color-theme;
+    position: absolute;
+    bottom: -1px;
+    right: 0;
+    transform: scaleY(0.5);
+    -webkit-transform: scaleY(0.5);
+  }
+}
+
+@media (-webkit-min-device-pixel-ratio: 2){
+  .border-bottom::after {
+    border-bottom-width: 1px;
+  }
+  .border-1px:after {
+    content: ' ';
+    display: block;
+    position: absolute;
+    top: 0;
+    right: -100%;
+    bottom: -100%;
+    left: 0;
+    border: 0 solid $border-color-theme;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    pointer-events: none;
+    -webkit-transform: scale(.5);
+    transform: scale(.5);
+    width: 200%;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+}
+//toast公共样式
+.weui-toast_text {
+  border-radius: 10px;
+  .weui-toast__content {
+    font-size: 32px;
+  }
+}
+// loading公共样式
+.weui-loading_toast {
+  .weui-toast {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-height: 200px;
+    width: 252px;
+    border-radius: 0.1rem;
+    .weui-loading {
+      margin: 0.5rem 0 0;
+      width: 0.6rem;
+      height: 0.6rem;
+    }
+    .weui-toast__content {
+      margin: 0 0 30px;
+      font-size: 32px;
+    }
+  }
+}
+
+body .weui-cell__ft {
+  text-align: left;
+  width: 100%;
+}
+body .weui-cell_access .weui-cell__ft:after {
+  height: 16px;
+  width: 16px;
+  right: 10px;
+}
+body .weui-cells {
+  margin-top: 0;
+  font-size: 28px;
+}
+body .weui-wepay-flow__li .weui-wepay-flow__state {
+  border-radius: 15px;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  left: -8px;
+}
+body .weui-wepay-flow__process {
+  background-color: $background-color-theme;
+}
+body .weui-wepay-flow_vertical .weui-wepay-flow__line_done .weui-wepay-flow__process {
+  width: 100%;
+}
+body .weui-wepay-flow__li_done .weui-wepay-flow__state {
+  background-color: $background-color-theme;
+}
+
+.scroll_list {
+  flex: 1;
+  overflow: hidden;
+  .main_content {
+    padding: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+.order-statistics .lb-textarea .weui-textarea {
+  font-size: 28px;
+  border: 1px solid $border-color-theme;
+}
+body .weui-btn_primary {
+  background-color: $background-color-theme;
+  border-radius: 10px;
+  font-size: 30px;
+}
+.v-transfer-dom, .vux-confirm, .vux-x-dialog, .weui-dialog {
+  width: 100% !important;
+  max-width: 5rem !important;
+}
+.weui-dialog > div {
+  width: 500px;
+  padding: 20px;
+}
+body .weui-dialog__bd {
+  padding: 10px 0 30px;
+}
+body .weui-dialog__bd:first-child {
+  padding-top: 30px;
+}
+.vux-x-input.weui-cell {
+  // display: flex;
+  height: 60px;
+  border-bottom: 1px solid $border-color-theme !important;
+}
+.vux-x-input.weui-cell > div {
+  float: left;
+}
+.weui-cell__primary {
+  height: 88px;
+  line-height: 88px;
+  padding-left: 20px;
+  color: $font-color-theme;
+  font-size: 28px;
+}
+.weui-label {
+  color: $font-color-theme;
+  font-size: 30px;
+  padding-left: 15px;
+}
+
+body .weui-cells__title {
+  color: $font-color-theme;
+  font-size: 30px;
+  padding: 30px;
+  padding-top: 40px;
+  margin-top: 0;
+}
+body .weui-textarea {
+  font-size: 28px;
+  // padding-left: 30px;
+}
+body .weui-cells:before {
+  border: none;
+}
+body .weui-search-bar {
+  background-color: $backgroud;
+}

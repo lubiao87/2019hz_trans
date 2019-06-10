@@ -1,11 +1,13 @@
 <template>
-  <div>
+  <div class="home">
     home页面
-    <div @click="routerGo">about</div>
+    <div @click="routerGo('about')">about</div>
+    <div @click="routerGo('mapArea')">mapArea</div>
+    <div @click="routerGo('chatOnline')">在线聊天</div>
   </div>
 </template>
 <script>
-import BMap from "BMap";
+// import BMap from "BMap";
 export default {
   data: function() {
     return {};
@@ -13,12 +15,16 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    routerGo() {
-      this.$router.push({ name: "about", params: { data: 666 } });
+    routerGo(name) {
+      this.$router.push({ name: name, params: { data: 666 } });
     }
   }
 };
 </script>
 
 <!--Add"scoped" attribute to limit CSS to this component only -->
-<style lang="scss" rel="stylesheet/scss"></style>
+<style lang="scss">
+.home {
+  font-size: 28px;
+}
+</style>

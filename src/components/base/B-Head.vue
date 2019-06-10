@@ -46,9 +46,8 @@ export default {
 @import "../../assets/scss/base.scss"; /*引入配置*/
 .base-box {
   width: 100%;
-  height: 60px;
-  border-bottom: 1px solid #ccc;
-  // background: #4c9ffb;
+  height: 100px;
+  border-bottom: 1px solid $border-color-theme;
   @include bg_color($background-color-theme);
   .base-container {
     position: relative;
@@ -57,18 +56,24 @@ export default {
       position: absolute;
       left: 30px;
       display: inline-block;
-      width: 20px;
-      height: 28px;
+      width: 40px;
+      height: 100%;
       line-height: 28px;
       font-size: 28px;
-      color: #666;
+      // top: 20px;
+      color: $font-color-theme;
       // background: url("../../assets/images/return.png") no-repeat center;
       background-size: 100%;
+      background-position: center;
+      // overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
     .head-title {
       font-size: $font_medium_s;
       font-weight: bold;
-      color: #666;
+      color: $font-color-theme;
     }
     .head-slot {
       position: absolute;

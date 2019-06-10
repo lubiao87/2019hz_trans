@@ -1,11 +1,11 @@
 <template>
-  <div id="app">
+  <div id="app" style="width: 100%;height: 100%;">
     <router-view />
   </div>
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
-import { constants } from "crypto";
+// import { constants } from "crypto";
 export default {
   data: function() {
     return {
@@ -68,9 +68,13 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped="">
-@import "@/assets/scss/base.scss";
+<style>
+html,
 body {
-  font-size: 16px;
+  width: 100%;
+  height: 100%;
+}
+.anchorBL {
+  display: none;
 }
 </style>

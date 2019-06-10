@@ -1,5 +1,5 @@
 const path = require("path");
-const vuxLoader = require("vux-loader");
+// const vuxLoader = require("vux-loader");
 function resolve(dir) {
   return path.join(__dirname, dir);
 }
@@ -11,7 +11,7 @@ module.exports = {
     port: 8888,
     proxy: {
       "/microModule": {
-        target: "http://192.168.1.141:8090/microModule",
+        target: "http://192.168.1.141:8090",
         changeOrigin: true,
         ws: true,
         pathRewrite: {
@@ -66,17 +66,31 @@ module.exports = {
   css: {
     loaderOptions: {
       css: {},
+      // postcss: {
+      //   plugins: [
+      //     require("postcss-px2rem")({
+      //       remUnit: 37.5
+      //     })
+      //   ]
+      //   /***
+      //    * 之所以设为37.5，是为了引用像mint-ui这样的第三方UI框架，
+      //    * 因为第三方框架没有兼容px2rem ，将remUnit的值设置为设计图宽度（这里为750px）75的一半，即可以1:1还原mint-ui的组件，
+      //    * 否则会样式会有变化，例如按钮会变小。
+      //    * */
+      // },
       postcss: {
         plugins: [
-          require("postcss-px2rem")({
-            remUnit: 37.5
+          require("postcss-pxtorem")({
+            rootValue: 16, // 换算的基数
+            selectorBlackList: [], // 忽略转换正则匹配项
+            propList: ["*"]
           })
         ]
-        /***
-         * 之所以设为37.5，是为了引用像mint-ui这样的第三方UI框架，
-         * 因为第三方框架没有兼容px2rem ，将remUnit的值设置为设计图宽度（这里为750px）75的一半，即可以1:1还原mint-ui的组件，
-         * 否则会样式会有变化，例如按钮会变小。
-         * */
+      },
+      sass: {
+        data: `
+          @import "@/assets/scss/variable.scss";
+        `
       }
     }
   }
