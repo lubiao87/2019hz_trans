@@ -296,3 +296,21 @@ body .weui-cells:before {
 body .weui-search-bar {
   background-color: $backgroud;
 }
+// body .mescroll-downwarp {
+//   overflow: auto;
+// }
+// body .mescroll-downwarp-reset {
+//   margin-top: 30px;
+// }
+body .mescroll-downwarp .downwarp-content {
+  min-height: 60px;
+  padding: 10px 0 ;
+  bottom: -30px;
+}
+body .mescroll-downwarp .downwarp-progress {
+  width: 6px;
+  height: 6px;
+}
+body .mescroll-downwarp .downwarp-tip {
+  font-size: 6px;
+}

@@ -25,6 +25,6 @@ export default {
 <!--Add"scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 .home {
-  font-size: 28px;
+  font-size: 34px;
 }
 </style>

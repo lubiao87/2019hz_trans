@@ -47,6 +47,10 @@ export default {
 .base-box {
   width: 100%;
   height: 100px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 998;
   border-bottom: 1px solid $border-color-theme;
   @include bg_color($background-color-theme);
   .base-container {
