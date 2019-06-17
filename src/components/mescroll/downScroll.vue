@@ -22,7 +22,7 @@ export default {
     return {
       showEmptySlot: false,
       refName: "mescroll_" + Date.now(),
-      instance: null
+      mescroll: null
     };
   },
   computed: {
@@ -36,8 +36,8 @@ export default {
   methods: {
     $_init() {
       this.showEmptySlot = false;
-      if (this.instance) this.instance.destroy();
-      this.instance = new MeScroll(this.refName, {
+      if (this.mescroll) this.mescroll.destroy();
+      this.mescroll = new MeScroll(this.refName, {
         down: {
           use: true,
           auto: false, // 默认不执行下拉刷新的回调
@@ -47,14 +47,19 @@ export default {
         up: {
           callback: null,
           use: false,
-          isBounce: false
+          isBounce: false,
+          page: {
+            num: 0, //当前页 默认0,回调之前会加1; 即callback(page)会从1开始
+            size: 10 //每页数据条数,默认10
+          },
+          noMoreSize: 5 //如果列表已无数据,可设置列表的总数量要大于5才显示无更多数据;
         }
       });
       let _this = this;
-      this.instance.showEmpty = function() {
+      this.mescroll.showEmpty = function() {
         _this.showEmptySlot = true;
       };
-      this.instance.removeEmpty = function() {
+      this.mescroll.removeEmpty = function() {
         _this.showEmptySlot = false;
       };
     },
@@ -63,10 +68,10 @@ export default {
       this.$emit("load", page.num);
     },
     getInstance() {
-      return this.instance;
+      return this.mescroll;
     },
     endByPage(curPagelen, totalPage) {
-      this.instance && this.instance.endByPage(curPagelen, totalPage);
+      this.mescroll && this.mescroll.endByPage(curPagelen, totalPage);
     }
   }
 };

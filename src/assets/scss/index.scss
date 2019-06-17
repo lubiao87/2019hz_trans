@@ -294,7 +294,8 @@ body .weui-cells:before {
   border: none;
 }
 body .weui-search-bar {
-  background-color: $backgroud;
+  background-color: #f8f4f2;
+  height: 100%;
 }
 // body .mescroll-downwarp {
 //   overflow: auto;
@@ -313,4 +314,73 @@ body .mescroll-downwarp .downwarp-progress {
 }
 body .mescroll-downwarp .downwarp-tip {
   font-size: 6px;
+}
+body .vux-search-box {
+  position: absolute;
+  padding: 2px;
+  font-size: 5px;
+}
+body .vux-search-box * {
+  border: 1px solid transparent;
+  border-top: 1px solid transparent;
+  border-bottom: 1px solid transparent;
+}
+body .weui-search-bar:before {
+  border-top: 0.01333rem solid transparent;
+}
+body .weui-search-bar:after {
+  border-bottom: 0.01333rem solid transparent;
+}
+body .weui-search-bar__box .weui-search-bar__input {
+  font-size: 5px;
+  height: 100%;
+  line-height: 5px;
+}
+body .weui-search-bar__box .weui-icon-clear {
+  display: none;
+}
+body .weui-search-bar__form {
+  background-color: #f8f4f2;
+}
+body .weui-cells.vux-search_show {
+  display: none;
+}
+// 服务评价
+body .weui-media-box__title {
+  font-size: 7px;
+}
+body .weui-media-box_appmsg .weui-media-box__hd {
+  width: 16px;
+  height: 16px;
+  margin-left: 12px;
+  margin-right: 8px;
+}
+body .weui-media-box__desc {
+  font-size: 6px;
+}
+// loding
+body .weui-loading_toast .weui-toast .weui-toast__content {
+  font-size: 7px;
+  color: $font-color-theme1;
+}
+body .weui-loading_toast .weui-toast {
+  width: 100px;
+  height: 40px;
+  min-height: 40px;
+  transform: translate(-50px, -20px);
+  margin-left: 0;
+}
+
+
+.chat-online .weui-icon-search:before {
+  display: none;
+}
+.chat-online .weui-search-bar__label {
+  display: none;
+}
+.chat-online .weui-search-bar__form {
+  height: 100%;
+}
+.chat-online .weui-search-bar__cancel-btn {
+  line-height: 14px;
 }

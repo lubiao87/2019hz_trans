@@ -7,8 +7,11 @@ import "@/config/rem"; // 配置flex
 import "normalize.css"; // 重置样式表
 import "@/assets/scss/index.scss"; // 全局样式
 import infiniteScroll from "vue-infinite-scroll";
-
 Vue.use(infiniteScroll);
+
+import { LoadingPlugin } from "vux";
+Vue.use(LoadingPlugin);
+
 Vue.config.productionTip = false;
 
 new Vue({

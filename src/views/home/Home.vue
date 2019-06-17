@@ -3,7 +3,8 @@
     home页面
     <div @click="routerGo('about')">about</div>
     <div @click="routerGo('mapArea')">mapArea</div>
-    <div @click="routerGo('chatOnline')">在线聊天</div>
+    <div @click="routerGo('chatOnline', 1)">我是用户1</div>
+    <div @click="routerGo('chatOnline', 2)">我是用户2</div>
   </div>
 </template>
 <script>
@@ -15,8 +16,8 @@ export default {
   created() {},
   mounted() {},
   methods: {
-    routerGo(name) {
-      this.$router.push({ name: name, params: { data: 666 } });
+    routerGo(name, id) {
+      this.$router.push({ name: name, params: { data: id, id: id } });
     }
   }
 };

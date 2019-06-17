@@ -31,12 +31,22 @@ export default new Router({
       component: () => import("@/views/olmap/mapArea.vue")
     },
     {
-      path: "/chatOnline",
+      // 在线聊天
+      path: "/chatOnline/:id",
       name: "chatOnline",
       meta: {
         keepAlive: true // 缓存
       },
       component: () => import("@/views/chat-online/chat_online.vue")
+    },
+    {
+      // 评价
+      path: "/AppraiseSheet",
+      name: "appraiseSheet",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/appraise-sheet/appraise_sheet.vue")
     }
   ]
 });

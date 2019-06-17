@@ -52,7 +52,7 @@ export default {
   left: 0;
   z-index: 998;
   border-bottom: 1px solid $border-color-theme;
-  @include bg_color($background-color-theme);
+  background-color: $background-color-theme;
   .base-container {
     position: relative;
     height: 100%;

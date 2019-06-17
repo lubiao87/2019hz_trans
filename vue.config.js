@@ -11,8 +11,9 @@ module.exports = {
     port: 8888,
     proxy: {
       "/microModule": {
-        target: "http://192.168.1.141:8090",
-        changeOrigin: true,
+        // target: "http://192.168.12.71:50087",
+        target: "http://192.168.1.177:28089/gzzqapi/api",
+        changeOrigin: false,
         ws: true,
         pathRewrite: {
           "^/microModule": "/"
