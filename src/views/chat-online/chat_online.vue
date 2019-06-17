@@ -303,6 +303,7 @@ export default {
     },
     // 开启websock
     initWebSocket() {
+      console.log(this.ID);
       const wsuri = `ws://192.168.12.71:50087/chatlineDev/chat/${this.ID}`; //这个地址由后端童鞋提供
       this.websock = new WebSocket(wsuri);
       this.websock.onmessage = this.websocketonmessage; //数据已接收
@@ -314,6 +315,9 @@ export default {
     websocketmes() {
       console.log("连接成功");
       this.chatList = this.chatList.reverse();
+      this.$nextTick(() => {
+        this.$refs.myscrollfull.mescroll.scrollTo(99999, 300); // 滚动到底部
+      });
       this.$vux.loading.hide();
     },
     // 连接成功发送消息
@@ -486,16 +490,19 @@ export default {
       this.$refs.myscrollfull.mescroll.lastScrollTop = this.$refs.myscrollfull.mescroll.getScrollTop(); // 记录当前滚动条的位置
       // this.$refs.myscrollfull.mescroll.hideTopBtn(0); // 隐藏回到顶部按钮,无渐隐动画
     }
+    this.websock = null;
     next();
   },
   activated() {
     const self = this;
     this.ID = this.$route.params.data;
     this.animationTime = Date.now();
-    self.$vux.loading.show({
-      text: "正在连接中..."
-    });
-    this.initWebSocket();
+    if (!this.websock) {
+      self.$vux.loading.show({
+        text: "正在连接中..."
+      });
+      this.initWebSocket();
+    }
   }
 };
 </script>

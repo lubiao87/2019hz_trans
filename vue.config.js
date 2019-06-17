@@ -24,6 +24,8 @@ module.exports = {
 
   //允许对内部的 webpack 配置进行更细粒度的修改。
   chainWebpack: config => {
+    // 修复HMR
+    config.resolve.symlinks(true);
     //命名
     config.resolve.alias.set("@", resolve("src"));
     //打包文件带hash
