@@ -32,7 +32,7 @@ export default new Router({
     },
     {
       // 在线聊天
-      path: "/chatOnline/:id",
+      path: "/chatOnline",
       name: "chatOnline",
       meta: {
         keepAlive: true // 缓存

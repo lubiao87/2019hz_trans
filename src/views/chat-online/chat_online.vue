@@ -47,8 +47,8 @@
               <span class="text">已生成服务单</span>
               <span class="line"></span>
             </div>
-            <div class="evaSheet-list">
-              <div class="name">服务评价</div>
+            <div class="evaSheet-list" v-for="(list, i) in item.list" :key="i">
+              <div class="name">{{ item.name }}</div>
               <div class="list">
                 <panel
                   :list="item.list"
@@ -56,6 +56,33 @@
                   @on-click-item="onevaSheetLook"
                   @on-img-error="onImgError"
                 ></panel>
+                <!-- <div class="evaluation-box">
+                  <div class="evaSheet-list">
+                    <div class="list">
+                      <div class="weui-panel weui-panel_access">
+                        <div class="weui-panel__bd">
+                          <a
+                            href="javascript:void(0);"
+                            class="weui-media-box weui-media-box_appmsg"
+                            ><div class="weui-media-box__hd">
+                              <img
+                                class="img-evaSheet"
+                                src="../../assets/images/evaSheet.png"
+                                alt=""
+                              />
+                            </div>
+                            <div class="weui-media-box__bd">
+                              <h4 class="weui-media-box__title"></h4>
+                              <p class="weui-media-box__desc">
+                                {{ list.desc }}
+                              </p>
+                            </div>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>-->
               </div>
             </div>
           </div>
@@ -96,18 +123,6 @@ export default {
       showBack: true,
       inputVal: "",
       chatList: [
-        // {
-        //   name: "用户1",
-        //   gender: "man",
-        //   text: "收到",
-        //   time: "2019-6-14 10:33:08" // 第一条是最新的消息
-        // },
-        // {
-        //   name: "用户2",
-        //   gender: "man",
-        //   text: "抄家伙",
-        //   time: "2019-6-14 9:33:08"
-        // },
         {
           name: "服务评价", // 评价单
           list: [
@@ -119,18 +134,6 @@ export default {
             }
           ]
         },
-        // {
-        //   name: "用户1",
-        //   gender: "man",
-        //   text: "完全没问题",
-        //   time: "2019-6-10 14:33:08"
-        // },
-        // {
-        //   name: "用户2",
-        //   gender: "man",
-        //   text: "带好现金",
-        //   time: "2019-6-10 14:33:08"
-        // },
         {
           name: "用户1",
           gender: "man",
@@ -170,13 +173,14 @@ export default {
     })
   },
   created() {
+    // this.chatList = this.chatList.reverse(); // 假数据倒序，记得注释掉
+    const self = this;
     this.ID = this.$route.params.data;
-    // this.msg = "用户" + this.ID + "上线";
-    // console.log(this.ID);
-    this.initWebSocket();
     this.animationTime = Date.now();
-    // console.log("没有缓存");
-    this.chatList = this.chatList.reverse();
+    self.$vux.loading.show({
+      text: "正在连接中..."
+    });
+    this.initWebSocket();
   },
   methods: {
     scrollToBottom() {
@@ -289,7 +293,7 @@ export default {
     },
     // 查看评价
     onevaSheetLook(item) {
-      // console.log(item);
+      console.log(item);
       this.$router.push({
         name: "appraiseSheet",
         params: {
@@ -299,36 +303,20 @@ export default {
     },
     // 开启websock
     initWebSocket() {
-      //初始化weosocket
-
       const wsuri = `ws://192.168.12.71:50087/chatlineDev/chat/${this.ID}`; //这个地址由后端童鞋提供
       this.websock = new WebSocket(wsuri);
       this.websock.onmessage = this.websocketonmessage; //数据已接收
-      this.websock.onopen = this.websocketonopen;
+      this.websock.onopen = this.websocketmes;
       this.websock.onerror = this.websocketonerror;
       this.websock.onclose = this.websocketclose;
     },
-    // 推送消息
-    websocketonopen() {
-      console.log("不推送消息");
-      // const self = this;
-      // const toSocketid = self.ID === 1 ? 2 : 1;
-      // const time = self.getNowFormatDate();
-      // let data = {
-      //   type: "QUIT", //消息类型    "ENTER";  //用户登录  "SPEAK";  //广播 "QUIT";  //私聊 "WARN";  //警告
-      //   username: "用户" + self.ID, //发送人名称
-      //   socketid: self.ID, //发送人id
-      //   toSocketid: toSocketid, //接收人id
-      //   timestamp: time, //时间戳
-      //   msg: self.msg //发送消息
-      // };
-      // if (self.msg) {
-      //   //连接建立之后执行send方法发送数据
-      //   this.websocketsend(JSON.stringify(data));
-      //   // this.websocketsend(data);
-      //   console.log("推送消息: ", data);
-      // }
+    // 连接成功
+    websocketmes() {
+      console.log("连接成功");
+      this.chatList = this.chatList.reverse();
+      this.$vux.loading.hide();
     },
+    // 连接成功发送消息
     websocketonopen2() {
       const self = this;
       const toSocketid = self.ID === 1 ? 2 : 1;
@@ -350,18 +338,20 @@ export default {
     },
     //连接建立失败重连
     websocketonerror() {
-      // const self = this;
+      const self = this;
       console.log("链接失败");
-
-      const number = 1 - (Date.now() - this.animationTime) / 5000;
-      console.log(number);
+      const number = 1 - (Date.now() - this.animationTime) / 30000;
       if (number < 0) {
+        const self = this;
+        self.$vux.loading.show({
+          text: "连接失败，正在重新连接"
+        });
         this.initWebSocket();
       } else {
         this.showPlugin();
         setTimeout(() => {
           self.$vux.loading.hide();
-          self.$router.go(-1);
+          self.$router.push({ name: "home" });
         }, 2000);
       }
     },
@@ -369,15 +359,12 @@ export default {
     websocketonmessage(e) {
       const self = this;
       let message = null;
-      console.log(typeof e);
       if (typeof e === "string") {
         message = JSON.parse(e);
       } else {
         message = e;
       }
-      console.log("连接成功，接受了: ", message);
       let messageData = null;
-      console.log(typeof message.data);
       if (typeof message.data === "string") {
         //这个判断是用户1业务需求才加的
         messageData = JSON.parse(message.data);
@@ -386,26 +373,17 @@ export default {
       }
       console.log("messageData: ", messageData);
       const time = self.getNowFormatDate();
-      if (messageData.msg) {
-        this.chatList.push({
-          name: "用户2",
-          gender: "man",
-          text: messageData.msg,
-          time: time
-        });
-        this.$nextTick(() => {
-          this.msg = "";
-          this.$refs.myscrollfull.mescroll.scrollTo(99999, 300); // 滚动到底部
-        });
-      } else {
-        self.$vux.loading.show({
-          text: "请输入内容"
-        });
-        setTimeout(() => {
-          self.$vux.loading.hide();
-          // self.$router.go(-1);
-        }, 2000);
-      }
+      this.chatList.push({
+        name: "用户2",
+        gender: "man",
+        text: messageData.msg,
+        time: time
+      });
+      this.$nextTick(() => {
+        this.msg = "";
+        this.$refs.myscrollfull.mescroll.scrollTo(99999, 300); // 滚动到底部
+      });
+
       //业务需求，将socket接收到的值存进vuex
       // this.$store.dispatch("footerStatus/RESET_ID"); //先调用reset方法置空vuex > store里面的scorketId（为什么置空，下面标题3解释）
       // this.$store.dispatch("footerStatus/SAVE_ID", 23); //重新给store中的scorketId赋值（数据格式问题先转了json）
@@ -419,6 +397,14 @@ export default {
     //关闭
     websocketclose(e) {
       console.log("断开连接", e);
+      const self = this;
+      self.$vux.loading.show({
+        text: "连接失败"
+      });
+      setTimeout(() => {
+        self.$vux.loading.hide();
+        self.$router.push({ name: "home" });
+      }, 2000);
     },
     // 获取当前时间
     getNowFormatDate() {
@@ -503,14 +489,13 @@ export default {
     next();
   },
   activated() {
-    // const self = this;
-    // setTimeout(() => {
-    //   self.showPlugin();
-    //   setTimeout(() => {
-    //     self.$vux.loading.hide();
-    //     self.$router.go(-1);
-    //   }, 3000);
-    // }, 5000);
+    const self = this;
+    this.ID = this.$route.params.data;
+    this.animationTime = Date.now();
+    self.$vux.loading.show({
+      text: "正在连接中..."
+    });
+    this.initWebSocket();
   }
 };
 </script>
@@ -601,6 +586,11 @@ export default {
       }
     }
     .evaluation-box {
+      .img-evaSheet {
+        width: 72px;
+        height: 72px;
+        display: block;
+      }
       .title-box {
         height: 80px;
         width: 100%;
