@@ -13,7 +13,7 @@ module.exports = {
       "/microModule": {
         // target: "http://192.168.12.71:50087",
         target: "http://192.168.1.177:28089/gzzqapi/api",
-        changeOrigin: false,
+        changeOrigin: true,
         ws: true,
         pathRewrite: {
           "^/microModule": "/"
@@ -25,7 +25,7 @@ module.exports = {
   //允许对内部的 webpack 配置进行更细粒度的修改。
   chainWebpack: config => {
     // 修复HMR
-    config.resolve.symlinks(true);
+    // config.resolve.symlinks(true);
     //命名
     config.resolve.alias.set("@", resolve("src"));
     //打包文件带hash

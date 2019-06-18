@@ -56,33 +56,6 @@
                   @on-click-item="onevaSheetLook"
                   @on-img-error="onImgError"
                 ></panel>
-                <!-- <div class="evaluation-box">
-                  <div class="evaSheet-list">
-                    <div class="list">
-                      <div class="weui-panel weui-panel_access">
-                        <div class="weui-panel__bd">
-                          <a
-                            href="javascript:void(0);"
-                            class="weui-media-box weui-media-box_appmsg"
-                            ><div class="weui-media-box__hd">
-                              <img
-                                class="img-evaSheet"
-                                src="../../assets/images/evaSheet.png"
-                                alt=""
-                              />
-                            </div>
-                            <div class="weui-media-box__bd">
-                              <h4 class="weui-media-box__title"></h4>
-                              <p class="weui-media-box__desc">
-                                {{ list.desc }}
-                              </p>
-                            </div>
-                          </a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>-->
               </div>
             </div>
           </div>
@@ -198,17 +171,20 @@ export default {
       // this.$refs.myscrollfull.mescroll.scrollTo(99999, 300); // 滚动到底部
       const self = this;
       const time = self.getNowFormatDate();
-      this.chatList.push({
-        name: "用户1",
-        gender: "man",
-        text: this.msg,
-        time: time
-      });
+      if (self.msg) {
+        this.chatList.push({
+          name: "用户1",
+          gender: "man",
+          text: this.msg,
+          time: time
+        });
+        this.websocketonopen2();
+      }
+
       this.$nextTick(() => {
         this.msg = "";
         this.$refs.myscrollfull.mescroll.scrollTo(99999, 300); // 滚动到底部
       });
-      this.websocketonopen2();
     },
     // 上拉刷新
     loadData() {
@@ -333,12 +309,10 @@ export default {
         timestamp: time, //时间戳
         msg: self.msg //发送消息
       };
-      if (self.msg) {
-        //连接建立之后执行send方法发送数据
-        this.websocketsend(JSON.stringify(data));
-        // this.websocketsend(data);
-        console.log("推送消息2: ", data);
-      }
+      //连接建立之后执行send方法发送数据
+      this.websocketsend(JSON.stringify(data));
+      // this.websocketsend(data);
+      console.log("推送消息2: ", data);
     },
     //连接建立失败重连
     websocketonerror() {

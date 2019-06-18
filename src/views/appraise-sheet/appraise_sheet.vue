@@ -1,23 +1,27 @@
 <template>
   <div class="appraise-sheet">
     <div class="header">
-      <p class="p1">你好修障工作已完成！</p>
+      <p class="p1">你好修障工作已完成!</p>
       <p class="p2">请你对张师傅的修障服务评级</p>
     </div>
     <div class="user-data">
-      <div class="head-portrait"></div>
-      <div class="name">张师傅</div>
-      <div class="phone">13365454456</div>
-      <div class="address">江北营销服务中心</div>
+      <div class="list">
+        <panel :list="userInfo" type="1"></panel>
+      </div>
     </div>
   </div>
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
-
+import { Panel, TransferDomDirective as TransferDom } from "vux";
 // import BMap from "BMap";
 export default {
-  components: {},
+  directives: {
+    TransferDom
+  },
+  components: {
+    Panel
+  },
   data: function() {
     return {
       title: "评价服务",
@@ -26,7 +30,15 @@ export default {
         productName: Math.random(),
         price: new Date().getTime()
       },
-      showBack: false
+      showBack: false,
+      userInfo: [
+        {
+          src: "./img/chatman.png",
+          title: "张师傅",
+          desc: `<p class="user-text">133****1132</p><p class="user-text">江北营销服务中心</p>`,
+          id: 333
+        }
+      ]
     };
   },
   computed: {
@@ -75,6 +87,9 @@ export default {
       color: $font-color-shallow9;
       font-size: $font_little_s;
     }
+  }
+  .user-text {
+    color: $font-color-theme3;
   }
   .user-data {
   }
