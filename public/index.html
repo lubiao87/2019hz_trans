@@ -1,15 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-
+    <meta name="robots" content="all" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover"
+    />
+    <meta charset="utf-8"/>
+    <meta name="format-detection" content="telephone=yes"/>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate"/>
+    <meta http-equiv="expires" content="0"/>
+    <!-- 针对手持设备优化，主要是针对一些老的不识别viewport的浏览器，比如黑莓 -->
+    <meta name="HandheldFriendly" content="true" />
+    <!-- 忽略页面中的数字识别为电话 -->
+    <!-- <meta name="format-detection" content="telephone=no" /> -->
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title>惠州透明化3.0</title>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=PfpX2crdNNOGUBaK9kWpCiaFjHaSiVSg"></script>
   </head>
   <body>
-    <noscript>
-      <strong>We're sorry but hz_trans_app doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
-    </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>

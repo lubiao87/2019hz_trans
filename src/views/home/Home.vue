@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     home页面
-    <div class="router-btn" @click="routerGo('about')">about</div>
+    <div class="router-btn" @click="routerGo('about')">about123</div>
     <div class="router-btn" @click="routerGo('mapArea')">mapAreay页面</div>
     <div class="router-btn" @click="routerGo('chatOnline', 1)">我是用户1</div>
     <div class="router-btn" @click="routerGo('chatOnline', 2)">我是用户2</div>

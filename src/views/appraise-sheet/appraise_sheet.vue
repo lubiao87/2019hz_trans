@@ -9,18 +9,27 @@
         <panel :list="userInfo" type="1"></panel>
       </div>
     </div>
+    <div>
+      <div class="sheet-list">
+        <div class="list" v-for="(item, index) in starsEvaluate" :key="index">
+          <span class="text">{{ item.name }}</span>
+          <rater v-model="item.stars"></rater>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
-import { Panel, TransferDomDirective as TransferDom } from "vux";
+import { Panel, Rater, TransferDomDirective as TransferDom } from "vux";
 // import BMap from "BMap";
 export default {
   directives: {
     TransferDom
   },
   components: {
-    Panel
+    Panel,
+    Rater
   },
   data: function() {
     return {
@@ -37,6 +46,24 @@ export default {
           title: "张师傅",
           desc: `<p class="user-text">133****1132</p><p class="user-text">江北营销服务中心</p>`,
           id: 333
+        }
+      ],
+      starsEvaluate: [
+        {
+          stars: 0,
+          name: "总体评价"
+        },
+        {
+          stars: 0,
+          name: "按约上门"
+        },
+        {
+          stars: 0,
+          name: "服务态度"
+        },
+        {
+          stars: 0,
+          name: "保障质量"
         }
       ]
     };
@@ -91,7 +118,18 @@ export default {
   .user-text {
     color: $font-color-theme3;
   }
-  .user-data {
+  .sheet-list {
+    width: 100%;
+    .list {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      .text {
+        display: inline-block;
+        margin-right: 30px;
+        margin-left: 50px;
+      }
+    }
   }
 }
 </style>

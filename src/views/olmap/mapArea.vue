@@ -116,7 +116,7 @@ export default {
     right: 0;
     margin: auto;
     width: 90%;
-    height: 50px;
+    // height: 100px;
     color: $font-color-theme;
     background-color: transparent;
   }

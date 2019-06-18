@@ -25,7 +25,7 @@ module.exports = {
   //允许对内部的 webpack 配置进行更细粒度的修改。
   chainWebpack: config => {
     // 修复HMR
-    // config.resolve.symlinks(true);
+    config.resolve.symlinks(true);
     //命名
     config.resolve.alias.set("@", resolve("src"));
     //打包文件带hash
@@ -85,9 +85,12 @@ module.exports = {
         plugins: [
           require("postcss-pxtorem")({
             rootValue: 16, // 换算的基数
-            selectorBlackList: [], // 忽略转换正则匹配项
+            selectorBlackList: ["vux"], // 忽略转换正则匹配项
             propList: ["*"]
           })
+          // require("postcss-px2rem")({
+          //   remUnit: 37.5
+          // })
         ]
       },
       sass: {

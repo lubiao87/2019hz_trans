@@ -368,7 +368,11 @@ body .weui-loading_toast .weui-toast {
   transform: translate(-50px, -20px);
   margin-left: 0;
 }
-
+body .appraise-sheet .weui-media-box_appmsg .weui-media-box__hd {
+  margin-top: 4px;
+  margin-left: 0;
+  margin-right: 6px;
+}
 
 .chat-online .weui-icon-search:before {
   display: none;
