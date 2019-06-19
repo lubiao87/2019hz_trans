@@ -205,7 +205,7 @@ body .weui-cell_access .weui-cell__ft:after {
 }
 body .weui-cells {
   margin-top: 0;
-  font-size: 28px;
+  // font-size: 28px;
 }
 body .weui-wepay-flow__li .weui-wepay-flow__state {
   border-radius: 15px;
@@ -238,9 +238,12 @@ body .weui-wepay-flow__li_done .weui-wepay-flow__state {
   border: 1px solid $border-color-theme;
 }
 body .weui-btn_primary {
-  background-color: $background-color-theme;
-  border-radius: 10px;
-  font-size: 30px;
+  background-color: $background-color-theme1;
+  font-size: 8px;
+}
+body .weui-btn_primary:not(.weui-btn_disabled):active {
+  background-color: $background-color-theme1;
+  opacity: 0.9;
 }
 .v-transfer-dom, .vux-confirm, .vux-x-dialog, .weui-dialog {
   width: 100% !important;
@@ -264,19 +267,6 @@ body .weui-dialog__bd:first-child {
 .vux-x-input.weui-cell > div {
   float: left;
 }
-.weui-cell__primary {
-  height: 88px;
-  line-height: 88px;
-  padding-left: 20px;
-  color: $font-color-theme;
-  font-size: 28px;
-}
-.weui-label {
-  color: $font-color-theme;
-  font-size: 30px;
-  padding-left: 15px;
-}
-
 body .weui-cells__title {
   color: $font-color-theme;
   font-size: 30px;
@@ -284,10 +274,18 @@ body .weui-cells__title {
   padding-top: 40px;
   margin-top: 0;
 }
+// 文本域
 body .weui-textarea {
-  font-size: 28px;
-  // padding-left: 30px;
+  background:$background-color-themesec;
+  border-radius: 2px;
+  padding: 5px;
+  font-size: 7px;
 }
+body .weui-textarea-counter {
+  margin-top: -12.5px;
+  margin-right: 5px;
+}
+
 body .weui-cells:before {
   border: none;
 }
@@ -356,6 +354,9 @@ body .weui-media-box_appmsg .weui-media-box__hd {
 body .weui-media-box__desc {
   font-size: 6px;
 }
+body .weui-media-box__desc .user-text{
+  padding-top: 2px;
+}
 // loding
 body .weui-loading_toast .weui-toast .weui-toast__content {
   font-size: 7px;
@@ -372,25 +373,59 @@ body .appraise-sheet .weui-media-box_appmsg .weui-media-box__hd {
   margin-top: 4px;
   margin-left: 0;
   margin-right: 6px;
+  width: 30px;
+  height: 30px;
 }
+body .weui-panel:before {
+  border-top: 0.01333rem solid transparent;
+}
+body .weui-panel:after {
 
-.chat-online .weui-icon-search:before {
-  display: none;
+  border-bottom: 0.01333rem solid transparent;
 }
-.chat-online .weui-search-bar__label {
-  display: none;
+body .weui-icon-success {
+  font-size: 8px;
 }
-.chat-online .weui-search-bar__form {
-  height: 100%;
+body .weui-icon-circle {
+  font-size: 8px;
 }
-.chat-online .weui-search-bar__cancel-btn {
-  line-height: 14px;
+body .vux-check-icon > .weui-icon-success:before, .vux-check-icon > .weui-icon-success-circle:before {
+  color: $background-color-theme1;
 }
-
-.appraise-sheet .weui-media-box_appmsg .weui-media-box__hd {
-  width: 28px;
-  height: 28px;
-  margin-top: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
+body .vux-tap-active {
+  margin-left: 10px;
+  vertical-align: middle;
+}
+body [class^="weui-icon-"]:before,body [class*=" weui-icon-"]:before {
+  margin-left: 0;
+  margin-right: 0;
+}
+body .weui-cells_checkbox .weui-icon-checked:before {
+  font-size: 8px;
+}
+body .weui-cells_checkbox .weui-check:checked + .vux-checklist-icon-checked:before {
+  color: $background-color-theme1;
+  display: block;
+    content: "";
+    color: #fff;
+    font-size: 8px;
+    background: url(../images/checker-icon.png) no-repeat center;
+    background-size: 100%;
+    text-align: center;
+    background-color: $background-color-theme1;
+}
+body .weui-cells_checkbox .weui-icon-checked:before {
+  display: block;
+    content: "";
+    width: 8px;
+    height: 8px;
+    line-height: 8px;
+    border: 0.1px solid $background-color-theme1;
+    margin-right: 4px;
+}
+body .weui-cells:after {
+  border-bottom: 0.01333rem solid transparent;
+}
+body .weui-cell:before {
+  border-top: 0.01333rem solid transparent;
 }

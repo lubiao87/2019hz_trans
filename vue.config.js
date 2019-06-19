@@ -99,5 +99,6 @@ module.exports = {
         `
       }
     }
-  }
+  },
+  runtimeCompiler: true // 包含运行时编译器的 Vue 构建版本
 };

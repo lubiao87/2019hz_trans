@@ -150,10 +150,10 @@ export default {
     const self = this;
     this.ID = this.$route.params.data;
     this.animationTime = Date.now();
-    self.$vux.loading.show({
-      text: "正在连接中..."
-    });
-    this.initWebSocket();
+    // self.$vux.loading.show({
+    //   text: "正在连接中..."
+    // });
+    // this.initWebSocket();
   },
   methods: {
     scrollToBottom() {
@@ -471,12 +471,12 @@ export default {
     const self = this;
     this.ID = this.$route.params.data;
     this.animationTime = Date.now();
-    if (!this.websock) {
-      self.$vux.loading.show({
-        text: "正在连接中..."
-      });
-      this.initWebSocket();
-    }
+    // if (!this.websock) {
+    //   self.$vux.loading.show({
+    //     text: "正在连接中..."
+    //   });
+    //   this.initWebSocket();
+    // }
   }
 };
 </script>
@@ -625,5 +625,31 @@ export default {
       width: 100%;
     }
   }
+}
+</style>
+<style lang="scss">
+@import "@/assets/scss/base.scss"; /*引入配置*/
+.chat-online .weui-icon-search:before {
+  display: none;
+}
+.chat-online .weui-search-bar__label {
+  display: none;
+}
+.chat-online .weui-search-bar__form {
+  height: 100%;
+}
+.chat-online .weui-search-bar__cancel-btn {
+  line-height: 14px;
+}
+
+.appraise-sheet .weui-media-box_appmsg .weui-media-box__hd {
+  width: 28px;
+  height: 28px;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+.appraise-sheet a.weui-media-box {
+  color: $font-color-theme3;
 }
 </style>
