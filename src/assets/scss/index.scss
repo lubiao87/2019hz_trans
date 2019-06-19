@@ -253,9 +253,6 @@ body .weui-btn_primary:not(.weui-btn_disabled):active {
   width: 500px;
   padding: 20px;
 }
-body .weui-dialog__bd {
-  padding: 10px 0 30px;
-}
 body .weui-dialog__bd:first-child {
   padding-top: 30px;
 }
@@ -428,4 +425,26 @@ body .weui-cells:after {
 }
 body .weui-cell:before {
   border-top: 0.01333rem solid transparent;
+}
+body .weui-dialog {
+  max-width: 100% !important;
+  width: 80% !important;
+}
+// 弹窗样式
+body .weui-dialog > div {
+  width: 100%;
+  padding: 4px;
+  font-size: 6px;
+}
+body .weui-dialog__title {
+  font-size: 6px;
+}
+body .weui-dialog__bd {
+  margin-bottom: 2px;
+}
+body .weui-dialog__ft:after {
+  border-top: 0.5px solid $border-color-theme;
+}
+body .weui-dialog__hd {
+  margin-top: 2px;
 }
