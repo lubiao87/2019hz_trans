@@ -50,7 +50,7 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 998;
+  z-index: 9;
   border-bottom: 1px solid $border-color-theme;
   background-color: $background-color-theme;
   .base-container {

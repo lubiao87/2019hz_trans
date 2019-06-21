@@ -8,11 +8,7 @@ export default new Router({
   mode: "history",
   base: process.env.BASE_URL,
   routes: [
-    {
-      path: "/",
-      name: "home",
-      component: Home
-    },
+    // 测试
     {
       path: "/about",
       name: "about",
@@ -21,6 +17,20 @@ export default new Router({
       },
       component: () =>
         import(/* webpackChunkName: "about" */ "@/views/test/About.vue")
+    },
+    /* 首页 */
+    {
+      path: "/",
+      name: "index",
+      redirect: "/home"
+    },
+    {
+      path: "/home",
+      name: "home",
+      component: Home,
+      meta: {
+        keepAlive: true // 缓存
+      }
     },
     {
       path: "/mapArea",
@@ -41,12 +51,21 @@ export default new Router({
     },
     {
       // 评价
-      path: "/AppraiseSheet",
+      path: "/appraiseSheet",
       name: "appraiseSheet",
       meta: {
         keepAlive: true // 缓存
       },
       component: () => import("@/views/appraise-sheet/appraise_sheet.vue")
+    },
+    // 服务单
+    {
+      path: "/generatingOrders",
+      name: "generatingOrders",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/generating-orders/generating_orders.vue")
     }
   ]
 });

@@ -18,17 +18,14 @@
         >
           <div
             class="lb-panel"
-            v-if="item.name !== '服务评价'"
+            v-if="item.name !== '服务单详情'"
             :class="{ myText: item.name === '用户1' }"
           >
             <div class="img-man">
               <div class="img"></div>
             </div>
             <div class="info">
-              <div
-                class="info-text"
-                :style="{ width: item.text.length + 2 + 'em' }"
-              >
+              <div class="info-text">
                 {{ item.text }}
                 <div
                   :class="{
@@ -41,7 +38,7 @@
             <!-- <div class="info">{{item.name}} {{item.mobile}}</div> -->
             <!-- <x-button class="onButton" @click.native="onButtonClick(item.id)">删除</x-button> -->
           </div>
-          <div class="evaluation-box" v-if="item.name === '服务评价'">
+          <div class="evaluation-box" v-if="item.name === '服务单详情'">
             <div class="title-box">
               <span class="line"></span>
               <span class="text">已生成服务单</span>
@@ -71,6 +68,7 @@
         value=""
       />
     </div>
+    <float-btn :text="floatText" @onFloatBtnClicked="floatClick" />
   </div>
 </template>
 <script>
@@ -78,7 +76,7 @@ import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
 import { Panel, TransferDomDirective as TransferDom } from "vux";
 import VScrollFull from "@/components/mescroll/downScroll";
 import BHead from "@/components/base/B-Head";
-import { setTimeout } from "timers";
+import FloatBtn from "@/components/dragBox/floatBtn";
 
 export default {
   directives: {
@@ -87,7 +85,8 @@ export default {
   components: {
     BHead,
     VScrollFull,
-    Panel
+    Panel,
+    FloatBtn
   },
   data: function() {
     return {
@@ -97,7 +96,7 @@ export default {
       inputVal: "",
       chatList: [
         {
-          name: "服务评价", // 评价单
+          name: "服务单详情", // 评价单
           list: [
             {
               src: "./img/evaSheet.png",
@@ -110,7 +109,7 @@ export default {
         {
           name: "用户1",
           gender: "man",
-          text: "好的，用户1马上过去",
+          text: "好的，我马上过去",
           time: "2019-6-10 14:33:08"
         },
         {
@@ -130,7 +129,10 @@ export default {
       results: [],
       msg: "",
       ID: null,
-      animationTime: null
+      animationTime: null,
+      left: 0,
+      top: 0,
+      floatText: "生成服务单"
     };
   },
   computed: {
@@ -146,16 +148,28 @@ export default {
     })
   },
   created() {
-    // this.chatList = this.chatList.reverse(); // 假数据倒序，记得注释掉
+    this.chatList = this.chatList.reverse(); // 假数据倒序，记得注释掉
     const self = this;
     this.ID = this.$route.params.data;
     this.animationTime = Date.now();
+    console.log(this.GLOBAL);
     // self.$vux.loading.show({
     //   text: "正在连接中..."
     // });
     // this.initWebSocket();
   },
   methods: {
+    // 点击浮动窗事件
+    floatClick() {
+      // console.log("点击浮动窗");
+      const self = this;
+      this.$router.push({
+        name: "generatingOrders",
+        params: {
+          data: self.floatText
+        }
+      });
+    },
     scrollToBottom() {
       // 点击输入
       this.$nextTick(() => {
@@ -178,7 +192,9 @@ export default {
           text: this.msg,
           time: time
         });
-        this.websocketonopen2();
+        if (this.websock) {
+          this.websocketonopen2();
+        }
       }
 
       this.$nextTick(() => {
@@ -188,7 +204,7 @@ export default {
     },
     // 上拉刷新
     loadData() {
-      console.log("可以上拉");
+      // console.log("可以上拉");
       const self = this;
       this.pageSize++;
       setTimeout(() => {
@@ -271,7 +287,7 @@ export default {
     onevaSheetLook(item) {
       console.log(item);
       this.$router.push({
-        name: "appraiseSheet",
+        name: "generatingOrders",
         params: {
           data: item
         }
@@ -280,7 +296,7 @@ export default {
     // 开启websock
     initWebSocket() {
       console.log(this.ID);
-      const wsuri = `ws://192.168.12.71:50087/chatlineDev/chat/${this.ID}`; //这个地址由后端童鞋提供
+      const wsuri = this.GLOBAL + this.ID; //这个地址由后端童鞋提供
       this.websock = new WebSocket(wsuri);
       this.websock.onmessage = this.websocketonmessage; //数据已接收
       this.websock.onopen = this.websocketmes;
@@ -487,7 +503,6 @@ export default {
   width: 100%;
   height: 100%;
   overflow: scroll;
-
   font-size: 32px;
   .scroll-top {
     width: 100%;
@@ -595,12 +610,13 @@ export default {
         margin: auto;
         width: 542px;
         border-radius: 20px;
-        padding: 20px;
+        padding: 20px 40px;
         overflow: hidden;
         .name {
           width: 100%;
           text-align: center;
           padding: 10px;
+          border-bottom: 2px dashed $border-color-theme;
         }
       }
     }
@@ -651,5 +667,8 @@ export default {
 }
 .appraise-sheet a.weui-media-box {
   color: $font-color-theme3;
+}
+.chat-online .evaSheet-list .weui-media-box {
+  padding-top: 30px;
 }
 </style>

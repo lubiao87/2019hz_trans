@@ -48,3 +48,6 @@ a{text-decoration:none;color:$font_default_color;}
 	/*原理： overflow!=visible ;display!=block;float!=none;position!=static||relative 都可为元素创建BFC；消除边距重叠或者浮动产生的影响*/
 	content:'';overflow:hidden;clear:both;
 }
+.gray-bg {
+  width: 120%; height:18px; background:$background-color-themesec;margin-left: -10%;
+}

@@ -1,77 +1,33 @@
 <template>
   <div id="app" style="width: 100%;height: 100%;">
-    <keep-alive>
-      <router-view v-if="$route.meta.keepAlive">
-        <!-- 这里是会被缓存的视图组件，比如 page1,page2 -->
+    <transition :name="transitionName">
+      <keep-alive>
+        <router-view class="child-view" v-if="$route.meta.keepAlive">
+          <!-- 这里是会被缓存的视图组件，比如 page1,page2 -->
+        </router-view>
+      </keep-alive>
+    </transition>
+    <transition :name="transitionName">
+      <router-view class="child-view" v-if="!$route.meta.keepAlive">
+        <!-- 这里是不被缓存的视图组件，比如 page3 -->
       </router-view>
-    </keep-alive>
-
-    <router-view v-if="!$route.meta.keepAlive">
-      <!-- 这里是不被缓存的视图组件，比如 page3 -->
-    </router-view>
+    </transition>
   </div>
 </template>
 <script>
-import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
-// import { constants } from "crypto";
 export default {
   data: function() {
     return {
-      user: {
-        name: "彪彪"
-      }
+      transitionName: "slide-left"
     };
   },
-
-  created() {
-    // this.initWebSocket();
-  },
-  computed: {
-    ...mapGetters("footerStatus", {
-      //用mapGetters来获取collection.js里面的getters
-      scorketId: "getscorketId"
-    })
-  },
-  methods: {
-    initWebSocket() {
-      //初始化weosocket
-      const wsuri = `ws://192.168.11.49:9998/echo`; //这个地址由后端童鞋提供
-      this.websock = new WebSocket(wsuri);
-      this.websock.onmessage = this.websocketonmessage;
-      this.websock.onopen = this.websocketonopen;
-      this.websock.onerror = this.websocketonerror;
-      this.websock.onclose = this.websocketclose;
-    },
-    websocketonopen() {
-      //连接建立之后执行send方法发送数据
-      this.websocketsend(this.user);
-      // console.log("连接建立");
-    },
-    websocketonerror() {
-      //连接建立失败重连
-      this.initWebSocket();
-    },
-    websocketonmessage(e) {
-      //数据接收
-      // console.log("连接成功: " + this.scorketId);
-      console.log(JSON.parse(e.data));
-      if (e.data == "连接成功") {
-        //这个判断是我业务需求才加的
-        return;
-      }
-      //业务需求，将socket接收到的值存进vuex
-      this.$store.dispatch("footerStatus/RESET_ID"); //先调用reset方法置空vuex > store里面的scorketId（为什么置空，下面标题3解释）
-      this.$store.dispatch("footerStatus/SAVE_ID", 23); //重新给store中的scorketId赋值（数据格式问题先转了json）
-      // this.SAVE_ID("23")
-      // console.log(_this.$store.state);
-    },
-    websocketsend(Data) {
-      //数据发送
-      this.websock.send(JSON.stringify(Data));
-    },
-    websocketclose(e) {
-      //关闭
-      console.log("断开连接", e);
+  //监听路由的路径，可以通过不同的路径去选择不同的切换效果
+  watch: {
+    $route(to, from) {
+      const toDepth = to.path.split("/")[1];
+      // const fromDepth = from.path.split("/")[1];
+      // console.log(toDepth, fromDepth);
+      this.transitionName = toDepth === "home" ? "slide-right" : "slide-left";
     }
   }
 };
@@ -84,5 +40,23 @@ body {
 }
 .anchorBL {
   display: none;
+}
+.child-view {
+  margin: 300px auto;
+  width: 100%;
+  height: 100%;
+  transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+}
+.slide-left-enter,
+.slide-right-leave-active {
+  opacity: 0;
+  -webkit-transform: translate(30px, 0);
+  transform: translate(30px, 0);
+}
+.slide-left-leave-active,
+.slide-right-enter {
+  opacity: 0;
+  -webkit-transform: translate(-30px, 0);
+  transform: translate(-30px, 0);
 }
 </style>

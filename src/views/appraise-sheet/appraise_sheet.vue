@@ -17,9 +17,7 @@
           <rater v-model="item.stars" :margin="8" :font-size="30"></rater>
         </div>
       </div>
-      <div
-        style="width: 120%; height:10px; background:rgba(239,239,244,1);margin-left: -10%;"
-      ></div>
+      <div class="gray-bg"></div>
       <div class="check-list">
         <div class="problem">
           <span class="problem-span">装维工程师是否提供便民服务? </span>
@@ -59,9 +57,7 @@
         </div>
       </div>
       <p class="tc stip" v-show="checkYes">请选择1-2项服务内容</p>
-      <div
-        style="width: 120%; height:10px; background:rgba(239,239,244,1);margin-left: -10%;"
-      ></div>
+      <div class="gray-bg"></div>
       <div class="primary-btn">
         <x-button @click.native="primarySubmit" type="primary">提交</x-button>
       </div>
