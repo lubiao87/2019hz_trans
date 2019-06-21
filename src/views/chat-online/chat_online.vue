@@ -148,11 +148,11 @@ export default {
     })
   },
   created() {
-    this.chatList = this.chatList.reverse(); // 假数据倒序，记得注释掉
     const self = this;
-    this.ID = this.$route.params.data;
+    this.ID = this.$route.params.data.id;
     this.animationTime = Date.now();
-    console.log(this.GLOBAL);
+    console.log(this.$route.params.data.id);
+    this.chatList = this.chatList.reverse(); // 假数据倒序，记得注释掉
     // self.$vux.loading.show({
     //   text: "正在连接中..."
     // });

@@ -59,4 +59,5 @@ body {
   -webkit-transform: translate(-30px, 0);
   transform: translate(-30px, 0);
 }
+@import "~@/assets/icon/iconfont.css";
 </style>

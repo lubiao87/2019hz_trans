@@ -56,13 +56,24 @@
         </div>
       </group>
       <div class="gray-bg"></div>
+
+      <group class="obstacles" title="报障内容">
+        <x-textarea
+          :max="100"
+          placeholder="请输入报障内容"
+          @on-focus="textareaEvent('focus')"
+          @on-blur="textareaEvent('blur')"
+        ></x-textarea>
+      </group>
+      <img-uploader />
     </div>
   </div>
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
 import BHead from "@/components/base/B-Head";
-import { XInput, Group, XButton, Cell } from "vux";
+import ImgUploader from "@/components/imgUploader/imgUploader";
+import { XInput, Group, XButton, Cell, XTextarea } from "vux";
 
 export default {
   components: {
@@ -70,7 +81,9 @@ export default {
     XInput,
     XButton,
     Group,
-    Cell
+    Cell,
+    XTextarea,
+    ImgUploader
   },
   data: function() {
     return {
@@ -154,7 +167,10 @@ export default {
     ...mapActions("collection", [
       //collection是指modules文件夹下的collection.js
       "invokePushItems" //collection.js文件中的actions里的方法，在上面的@click中执行并传入实参
-    ])
+    ]),
+    textareaEvent(e) {
+      console.log(e);
+    }
   },
   mounted() {}
 };
@@ -177,11 +193,19 @@ export default {
       border-bottom: 1px solid $border-color-theme;
       .weui-cell__hd {
         height: 100%;
-        padding: 10px;
+        padding: 10px 20px;
       }
       .weui-cell__bd {
         padding: 10px 0;
       }
+    }
+    .obstacles:after {
+      content: "*";
+      position: absolute;
+      left: 10px;
+      top: 28px;
+      color: red;
+      font-size: 50px;
     }
   }
 }
@@ -201,12 +225,12 @@ export default {
     display: block;
     .weui-cell__bd {
       width: 70%;
-      padding-right: 10px;
+      padding-right: 20px;
       float: left;
     }
     .weui-cell__hd {
       width: 30%;
-      padding-left: 10px;
+      padding-left: 20px;
       float: left;
     }
   }
@@ -240,6 +264,21 @@ export default {
   }
   .vux-x-input.weui-cell {
     height: 100px;
+  }
+  .obstacles {
+    padding: 20px;
+    width: 100%;
+    position: relative;
+    .weui-cell {
+      .weui-cell__bd {
+        width: 100%;
+      }
+    }
+  }
+  .weui-cells__title {
+    color: $font-color-shallow0;
+    font-size: $font_medium_s;
+    margin-top: 10px;
   }
 }
 </style>

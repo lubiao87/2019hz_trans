@@ -5,18 +5,18 @@ function resolve(dir) {
 }
 module.exports = {
   lintOnSave: false,
-  // baseUrl: "/",
+  // baseUrl: "http://192.168.12.71",
   publicPath: "./",
   devServer: {
     port: 8888,
     proxy: {
-      "/microModule": {
-        // target: "http://192.168.12.71:50087",
-        target: "http://192.168.1.177:28089/gzzqapi/api",
+      "/transApp": {
+        target: "http://192.168.12.71/transApp",
+        // target: "http://192.168.1.141:8090/microModule",
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          "^/microModule": "/"
+          "^/transApp": "/"
         }
       }
     }
