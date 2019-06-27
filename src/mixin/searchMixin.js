@@ -20,7 +20,6 @@ export const listSearch = {
      * 发送请求
      */
     sendReq (params, callback) {
-      console.log(params)
       let self = this
       request({
         method: params.method || 'POST',
@@ -32,12 +31,13 @@ export const listSearch = {
           'Content-type': params.contentType || 'application/json'
         }
       }).then((res) => {
+        // console.log(res)
         // 如果该请求不需要干扰到loading，那么需要设置 doNotDisturbLoading 为 true
         if (res && res.data) {
           callback && callback(res.data)
         }
       }, (error) => {
-        let res = error.data
+        console.log(error)
       })
     }
   }

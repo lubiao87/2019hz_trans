@@ -8,9 +8,10 @@ module.exports = {
   // BASE_URL: "http://hztxfw.gdyuhui.net/wx-course",
   publicPath: "./",
   devServer: {
-    port: 8888,
+    port: 80,
     // assetsPublicPath: "/txfwapp/",
     host: "192.168.11.183",
+    // host: "hztxfw.gdyuhui.net",
     proxy: {
       "/transApp": {
         target: "http://192.168.12.71/transApp",

@@ -33,7 +33,7 @@ export default new Router({
       }
     },
     {
-      path: "/mapArea",
+      path: "/txfwapp",
       name: "mapArea",
       meta: {
         keepAlive: true // 缓存

@@ -25,10 +25,10 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   response => {
-    if (response.data.respHeader.resultCode == 1001) {
-      //token过期
-      router.push("/login");
-    }
+    // if (response.data.respHeader.resultCode == 1001) {
+    //   //token过期
+    //   router.push("/login");
+    // }
     // 截取响应头的信息token 存入缓存
     if (response.headers["x-auth-token"]) {
       Cookie.set("token", response.headers["x-auth-token"]);
