@@ -251,7 +251,7 @@ export default {
 }
 .vue-uploader .upload-func {
   display: flex;
-  padding: 10px;
+  padding: 10px 50px;
   margin: 0px;
   /* background: #f8f8f8; */
   /* border-top: 1px solid #ececec; */

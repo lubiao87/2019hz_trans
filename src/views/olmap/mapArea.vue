@@ -20,10 +20,16 @@ import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
 import { Search } from "vux";
 import BMap from "BMap";
 import HZJSON from "@/assets/json/custom_map_config.json";
+import wx from "weixin-js-sdk";
+import { listSearchMixin } from "../../mixin"; //混淆请求
+import { api2 } from "../../api/api"; //api配置请求的路径
+import qs from "qs";
+
 export default {
   components: {
     Search
   },
+  mixins: [listSearchMixin],
   data: function() {
     return {
       title: "区域服务工程师",
@@ -45,7 +51,9 @@ export default {
       arrList: "renderCollects"
     })
   },
-  created() {},
+  created() {
+    console.log(wx);
+  },
   methods: {
     mapintialize() {
       // console.log(this.styleJson);
@@ -56,20 +64,20 @@ export default {
       // var opts = { type: "BMAP_NAVIGATION_CONTROL_SMALL" };
 
       this.map.setMapStyle({ styleJson: this.styleJson }); //地图风格
-      var geolocation = new BMap.Geolocation();
-      geolocation.getCurrentPosition(
-        function(r) {
-          if (this.getStatus() == 0) {
-            var mk = new BMap.Marker(r.point);
-            self.map.addOverlay(mk);
-            self.map.panTo(r.point);
-            //   alert("您的位置：" + r.point.lng + "," + r.point.lat);
-          } else {
-            //   alert("failed" + this.getStatus());
-          }
-        },
-        { enableHighAccuracy: true }
-      );
+      // var geolocation = new BMap.Geolocation();
+      // geolocation.getCurrentPosition(
+      //   function(r) {
+      //     if (this.getStatus() == 0) {
+      //       var mk = new BMap.Marker(r.point);
+      //       self.map.addOverlay(mk);
+      //       self.map.panTo(r.point);
+      //       //   alert("您的位置：" + r.point.lng + "," + r.point.lat);
+      //     } else {
+      //       //   alert("failed" + this.getStatus());
+      //     }
+      //   },
+      //   { enableHighAccuracy: true }
+      // );
 
       // this.map.addControl(
       //   new BMap.ScaleControl({ offset: new BMap.Size(150, 5), type: 'BMAP_NAVIGATION_CONTROL_SMALL' })
@@ -93,10 +101,28 @@ export default {
     },
     onCancel() {
       console.log("onCancel");
+    },
+    getWXSignature() {
+      const self = this;
+
+      let data = {
+        url: "hztxfw.gdyuhui.net/txfwapp"
+      };
+      let param = {
+        url: api2.txfwappSrc, //获取request_url.js文件的请求路径
+        data: qs.stringify(data),
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8"
+      };
+      self.indexs = 0;
+      self.sendReq(param, res => {
+        console.log(res);
+        alert(res.appId);
+      });
     }
   },
   mounted() {
     this.mapintialize();
+    this.getWXSignature();
   }
 };
 </script>

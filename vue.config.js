@@ -5,10 +5,12 @@ function resolve(dir) {
 }
 module.exports = {
   lintOnSave: false,
-  // baseUrl: "http://192.168.12.71",
+  // BASE_URL: "http://hztxfw.gdyuhui.net/wx-course",
   publicPath: "./",
   devServer: {
     port: 8888,
+    // assetsPublicPath: "/txfwapp/",
+    host: "192.168.11.183",
     proxy: {
       "/transApp": {
         target: "http://192.168.12.71/transApp",
@@ -18,8 +20,18 @@ module.exports = {
         pathRewrite: {
           "^/transApp": "/"
         }
+      },
+      "/wx-course": {
+        target: "http://hztmhpro.gdyuhui.net/wx-course", // 生产地址
+        // target: "http://192.168.1.141:8090/microModule",
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          "^/wx-course": "/"
+        }
       }
-    }
+    },
+    disableHostCheck: true
   },
 
   //允许对内部的 webpack 配置进行更细粒度的修改。

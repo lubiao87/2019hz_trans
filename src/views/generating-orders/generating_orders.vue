@@ -65,7 +65,31 @@
           @on-blur="textareaEvent('blur')"
         ></x-textarea>
       </group>
+      <!-- -----------------上传图片 ------------------ -->
       <img-uploader />
+      <group class="obstacles obstacles2" title="期望上门时间">
+        <div class="pleaseChoose">{{ homeTime }}</div>
+        <div class="date-box">
+          <datetime
+            class="minuteListValue"
+            v-model="minuteListValue"
+            format="YYYY/MM/DD"
+            @on-change="minuteChange"
+          ></datetime>
+          <datetime
+            class="HHMMListValue"
+            v-model="HHMMListValue"
+            format="HH:mm"
+            @on-change="minuteChange1"
+          ></datetime>
+          <datetime
+            class="HHMMListValue2"
+            v-model="HHMMListValue2"
+            format="HH:mm"
+            @on-change="minuteChange2"
+          ></datetime>
+        </div>
+      </group>
     </div>
   </div>
 </template>
@@ -73,7 +97,7 @@
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
 import BHead from "@/components/base/B-Head";
 import ImgUploader from "@/components/imgUploader/imgUploader";
-import { XInput, Group, XButton, Cell, XTextarea } from "vux";
+import { XInput, Group, XButton, Cell, XTextarea, Datetime } from "vux";
 
 export default {
   components: {
@@ -83,7 +107,8 @@ export default {
     Group,
     Cell,
     XTextarea,
-    ImgUploader
+    ImgUploader,
+    Datetime
   },
   data: function() {
     return {
@@ -147,7 +172,13 @@ export default {
           placeholder: "",
           disabled: true
         }
-      ]
+      ],
+      minuteListValue: "",
+      minuteShow: false,
+      HHMMListValue: "09:00",
+      HHMMListValue2: "10:00",
+      HHmmeShow1: false,
+      HHmmeShow2: false
     };
   },
   computed: {
@@ -160,9 +191,20 @@ export default {
     ...mapGetters("collection", {
       //用mapGetters来获取collection.js里面的getters
       arrList: "renderCollects"
-    })
+    }),
+    homeTime() {
+      let value =
+        this.minuteListValue +
+        " " +
+        this.HHMMListValue +
+        " - " +
+        this.HHMMListValue2;
+      return value;
+    }
   },
-  created() {},
+  created() {
+    this.minuteListValue = this.getNowFormatDate();
+  },
   methods: {
     ...mapActions("collection", [
       //collection是指modules文件夹下的collection.js
@@ -170,6 +212,30 @@ export default {
     ]),
     textareaEvent(e) {
       console.log(e);
+    },
+    minuteChange(e) {
+      console.log("日期", e);
+    },
+    minuteChange1(e) {
+      console.log("日期", e);
+    },
+    minuteChange2(e) {
+      console.log("日期", e);
+    },
+    getNowFormatDate() {
+      var date = new Date();
+      var seperator1 = "-";
+      var year = date.getFullYear();
+      var month = date.getMonth() + 1;
+      var strDate = date.getDate();
+      if (month >= 1 && month <= 9) {
+        month = "0" + month;
+      }
+      if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+      }
+      var currentdate = year + seperator1 + month + seperator1 + strDate;
+      return currentdate;
     }
   },
   mounted() {}
@@ -206,6 +272,20 @@ export default {
       top: 28px;
       color: red;
       font-size: 50px;
+    }
+    .obstacles {
+      position: relative;
+      .pleaseChoose {
+        height: 50px;
+        line-height: 50px;
+        float: right;
+      }
+      .date-box {
+        position: absolute;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 }
@@ -269,10 +349,36 @@ export default {
     padding: 20px;
     width: 100%;
     position: relative;
+
     .weui-cell {
       .weui-cell__bd {
         width: 100%;
       }
+    }
+  }
+  .obstacles2 {
+    .weui-cells__title {
+      width: 40%;
+      float: left;
+    }
+    .weui-cells {
+      width: 60%;
+      float: left;
+    }
+    .minuteListValue {
+      width: 54%;
+      height: 100%;
+      float: left;
+    }
+    .HHMMListValue {
+      width: 23%;
+      height: 100%;
+      float: left;
+    }
+    .HHMMListValue2 {
+      width: 23%;
+      height: 100%;
+      float: left;
     }
   }
   .weui-cells__title {

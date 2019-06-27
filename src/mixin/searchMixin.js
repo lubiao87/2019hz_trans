@@ -20,11 +20,14 @@ export const listSearch = {
      * 发送请求
      */
     sendReq (params, callback) {
+      console.log(params)
       let self = this
       request({
         method: params.method || 'POST',
         url: params.url,
         data: params.data || {},
+        // cache: false,
+        // dataType: 'json',
         headers: {
           'Content-type': params.contentType || 'application/json'
         }
@@ -35,18 +38,6 @@ export const listSearch = {
         }
       }, (error) => {
         let res = error.data
-      })
-    },
-    /**
-     * 根据页码、条数 查询
-     */
-    searchForPage () {
-      let self = this
-      let params = self.getParams()
-      if (!params) return false
-      self.loading = true
-      self.sendReq(params, (res) => {
-        self.listData = res || []
       })
     }
   }
