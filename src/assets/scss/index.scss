@@ -259,7 +259,7 @@ body .weui-dialog__bd:first-child {
 .vux-x-input.weui-cell {
   // display: flex;
   height: 60px;
-  border-bottom: 1px solid $border-color-theme !important;
+  // border-bottom: none;
 }
 .vux-x-input.weui-cell > div {
   float: left;

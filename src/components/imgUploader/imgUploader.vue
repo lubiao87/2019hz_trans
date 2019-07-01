@@ -7,7 +7,7 @@
         :key="index"
       >
         <img :src="file.src" alt="" ondragstart="return false;" />
-        <p class="file-name">{{ file.name }}</p>
+        <!-- <p class="file-name">{{ file.name }}</p> -->
         <span class="file-remove" @click="remove(index)">+</span>
       </section>
       <section
@@ -27,10 +27,10 @@
           {{ indexs + "%" }}
         </section>
       </div>
-      <div class="operation-box">
+      <!-- <div class="operation-box">
         <button v-if="status === 'ready'" @click="submit">上传图片</button>
         <button v-if="status === 'finished'" @click="finished">上传成功</button>
-      </div>
+      </div> -->
     </section>
     <input
       type="file"
@@ -142,15 +142,15 @@ export default {
         url: api.uploadFile, //获取request_url.js文件的请求路径
         data: self.formData
       };
-      self.indexs = 0;
+      // self.indexs = 0;
       self.sendReq(param, res => {
         console.log(res);
-        self.indexs = 20;
-        self.render();
-        setTimeout(() => {
-          self.indexs = 100;
-          self.status = "finished";
-        }, 1000);
+        // self.indexs = 20;
+        // self.render();
+        // setTimeout(() => {
+        //   self.indexs = 100;
+        //   self.status = "finished";
+        // }, 1000);
       });
     },
     render() {

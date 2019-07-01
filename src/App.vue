@@ -32,7 +32,8 @@ export default {
   }
 };
 </script>
-<style>
+<style lang="less">
+@import "~vux/src/styles/1px.less";
 html,
 body {
   width: 100%;

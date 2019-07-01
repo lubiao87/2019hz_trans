@@ -3,7 +3,7 @@
     <b-head :showBack="true" :title="title"></b-head>
     <div class="content">
       <div class="gray-bg"></div>
-      <group v-for="(item, index) in menuList" :key="index">
+      <group v-for="(item, index) in menuList" :key="index" class="vux-1px-b">
         <x-input
           :title="item.title"
           v-model="item.value"
@@ -17,6 +17,7 @@
       <group
         v-for="(item, index) in menuList2"
         :key="index + 'a'"
+        class="vux-1px-b"
         :class="{ 'product-acc': item.title === '产品账号' }"
       >
         <x-input
@@ -36,7 +37,7 @@
         ></x-icon>
         <!-- 装机地址 -->
         <div
-          class="weui-cell disabled address-border"
+          class="weui-cell disabled address-border vux-1px-b"
           v-if="item.title === '装机地址'"
         >
           <div class="weui-cell__hd">
@@ -67,30 +68,34 @@
       </group>
       <!-- -----------------上传图片 ------------------ -->
       <img-uploader />
+
       <group class="obstacles obstacles2" title="期望上门时间">
-        <div class="pleaseChoose">{{ homeTime }}</div>
-        <div class="date-box">
-          <datetime
-            class="minuteListValue"
-            v-model="minuteListValue"
-            format="YYYY/MM/DD"
-            @on-change="minuteChange"
-          ></datetime>
-          <datetime
-            class="HHMMListValue"
-            v-model="HHMMListValue"
-            format="HH:mm"
-            @on-change="minuteChange1"
-          ></datetime>
-          <datetime
-            class="HHMMListValue2"
-            v-model="HHMMListValue2"
-            format="HH:mm"
-            @on-change="minuteChange2"
-          ></datetime>
+        <div class="pleaseChoose" @click="showdateSingle = true">
+          {{ homeTime }}
         </div>
       </group>
+
+      <div class="foot-box">
+        <div class="cancel-btn vux-1px">
+          取消
+        </div>
+        <div class="confirm-btn vux-1px">
+          确定
+        </div>
+      </div>
     </div>
+    <date
+      :showCalendar.sync="showdateSingle"
+      maxDate="12m"
+      :options="dateOptionsSingle"
+      @changeDate="changeDateSingle"
+    ></date>
+    <date-hours
+      :showCalendar.sync="showdateHours"
+      :date.sync="showSingle"
+      @changeDate="changeDateHours"
+    >
+    </date-hours>
   </div>
 </template>
 <script>
@@ -98,6 +103,8 @@ import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
 import BHead from "@/components/base/B-Head";
 import ImgUploader from "@/components/imgUploader/imgUploader";
 import { XInput, Group, XButton, Cell, XTextarea, Datetime } from "vux";
+import date from "@/components/datepicker/datePicker";
+import dateHours from "@/components/datepicker/dateHours";
 
 export default {
   components: {
@@ -108,7 +115,9 @@ export default {
     Cell,
     XTextarea,
     ImgUploader,
-    Datetime
+    Datetime,
+    date,
+    dateHours
   },
   data: function() {
     return {
@@ -173,12 +182,18 @@ export default {
           disabled: true
         }
       ],
-      minuteListValue: "",
-      minuteShow: false,
-      HHMMListValue: "09:00",
-      HHMMListValue2: "10:00",
-      HHmmeShow1: false,
-      HHmmeShow2: false
+      showSingle: "",
+      showdateSingle: false,
+      dateOptionsSingle: {
+        // scrollEnd: true, // 滚到最后
+        start: "2019-06-28",
+        maxDate: "24m", // 月份跨度
+        isDoubleCheck: false
+        // startDate: this.formatDate(new Date().getTime())
+      },
+      HHMMListValue: "12:00 ~ 14:00",
+      // HHMMListValue2: "14:00",
+      showdateHours: false
     };
   },
   computed: {
@@ -193,17 +208,19 @@ export default {
       arrList: "renderCollects"
     }),
     homeTime() {
-      let value =
-        this.minuteListValue +
-        " " +
-        this.HHMMListValue +
-        " - " +
-        this.HHMMListValue2;
+      let value = this.showSingle + " " + this.HHMMListValue;
       return value;
     }
   },
   created() {
-    this.minuteListValue = this.getNowFormatDate();
+    this.dateOptionsSingle = {
+      // scrollEnd: true, // 滚到最后
+      start: this.getNowFormatDate("-"),
+      maxDate: "24m", // 月份跨度
+      isDoubleCheck: false
+      // startDate: this.formatDate(new Date().getTime())
+    };
+    this.showSingle = this.getNowFormatDate("/");
   },
   methods: {
     ...mapActions("collection", [
@@ -213,18 +230,20 @@ export default {
     textareaEvent(e) {
       console.log(e);
     },
-    minuteChange(e) {
-      console.log("日期", e);
+    changeDateSingle(start, end) {
+      console.log(start, end);
+      if (start) {
+        this.showSingle = start;
+        this.showdateHours = true;
+      }
     },
-    minuteChange1(e) {
-      console.log("日期", e);
+    changeDateHours(value) {
+      console.log(value);
+      this.HHMMListValue = value.alias;
     },
-    minuteChange2(e) {
-      console.log("日期", e);
-    },
-    getNowFormatDate() {
+    getNowFormatDate(FH) {
       var date = new Date();
-      var seperator1 = "-";
+      var seperator1 = FH;
       var year = date.getFullYear();
       var month = date.getMonth() + 1;
       var strDate = date.getDate();
@@ -243,6 +262,7 @@ export default {
 </script>
 <style lang="scss" scoped="">
 @import "@/assets/scss/base.scss"; /*引入配置*/
+
 .btn {
   margin-top: 10px;
   @include bg_color($background-color-theme);
@@ -250,13 +270,14 @@ export default {
 .generating-orders {
   .content {
     margin-top: 100px;
+    overflow-x: hidden;
     font-size: $font_little;
     .weui-cells {
       font-size: $font_little;
     }
     .address-border {
       overflow: hidden;
-      border-bottom: 1px solid $border-color-theme;
+      // border-bottom: 1px solid $border-color-theme;
       .weui-cell__hd {
         height: 100%;
         padding: 10px 20px;
@@ -274,6 +295,7 @@ export default {
       font-size: 50px;
     }
     .obstacles {
+      overflow: hidden;
       position: relative;
       .pleaseChoose {
         height: 50px;
@@ -285,6 +307,44 @@ export default {
         left: 0;
         width: 100%;
         height: 100%;
+      }
+    }
+    .foot-box {
+      width: 100%;
+      height: 120px;
+      box-shadow: $border-color-theme 10px 0px 20px 4px;
+      display: flex;
+      padding: 20px;
+      & > div {
+        flex: 1;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        line-height: 80px;
+        font-size: $font_medium_s;
+        margin: 0 20px;
+      }
+      & > div.vux-1px:before {
+        border-color: $border-color-theme2;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .cancel-btn {
+        color: $border-color-theme2;
+      }
+      .confirm-btn.vux-1px:before {
+        content: "提交";
+        background-color: $border-color-theme2;
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        height: 160px;
+        line-height: 160px;
+        font-size: 64px;
+        color: $font-color-theme1;
+      }
+      & > div:active {
+        opacity: 0.6;
       }
     }
   }
@@ -365,21 +425,21 @@ export default {
       width: 60%;
       float: left;
     }
-    .minuteListValue {
+    .showSingle {
       width: 54%;
       height: 100%;
       float: left;
     }
     .HHMMListValue {
-      width: 23%;
+      width: 46%;
       height: 100%;
       float: left;
     }
-    .HHMMListValue2 {
-      width: 23%;
-      height: 100%;
-      float: left;
-    }
+    // .HHMMListValue2 {
+    //   width: 23%;
+    //   height: 100%;
+    //   float: left;
+    // }
   }
   .weui-cells__title {
     color: $font-color-shallow0;
