@@ -238,8 +238,8 @@ export default {
       }
     },
     changeDateHours(value) {
-      console.log(value);
-      this.HHMMListValue = value.alias;
+      console.log("changeDateHours", value);
+      this.HHMMListValue = value[0];
     },
     getNowFormatDate(FH) {
       var date = new Date();
