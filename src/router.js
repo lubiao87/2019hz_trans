@@ -32,15 +32,6 @@ export default new Router({
         keepAlive: true // 缓存
       }
     },
-    // 区域查找
-    {
-      path: "/mapArea",
-      name: "mapArea",
-      meta: {
-        keepAlive: true // 缓存
-      },
-      component: () => import("@/views/olmap/mapArea.vue")
-    },
     {
       // 在线聊天
       path: "/chatOnline",
@@ -76,6 +67,24 @@ export default new Router({
         keepAlive: true // 缓存
       },
       component: () => import("@/views/look-engineer/look_engineer.vue")
+    },
+    // 区域查找
+    {
+      path: "/lookEngineer/mapArea",
+      name: "mapArea",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/look-engineer/mapArea.vue")
+    },
+    // 绑定账号查找
+    {
+      path: "/lookEngineer/accSearch",
+      name: "ACCSearch",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/look-engineer/ACCSearch.vue")
     }
   ]
 });

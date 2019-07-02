@@ -9,7 +9,9 @@
           selected
           >区域查</tab-item
         >
-        <tab-item active-class="active-1" @on-item-click="onTabClick('')"
+        <tab-item
+          active-class="active-1"
+          @on-item-click="onTabClick('accSearch')"
           >绑定账号查</tab-item
         >
         <tab-item active-class="active-1" @on-item-click="onTabClick('')"
@@ -26,13 +28,15 @@
 <script>
 import { Tab, TabItem } from "vux";
 import BHead from "@/components/base/B-Head";
-import mapArea from "@/views/olmap/mapArea.vue";
+import mapArea from "@/views/look-engineer/mapArea.vue";
+import accSearch from "@/views/look-engineer/ACCSearch.vue";
 export default {
   components: {
     BHead,
     Tab,
     TabItem,
-    mapArea
+    mapArea,
+    accSearch
     // Grid
   },
   data: function() {

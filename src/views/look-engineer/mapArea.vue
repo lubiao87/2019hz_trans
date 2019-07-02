@@ -3,7 +3,7 @@
     <div class="title">
       区域查
       <div class="f5">
-        <span class="iconfont">&#xe626;</span>
+        <span class="iconfont" @click="refreshMap">&#xe626;</span>
       </div>
     </div>
     <div id="locationMap" class="locationMap"></div>
@@ -108,9 +108,6 @@ export default {
         new BMap.Size(50, 65)
       );
       this.marker = new BMap.Marker(this.point, { icon: myIcon }); // 创建标注
-      // this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-      // var opts = { type: "BMAP_NAVIGATION_CONTROL_SMALL" };
-      // this.marker = new BMap.Marker(this.point); // 创建标注
       this.map.addOverlay(this.marker); // 将标注添加到地图中
       this.marker.setAnimation("BMAP_ANIMATION_BOUNCE"); //跳动的动画
 
@@ -128,6 +125,10 @@ export default {
       //   },
       //   { enableHighAccuracy: true }
       // );
+    },
+    refreshMap() {
+      this.point = new BMap.Point(113.376989, 23.1287725);
+      this.map.centerAndZoom(this.point, 15);
     },
     onSubmit() {
       console.log("onSubmit");
@@ -193,7 +194,7 @@ export default {
   },
   mounted() {
     this.mapintialize();
-    this.getWXSignature();
+    // this.getWXSignature();
   }
 };
 </script>
@@ -315,7 +316,8 @@ export default {
 .mapArea .weui-media-box__title {
   padding: 5px 0;
 }
-.BMap_Marker.BMap_noprint {
-  background-size: 100% !important;
+.mapArea .BMap_Marker > div > img {
+  width: 100px;
+  height: 130px;
 }
 </style>
