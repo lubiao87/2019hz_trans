@@ -15,7 +15,7 @@
         class="file-item flex-middle"
       >
         <div @click="add" class="add">
-          <span class="iconfont">&#xe61d;</span>
+          <span class="iconfont">&#xe644;</span>
           <p>上传凭证 （最多3张）</p>
         </div>
       </section>
@@ -235,6 +235,7 @@ export default {
   line-height: 80px;
   border: 1px dashed #ececec;
   cursor: pointer;
+  padding-top: 20px;
 }
 .vue-uploader .add p {
   line-height: 30px;
@@ -245,9 +246,10 @@ export default {
   color: #999;
 }
 .vue-uploader .add .iconfont {
-  font-size: 56px;
+  font-size: 68px;
   display: block;
   color: #666;
+  line-height: 60px;
 }
 .vue-uploader .upload-func {
   display: flex;

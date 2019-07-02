@@ -71,7 +71,7 @@ module.exports = {
   configureWebpack: config => {
     require("vux-loader").merge(config, {
       options: {},
-      plugins: ["vux-ui"]
+      plugins: ["vux-ui", "vux"]
     });
     return {
       externals: {
@@ -98,7 +98,7 @@ module.exports = {
         plugins: [
           require("postcss-pxtorem")({
             rootValue: 16, // 换算的基数
-            selectorBlackList: ["vux"], // 忽略转换正则匹配项
+            selectorBlackList: ["vux", "vux-ui"], // 忽略转换正则匹配项
             propList: ["*"]
           })
           // require("postcss-px2rem")({

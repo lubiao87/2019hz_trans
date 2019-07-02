@@ -32,8 +32,9 @@ export default new Router({
         keepAlive: true // 缓存
       }
     },
+    // 区域查找
     {
-      path: "/txfwapp",
+      path: "/mapArea",
       name: "mapArea",
       meta: {
         keepAlive: true // 缓存
@@ -66,6 +67,15 @@ export default new Router({
         keepAlive: true // 缓存
       },
       component: () => import("@/views/generating-orders/generating_orders.vue")
+    },
+    // 我要找工程师
+    {
+      path: "/lookEngineer",
+      name: "lookEngineer",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/look-engineer/look_engineer.vue")
     }
   ]
 });

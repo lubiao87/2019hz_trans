@@ -35,7 +35,7 @@ export default {
       menuList: [
         {
           title: "我要找工程师",
-          routerLink: "mapArea",
+          routerLink: "lookEngineer",
           imgSrc: "./img/HZTMH_home_icon_engineer@3x.png"
         },
         {

@@ -1,6 +1,38 @@
 <template>
   <div class="mapArea">
+    <div class="title">
+      区域查
+      <div class="f5">
+        <span class="iconfont">&#xe626;</span>
+      </div>
+    </div>
     <div id="locationMap" class="locationMap"></div>
+    <div class="current-location">
+      <div class="stip">
+        当前位置
+      </div>
+      <div class="location-btn vux-1px-b flex">
+        <div class="location-img">
+          <div></div>
+        </div>
+        <div class="text">惠州电信大厦</div>
+        <div class="arrow-right flex-middle">
+          <x-icon type="ios-arrow-right" size="24"></x-icon>
+        </div>
+      </div>
+      <div class="panel-boxs">
+        <p class="result">所在区域为您找到 <span>1</span> 名服务工程师</p>
+        <div class="panel-box">
+          <panel
+            :list="panelList"
+            type="1"
+            @on-click-item="onevaSheetLook"
+          ></panel>
+          <span class="iconfont iconfont-set">&#xe68b;</span>
+        </div>
+      </div>
+    </div>
+
     <search
       style="position: flex;"
       :results="results"
@@ -12,12 +44,13 @@
       ref="search"
       class="lb-search"
       placeholder="请输入查找"
+      v-show="false"
     ></search>
   </div>
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
-import { Search } from "vux";
+import { Search, Panel } from "vux";
 import BMap from "BMap";
 import HZJSON from "@/assets/json/custom_map_config.json";
 import wx from "weixin-js-sdk";
@@ -27,7 +60,8 @@ import qs from "qs";
 
 export default {
   components: {
-    Search
+    Search,
+    Panel
   },
   mixins: [listSearchMixin],
   data: function() {
@@ -36,7 +70,15 @@ export default {
       map: null,
       styleJson: HZJSON,
       results: [],
-      value: ""
+      value: "",
+      panelList: [
+        {
+          src: "./img/kehu-1.png",
+          title: "彭于浩",
+          desc: "江北营销服务中心",
+          id: 384
+        }
+      ]
     };
   },
   computed: {
@@ -56,14 +98,22 @@ export default {
   },
   methods: {
     mapintialize() {
-      // console.log(this.styleJson);
-      let self = this;
+      const self = this;
       this.map = new BMap.Map("locationMap"); // 创建地图实例
-      this.map.centerAndZoom(new BMap.Point(113.280771, 23.147166), 12); // 初始化地图，设置中心点坐标和地图级别
+      this.point = new BMap.Point(113.376989, 23.1287725);
+      this.map.centerAndZoom(this.point, 15);
+      this.map.setMapStyle({ styleJson: this.styleJson }); //地图风格
+      var myIcon = new BMap.Icon(
+        "./img/map-location.png",
+        new BMap.Size(50, 65)
+      );
+      this.marker = new BMap.Marker(this.point, { icon: myIcon }); // 创建标注
       // this.map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
       // var opts = { type: "BMAP_NAVIGATION_CONTROL_SMALL" };
+      // this.marker = new BMap.Marker(this.point); // 创建标注
+      this.map.addOverlay(this.marker); // 将标注添加到地图中
+      this.marker.setAnimation("BMAP_ANIMATION_BOUNCE"); //跳动的动画
 
-      this.map.setMapStyle({ styleJson: this.styleJson }); //地图风格
       // var geolocation = new BMap.Geolocation();
       // geolocation.getCurrentPosition(
       //   function(r) {
@@ -78,19 +128,6 @@ export default {
       //   },
       //   { enableHighAccuracy: true }
       // );
-
-      // this.map.addControl(
-      //   new BMap.ScaleControl({ offset: new BMap.Size(150, 5), type: 'BMAP_NAVIGATION_CONTROL_SMALL' })
-      // );
-      // this.map.addControl(
-      //   new BMap.OverviewMapControl({ offset: new BMap.Size(150, 5) })
-      // );
-      this.map.addControl(
-        new BMap.MapTypeControl({
-          offset: new BMap.Size(30, 60),
-          type: "BMAP_NAVIGATION_CONTROL_SMALL"
-        }) //地图类型
-      );
     },
     onSubmit() {
       console.log("onSubmit");
@@ -142,6 +179,16 @@ export default {
     checkJsApiSuccess(res) {
       alert("纬度: " + res.latitude + ", 经度： " + res.longitude);
       console.log("checkJsApiSuccess :" + res);
+    },
+    // 点击名片
+    onevaSheetLook(item) {
+      console.log(item);
+      this.$router.push({
+        name: "generatingOrders",
+        params: {
+          data: item
+        }
+      });
     }
   },
   mounted() {
@@ -154,10 +201,96 @@ export default {
 @import "@/assets/scss/base.scss"; /*引入配置*/
 
 .mapArea {
+  background-color: $background-color-theme;
+  padding: 0px 40px;
+  border-radius: 10px;
+  .title {
+    width: 100%;
+    height: 80px;
+    line-height: 80px;
+    font-size: $font_medium_s;
+    position: relative;
+    font-weight: bold;
+    color: $font-color-shallow3;
+    .f5 {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      right: 0;
+      top: 20px;
+      span {
+        display: block;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        line-height: 30px;
+        color: $font-color-shallow9;
+      }
+    }
+  }
+  position: relative;
   width: 100%;
   height: 100%;
+  min-height: 740px;
   .locationMap {
-    height: 100%;
+    height: 274px;
+  }
+  .stip {
+    color: $font-color-shallow9;
+    font-size: $font_little_s;
+    padding-top: 30px;
+  }
+  .current-location {
+    width: 100%;
+    .location-btn {
+      padding-top: 10px;
+      padding-bottom: 14px;
+      // height: 60px;
+      width: 100%;
+      align-items: center;
+      .location-img {
+        flex: 2;
+        div {
+          height: 30px;
+          width: 20px;
+          background: url(../../assets/images/location-icon.png) no-repeat
+            center;
+          background-size: 100%;
+        }
+      }
+
+      .text {
+        flex: 24;
+      }
+      .arrow-right {
+        flex: 2;
+        .vux-x-icon {
+          fill: $font-color-shallow9;
+        }
+      }
+    }
+    .panel-boxs {
+      margin-top: 20px;
+      width: 100%;
+      .result {
+        color: $font-color-shallow9;
+        font-size: $font_little_s;
+        height: 40px;
+        span {
+          color: $font-color-theme2;
+        }
+      }
+      .panel-box {
+        position: relative;
+        .iconfont-set {
+          position: absolute;
+          right: 0px;
+          bottom: 20px;
+          font-size: 48px;
+          color: #8c929f;
+        }
+      }
+    }
   }
   .lb-search {
     position: absolute;
@@ -170,5 +303,19 @@ export default {
     color: $font-color-theme;
     background-color: transparent;
   }
+}
+</style>
+<style lang="scss">
+@import "@/assets/scss/base.scss"; /*引入配置*/
+.mapArea .weui-media-box_appmsg .weui-media-box__hd {
+  margin-left: 0;
+  width: 100px;
+  height: 100px;
+}
+.mapArea .weui-media-box__title {
+  padding: 5px 0;
+}
+.BMap_Marker.BMap_noprint {
+  background-size: 100% !important;
 }
 </style>
