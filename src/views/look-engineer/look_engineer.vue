@@ -26,6 +26,8 @@
   </div>
 </template>
 <script>
+// import Tab from "vux/src/components/tab";
+// import TabItem from "vux/src/components/tab/tab-item";
 import { Tab, TabItem } from "vux";
 import BHead from "@/components/base/B-Head";
 import mapArea from "@/views/look-engineer/mapArea.vue";

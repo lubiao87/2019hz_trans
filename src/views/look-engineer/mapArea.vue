@@ -50,7 +50,9 @@
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
-import { Search, Panel } from "vux";
+// import { Search, Panel } from "vux";
+import Search from "vux/src/components/search";
+import Panel from "vux/src/components/panel";
 import BMap from "BMap";
 import HZJSON from "@/assets/json/custom_map_config.json";
 import wx from "weixin-js-sdk";
