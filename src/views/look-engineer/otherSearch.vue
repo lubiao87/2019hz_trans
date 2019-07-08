@@ -144,6 +144,7 @@ export default {
     margin-top: 10px;
     font-size: $font_little_s;
     width: 100%;
+    line-height: 30px;
   }
 }
 </style>
@@ -221,9 +222,11 @@ export default {
 .v-transfer-dom {
   max-width: 60% !important;
   left: 34% !important;
-  padding-left: 10px;
+  padding-left: 20px;
   background-color: rgba(25, 27, 37, 0.8) !important;
   border-radius: 8px !important;
+  text-indent: -12px;
+  padding-bottom: 10px;
 }
 body .vux-popover-arrow-up {
   border-left: 12px solid transparent;

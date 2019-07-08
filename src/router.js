@@ -94,6 +94,15 @@ export default new Router({
         keepAlive: true // 缓存
       },
       component: () => import("@/views/business-card/business_card.vue")
+    },
+    // 区域搜索
+    {
+      path: "/areaSearch",
+      name: "areaSearch",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/map-search/area_search.vue")
     }
   ]
 });

@@ -7,17 +7,17 @@
           active-class="active-1"
           @on-item-click="onTabClick('mapArea')"
           selected
-          >区域查</tab-item
+          >区域查询</tab-item
         >
         <tab-item
           active-class="active-1"
           @on-item-click="onTabClick('accSearch')"
-          >绑定账号查</tab-item
+          >绑定账号查询</tab-item
         >
         <tab-item
           active-class="active-1"
           @on-item-click="onTabClick('otherSearch')"
-          >其他方式查</tab-item
+          >其他方式查询</tab-item
         >
       </tab>
       <!-- <div class="gray-bg"></div> -->

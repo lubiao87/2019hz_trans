@@ -11,7 +11,7 @@
       <div class="stip">
         当前位置
       </div>
-      <div class="location-btn vux-1px-b flex">
+      <div class="location-btn vux-1px-b flex" @click="routerGo">
         <div class="location-img">
           <div></div>
         </div>
@@ -192,6 +192,9 @@ export default {
           data: item
         }
       });
+    },
+    routerGo() {
+      this.$router.push({ name: "areaSearch", params: { data: null } });
     }
   },
   mounted() {

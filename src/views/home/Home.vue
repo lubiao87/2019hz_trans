@@ -69,7 +69,7 @@ export default {
   },
   created() {},
   mounted() {
-    // this.alertShow();
+    this.alertShow();
   },
   methods: {
     routerGo(item) {

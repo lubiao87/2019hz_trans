@@ -15,6 +15,7 @@
             alt="用户头像"
             class="user-img"
           />
+          <img src="../../assets/images/biao.png" alt="" class="user-badge" />
           <div></div>
         </div>
       </div>
@@ -27,7 +28,7 @@
               alt=""
               class="stars-img"
             />
-            <span>4.9</span>
+            <span>{{ starsData }}</span>
             <img
               src="../../assets/images/arrow-small.png"
               alt=""
@@ -38,39 +39,72 @@
           <div class="rater-box">
             <span class="text">总体评价</span>
             <rater
+              disabled
               v-model="starsData"
               :margin="8"
               :font-size="30"
-              :class="{ stars5: starsData > 4 && starsData < 5 }"
+              :class="{
+                stars5: starsData > 4 && starsData < 5,
+                stars4: starsData > 3 && starsData < 4,
+                stars3: starsData > 2 && starsData < 3,
+                stars2: starsData > 1 && starsData < 2,
+                stars1: starsData > 0 && starsData < 1
+              }"
               class="rater-in"
             ></rater>
           </div>
         </div>
       </div>
       <div class="contact-btn">
-        <div class="online-chat">
+        <div class="online-chat" @click="routerGo('chatOnline')">
           <span class="iconfont">&#xe64b;</span>
           在线聊天
         </div>
-        <div class="online-call">
+        <div class="online-call" @click="onlineCall">
           <span class="iconfont">&#xe657;</span>
           一键呼叫
         </div>
       </div>
       <!-- <div class="gray-bg"></div> -->
     </div>
+    <div v-transfer-dom class="business-card2" v-show="show5">
+      <confirm
+        v-model="show5"
+        ref="confirm5"
+        title="使用当前手机号码"
+        @on-cancel="onCancel"
+        @on-confirm="onConfirm5"
+        @on-show="onShow5"
+        @on-hide="onHide"
+      >
+        <input v-model="inputIphone" class="set-prompt-msgbox" />
+        <span class="replace-iphone">跟换</span>
+      </confirm>
+    </div>
   </div>
 </template>
 <script>
 // import Tab from "vux/src/components/tab";
 // import TabItem from "vux/src/components/tab/tab-item";
-import { Rater } from "vux";
+import {
+  Rater,
+  Confirm,
+  // Group,
+  // XInput,
+  TransferDomDirective as TransferDom
+} from "vux";
 import BHead from "@/components/base/B-Head";
 
 export default {
+  directives: {
+    TransferDom
+  },
   components: {
     BHead,
-    Rater
+    Rater,
+    Confirm
+    // XInput,
+    // Group
     // Tab,
     // TabItem
     // Grid
@@ -78,7 +112,9 @@ export default {
   data: function() {
     return {
       title: "工程师名片",
-      starsData: 4.9
+      starsData: 4.9,
+      show5: false,
+      inputIphone: 13802147468
     };
   },
   created() {},
@@ -92,6 +128,29 @@ export default {
     getChildData(value) {
       console.log(value);
       this.showInputBox = value;
+    },
+    routerGo(item) {
+      // console.log(item);
+      this.$router.push({ name: item, params: { data: item } });
+    },
+    onShow5() {
+      // this.$refs.confirm5.setInputValue("13802147411");
+      console.log("onShow5");
+    },
+    onConfirm5() {
+      console.log(this.inputIphone);
+      // this.$refs.confirm5.setInputValue("");
+      // this.$vux.toast.text("input value: " + this.inputIphone);
+    },
+    onHide() {
+      console.log("on hide");
+    },
+    onCancel() {
+      console.log("on cancel");
+    },
+    // 一键呼叫
+    onlineCall() {
+      this.show5 = true;
     }
   }
 };
@@ -149,6 +208,13 @@ export default {
           bottom: 0;
           left: 50%;
           margin-left: -25%;
+        }
+        .user-badge {
+          width: 61px;
+          height: 77px;
+          position: absolute;
+          bottom: 40px;
+          right: 40px;
         }
       }
     }
@@ -219,6 +285,53 @@ export default {
 </style>
 <style lang="scss">
 @import "@/assets/scss/base.scss"; /*引入配置*/
-.business-card {
+.business-card .vux-rater-box .vux-rater-inner {
+  background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
+  background-size: 80%;
+}
+
+.stars5 a:nth-child(6) .vux-rater-inner {
+  background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
+  background-size: 80%;
+}
+.stars4 a:nth-child(5) .vux-rater-inner {
+  background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
+  background-size: 80%;
+}
+.stars3 a:nth-child(4) .vux-rater-inner {
+  background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
+  background-size: 80%;
+}
+.stars2 a:nth-child(3) .vux-rater-inner {
+  background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
+  background-size: 80%;
+}
+.stars1 a:nth-child(2) .vux-rater-inner {
+  background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
+  background-size: 80%;
+}
+// 弹窗框
+.business-card2 .set-prompt-msgbox {
+  width: 220px;
+  height: 60px;
+  font-size: $font_medium_s;
+  border-bottom: 1px solid $border-color-theme;
+}
+.business-card2 .weui-dialog__btn_default {
+  color: $font-color-theme2;
+}
+.business-card2 .weui-dialog__title {
+  color: $font-color-theme;
+  margin-top: 10px;
+}
+.business-card2 .weui-dialog__btn_primary {
+  color: $font-color-theme2;
+}
+.business-card2 .weui-dialog {
+  border-radius: 30px;
+}
+.business-card2 .replace-iphone {
+  color: $border-color-theme2;
+  margin-left: 20px;
 }
 </style>
