@@ -14,14 +14,21 @@
           @on-item-click="onTabClick('accSearch')"
           >绑定账号查</tab-item
         >
-        <tab-item active-class="active-1" @on-item-click="onTabClick('')"
+        <tab-item
+          active-class="active-1"
+          @on-item-click="onTabClick('otherSearch')"
           >其他方式查</tab-item
         >
       </tab>
       <!-- <div class="gray-bg"></div> -->
       <div class="router-box">
-        <component v-bind:is="viewsName" :key="viewsName"></component>
+        <component
+          v-bind:is="viewsName"
+          :key="viewsName"
+          @childrenData="getChildData"
+        ></component>
       </div>
+      <codeInput :showFlag="showInputBox" @childrenData="getChildData" />
     </div>
   </div>
 </template>
@@ -32,19 +39,24 @@ import { Tab, TabItem } from "vux";
 import BHead from "@/components/base/B-Head";
 import mapArea from "@/views/look-engineer/mapArea.vue";
 import accSearch from "@/views/look-engineer/ACCSearch.vue";
+import otherSearch from "@/views/look-engineer/otherSearch.vue";
+import CodeInput from "@/components/codeInput/codeInput";
 export default {
   components: {
     BHead,
     Tab,
     TabItem,
     mapArea,
-    accSearch
+    accSearch,
+    otherSearch,
+    CodeInput
     // Grid
   },
   data: function() {
     return {
       title: "我要找工程师",
-      viewsName: "mapArea"
+      viewsName: "mapArea",
+      showInputBox: false
     };
   },
   created() {},
@@ -54,6 +66,10 @@ export default {
   methods: {
     onTabClick(link) {
       this.viewsName = link;
+    },
+    getChildData(value) {
+      console.log(value);
+      this.showInputBox = value;
     }
   }
 };
@@ -104,10 +120,10 @@ export default {
     width: 0;
     display: block;
     border: none !important;
-    border-right: 0.5px solid $border-color-theme !important;
+    border-right: 1px solid $border-color-theme !important;
   }
-  .vux-tab-item::after:nth-child(3) {
-    border-right: none !important;
+  .vux-tab-item:nth-child(3):after {
+    border-right: 1px solid transparent !important;
   }
   .base-box {
     border-bottom: none;

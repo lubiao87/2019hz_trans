@@ -107,7 +107,7 @@ export default {
       this.map.setMapStyle({ styleJson: this.styleJson }); //地图风格
       var myIcon = new BMap.Icon(
         "./img/map-location.png",
-        new BMap.Size(50, 65)
+        new BMap.Size(25, 33)
       );
       this.marker = new BMap.Marker(this.point, { icon: myIcon }); // 创建标注
       this.map.addOverlay(this.marker); // 将标注添加到地图中
@@ -187,7 +187,7 @@ export default {
     onevaSheetLook(item) {
       console.log(item);
       this.$router.push({
-        name: "generatingOrders",
+        name: "businessCard",
         params: {
           data: item
         }
@@ -209,8 +209,8 @@ export default {
   border-radius: 10px;
   .title {
     width: 100%;
-    height: 80px;
-    line-height: 80px;
+    height: 96px;
+    line-height: 96px;
     font-size: $font_medium_s;
     position: relative;
     font-weight: bold;
@@ -220,7 +220,7 @@ export default {
       width: 30px;
       height: 30px;
       right: 0;
-      top: 20px;
+      top: 30px;
       span {
         display: block;
         height: 100%;
@@ -230,6 +230,15 @@ export default {
         color: $font-color-shallow9;
       }
     }
+  }
+  .title::before {
+    position: absolute;
+    content: "";
+    left: -30px;
+    top: 32px;
+    width: 8px;
+    height: 30px;
+    background-color: $background-color-theme1;
   }
   position: relative;
   width: 100%;
@@ -319,7 +328,7 @@ export default {
   padding: 5px 0;
 }
 .mapArea .BMap_Marker > div > img {
-  width: 100px;
-  height: 130px;
+  width: 50px;
+  height: 65px;
 }
 </style>

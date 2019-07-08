@@ -85,6 +85,15 @@ export default new Router({
         keepAlive: true // 缓存
       },
       component: () => import("@/views/look-engineer/ACCSearch.vue")
+    },
+    // 工程师名片
+    {
+      path: "/businessCard",
+      name: "businessCard",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/business-card/business_card.vue")
     }
   ]
 });

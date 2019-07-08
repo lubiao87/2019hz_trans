@@ -10,7 +10,7 @@ module.exports = {
   devServer: {
     port: 80,
     // assetsPublicPath: "/txfwapp/",
-    host: "192.168.11.183",
+    host: "192.168.11.188",
     // host: "hztxfw.gdyuhui.net",
     proxy: {
       "/transApp": {

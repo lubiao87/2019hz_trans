@@ -302,10 +302,11 @@ body .mescroll-downwarp .downwarp-progress {
 body .mescroll-downwarp .downwarp-tip {
   font-size: 6px;
 }
+// 搜索框
 body .vux-search-box {
   position: absolute;
   padding: 2px;
-  font-size: 5px;
+  font-size: 8px;
 }
 body .vux-search-box * {
   border: 1px solid transparent;
@@ -319,9 +320,13 @@ body .weui-search-bar:after {
   border-bottom: 0.01333rem solid transparent;
 }
 body .weui-search-bar__box .weui-search-bar__input {
-  font-size: 5px;
+  font-size: 8px;
   height: 100%;
-  line-height: 5px;
+  line-height: 8px;
+}
+body .weui-search-bar__label {
+  line-height: 10px;
+  font-size: 10px;
 }
 body .weui-search-bar__box .weui-icon-clear {
   display: none;
@@ -332,6 +337,7 @@ body .weui-search-bar__form {
 body .weui-cells.vux-search_show {
   display: none;
 }
+
 // 服务评价
 body .weui-media-box__title {
   font-size: 7px;
