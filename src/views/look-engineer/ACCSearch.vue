@@ -92,12 +92,12 @@ export default {
     // 点击名片
     onevaSheetLook(item) {
       console.log(item);
-      // this.$router.push({
-      //   name: "generatingOrders",
-      //   params: {
-      //     data: item
-      //   }
-      // });
+      this.$router.push({
+        name: "businessCard",
+        params: {
+          data: item
+        }
+      });
     }
   },
   mounted() {}

@@ -194,7 +194,14 @@ export default {
       });
     },
     routerGo() {
-      this.$router.push({ name: "areaSearch", params: { data: null } });
+      this.$router.push({
+        name: "areaSearch",
+        params: {
+          data: {
+            name: "惠州电信大楼"
+          }
+        }
+      });
     }
   },
   mounted() {

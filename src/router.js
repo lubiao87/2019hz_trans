@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Router from "vue-router";
-import Home from "./views/home/Home.vue";
 
 Vue.use(Router);
 
@@ -22,12 +21,12 @@ export default new Router({
     {
       path: "/",
       name: "index",
-      redirect: "/home"
+      redirect: "home"
     },
     {
       path: "/home",
       name: "home",
-      component: Home,
+      component: () => import("@/views/home/Home.vue"),
       meta: {
         keepAlive: true // 缓存
       }
