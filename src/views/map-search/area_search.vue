@@ -2,20 +2,36 @@
   <div class="area-search">
     <b-head :showBack="true" :title="title"></b-head>
     <div id="allmap" class="allmap"></div>
+    <search
+      style="position: flex;"
+      :results="results"
+      v-model="value"
+      auto-scroll-to-top
+      @on-focus="onFocus"
+      @on-cancel="onCancel"
+      @on-submit="onSubmit"
+      ref="search"
+      class="lb-search"
+      placeholder="请输入查找"
+    ></search>
   </div>
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
+import Search from "vux/src/components/search";
 import BHead from "@/components/base/B-Head";
 import BMap from "BMap";
 export default {
   components: {
-    BHead
+    BHead,
+    Search
   },
   data: function() {
     return {
       title: "我要找工程师",
-      showBack: false
+      showBack: false,
+      value: "",
+      results: []
     };
   },
   computed: {
@@ -52,6 +68,16 @@ export default {
       );
       this.marker = new BMap.Marker(this.point, { icon: myIcon }); // 创建标注
       this.map.addOverlay(this.marker); // 将标注添加到地图中
+    },
+    onSubmit() {
+      console.log("onSubmit");
+      this.$refs.search.setBlur();
+    },
+    onFocus() {
+      console.log("on focus");
+    },
+    onCancel() {
+      console.log("onCancel");
     }
   },
   mounted() {
@@ -66,7 +92,21 @@ export default {
     position: relative;
   }
   .allmap {
-    height: 900px;
+    height: 80%;
+  }
+  .lb-search {
+    position: relative;
+    margin: auto;
+    width: 90%;
+    // height: 100px;
+    color: $font-color-theme;
+    background-color: transparent;
+  }
+  .allmap {
+    position: absolute !important;
+    top: 0;
+    width: 100%;
+    height: 100%;
   }
 }
 </style>
@@ -80,6 +120,13 @@ export default {
   .BMap_Marker > div > img {
     width: 44px;
     height: 72px;
+  }
+  .vux-search-box {
+    padding: 0;
+  }
+  .weui-search-bar {
+    background-color: transparent;
+    padding: 0;
   }
 }
 </style>
