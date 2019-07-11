@@ -6,12 +6,13 @@ function resolve(dir) {
 module.exports = {
   lintOnSave: false,
   // BASE_URL: "http://hztxfw.gdyuhui.net/wx-course",
-  publicPath: "./",
+  baseUrl: "./",
+  // publicPath: "./",
   devServer: {
     port: 80,
     // assetsPublicPath: "/txfwapp/",
-    // host: "http://192.168.11.188",
-    host: "localhost",
+    host: "192.168.11.188",
+    // host: "localhost",
     // host: "hztxfw.gdyuhui.net",
     proxy: {
       "/transApp": {

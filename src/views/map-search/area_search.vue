@@ -34,8 +34,28 @@
           </div>
         </div>
       </div>
-      <div>
+      <div class="fj-icon">
         <span class="iconfont" @click="backBtn">&#xe635;</span>
+        <span>附近地址</span>
+      </div>
+      <div class="current-location">
+        <div class="location-btn vux-1px-b flex">
+          <div class="location-img">
+            <div></div>
+          </div>
+          <div class="text">惠州电信大厦</div>
+        </div>
+        <div class="panel-boxs">
+          <p class="result">所在区域为您找到 <span>1</span> 名服务工程师</p>
+          <div class="panel-box">
+            <panel
+              :list="panelList"
+              type="1"
+              @on-click-item="onevaSheetLook"
+            ></panel>
+            <span class="iconfont iconfont-set">&#xe68b;</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -43,6 +63,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
 import Search from "vux/src/components/search";
+import Panel from "vux/src/components/panel";
 import BHead from "@/components/base/B-Head";
 import BMap from "BMap";
 import { _debounce } from "@/utils/public";
@@ -50,7 +71,8 @@ import { _debounce } from "@/utils/public";
 export default {
   components: {
     BHead,
-    Search
+    Search,
+    Panel
   },
   data: function() {
     return {
@@ -74,7 +96,15 @@ export default {
       ],
       index: 0,
       topCell: false,
-      leftAnimater: false
+      leftAnimater: false,
+      panelList: [
+        {
+          src: "./img/kehu-1.png",
+          title: "彭于浩",
+          desc: "江北营销服务中心",
+          id: 384
+        }
+      ]
     };
   },
   computed: {
@@ -155,6 +185,16 @@ export default {
     },
     backBtn() {
       this.leftAnimater = false;
+    },
+    // 点击名片
+    onevaSheetLook(item) {
+      console.log(item);
+      this.$router.push({
+        name: "businessCard",
+        params: {
+          data: item
+        }
+      });
     }
   },
   mounted() {
@@ -218,12 +258,19 @@ export default {
       float: left;
     }
     & > div:nth-child(2) {
-      padding: 20px;
+      padding: 10px 20px;
+      display: flex;
+      align-items: center;
       .iconfont {
         margin-left: 10px;
-        color: $font-color-shallow9;
+
         font-size: $font_large_s;
         display: block;
+        width: 80px;
+      }
+      & > span {
+        float: left;
+        color: $font-color-shallow9;
       }
     }
   }
@@ -233,6 +280,60 @@ export default {
     }
     & > div:nth-child(2) {
       display: none;
+    }
+  }
+  .current-location {
+    padding: 10px 30px;
+    width: 100%;
+    .location-btn {
+      padding-top: 10px;
+      padding-bottom: 20px;
+      // height: 60px;
+      width: 100%;
+      align-items: center;
+      border-bottom: 1px solid $border-color-theme;
+      .location-img {
+        flex: 2;
+        div {
+          height: 30px;
+          width: 20px;
+          background: url(../../assets/images/location-icon.png) no-repeat
+            center;
+          background-size: 100%;
+        }
+      }
+
+      .text {
+        flex: 24;
+      }
+      .arrow-right {
+        flex: 2;
+        .vux-x-icon {
+          fill: $font-color-shallow9;
+        }
+      }
+    }
+    .panel-boxs {
+      margin-top: 30px;
+      width: 100%;
+      .result {
+        color: $font-color-shallow9;
+        font-size: $font_little_s;
+        height: 40px;
+        span {
+          color: $font-color-theme2;
+        }
+      }
+      .panel-box {
+        position: relative;
+        .iconfont-set {
+          position: absolute;
+          right: 0px;
+          bottom: 20px;
+          font-size: 48px;
+          color: #8c929f;
+        }
+      }
     }
   }
 }
