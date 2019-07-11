@@ -20,7 +20,7 @@
       </div>
       <div class="btn-box">
         <div class="cancel" @click="hidePage">取消</div>
-        <div class="submit" @click="hidePage">确认</div>
+        <div class="submit" @click="submitCode">确认</div>
       </div>
     </div>
   </div>
@@ -72,7 +72,17 @@ export default {
       e.preventDefault();
     },
     hidePage() {
-      this.$emit("childrenData", false);
+      let data = {
+        showInputBox: false
+      };
+      this.$emit("childrenData", data);
+    },
+    submitCode() {
+      let data = {
+        showInputBox: false,
+        routerLink: "searchResult"
+      };
+      this.$emit("childrenData", data);
     }
   },
   data() {

@@ -1,8 +1,21 @@
 <template>
   <div class="generating-orders">
     <b-head :showBack="true" :title="title"></b-head>
-    <div class="content">
+    <div class="content" :class="{ state2: state === 2, state3: state === 3 }">
       <div class="gray-bg"></div>
+      <group class="vux-1px-b group-1 state2-box">
+        <x-input
+          title="当前状态"
+          v-model="stateValue"
+          disabled
+          :show-clear="false"
+          placeholder-align="left"
+        ></x-input>
+        <div class="group-btn">
+          <div class="cuidan">催单</div>
+          <div class="zhuantousu">转投诉</div>
+        </div>
+      </group>
       <group v-for="(item, index) in menuList" :key="index" class="vux-1px-b">
         <x-input
           :title="item.title"
@@ -31,7 +44,7 @@
         ></x-input>
         <x-icon
           type="ios-arrow-right"
-          v-if="item.title === '产品账号'"
+          v-if="item.title === '产品账号' && state === 1"
           class="cell-x-icon"
           size="26"
         ></x-icon>
@@ -61,14 +74,14 @@
       <group class="obstacles" title="报障内容">
         <x-textarea
           :max="100"
+          :rows="2"
           placeholder="请输入报障内容"
           @on-focus="textareaEvent('focus')"
           @on-blur="textareaEvent('blur')"
         ></x-textarea>
       </group>
       <!-- -----------------上传图片 ------------------ -->
-      <img-uploader />
-
+      <img-uploader @childrenData="getChildData" />
       <group class="obstacles obstacles2" title="期望上门时间">
         <div class="pleaseChoose" @click="showdateSingle = true">
           {{ homeTime }}
@@ -79,7 +92,7 @@
         <div class="cancel-btn vux-1px">
           取消
         </div>
-        <div class="confirm-btn vux-1px">
+        <div class="confirm-btn vux-1px" @click="confirmOrders">
           确定
         </div>
       </div>
@@ -193,7 +206,9 @@ export default {
       },
       HHMMListValue: "12:00 ~ 14:00",
       // HHMMListValue2: "14:00",
-      showdateHours: false
+      showdateHours: false,
+      state: 1,
+      stateValue: "处理中"
     };
   },
   computed: {
@@ -255,6 +270,12 @@ export default {
       }
       var currentdate = year + seperator1 + month + seperator1 + strDate;
       return currentdate;
+    },
+    getChildData(data) {
+      console.log(data);
+    },
+    confirmOrders() {
+      this.state = 2;
     }
   },
   mounted() {}
@@ -272,6 +293,31 @@ export default {
     margin-top: 100px;
     overflow-x: hidden;
     font-size: $font_little;
+
+    .group-1 {
+      position: relative;
+      .group-btn {
+        position: absolute;
+        right: 40px;
+        top: 30px;
+        .cuidan,
+        .zhuantousu {
+          display: inline-block;
+          height: 44px;
+          color: $font-color-theme1;
+          line-height: 36px;
+          background-color: $font-color-theme2;
+          text-align: center;
+          padding: 4px 10px;
+          font-size: $font_little;
+          letter-spacing: 4px;
+          border-radius: 4px;
+        }
+      }
+    }
+    .zhuantousu {
+      margin-left: 20px;
+    }
     .weui-cells {
       font-size: $font_little;
     }
@@ -356,6 +402,23 @@ export default {
   .weui-input {
     text-align: right;
     color: $font-color-shallow0;
+  }
+  // 状态 【处理中】样式
+  .state2 {
+    .weui-label {
+      color: $font-color-theme;
+    }
+    .product-acc .weui-cell .weui-cell__bd {
+      padding-right: 20px;
+    }
+    .weui-textarea-counter {
+      display: none;
+    }
+  }
+
+  .group-1 .weui-input {
+    text-align: left;
+    padding-left: 30px;
   }
   .vux-x-input.disabled .weui-input {
     -webkit-text-fill-color: $font-color-shallow0;

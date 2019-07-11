@@ -105,6 +105,7 @@ export default {
           };
           this.html5Reader(list[i], item);
           this.files.push(item);
+          this.$emit("childrenData", this.files);
         }
       }
       // this.html5Reader(list);

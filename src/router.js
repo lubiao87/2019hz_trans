@@ -102,6 +102,15 @@ export default new Router({
         keepAlive: true // 缓存
       },
       component: () => import("@/views/map-search/area_search.vue")
+    },
+    // 查询结束
+    {
+      path: "/searchResult",
+      name: "searchResult",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/search-result/search_result.vue")
     }
   ]
 });

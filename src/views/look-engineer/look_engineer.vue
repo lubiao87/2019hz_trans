@@ -67,9 +67,12 @@ export default {
     onTabClick(link) {
       this.viewsName = link;
     },
-    getChildData(value) {
-      console.log(value);
-      this.showInputBox = value;
+    getChildData(data) {
+      // console.log(data);
+      this.showInputBox = data.showInputBox;
+      if (data.routerLink) {
+        this.$router.push({ name: data.routerLink, params: { data: "item" } });
+      }
     }
   }
 };

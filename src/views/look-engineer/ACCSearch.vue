@@ -195,7 +195,7 @@ export default {
         }
         .iconfont-set {
           position: absolute;
-          bottom: 14px;
+          bottom: 20px;
           right: 20px;
           font-size: 44px;
           color: #8c929f;

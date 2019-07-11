@@ -75,7 +75,10 @@ export default {
       console.log("onCancel");
     },
     showInputBox() {
-      this.$emit("childrenData", true);
+      let data = {
+        showInputBox: true
+      };
+      this.$emit("childrenData", data);
     }
   },
   mounted() {}
