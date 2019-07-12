@@ -103,7 +103,25 @@ export default new Router({
       },
       component: () => import("@/views/map-search/area_search.vue")
     },
-    // 查询结束
+    // w我的报账记录
+    {
+      path: "/baoZhan",
+      name: "baoZhan",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/bao-zhan/bao_zhan.vue")
+    },
+    // 一键报障
+    {
+      path: "/quickReport",
+      name: "quickReport",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/quick-report/quick_report.vue")
+    },
+    // 工程师其它查询结束
     {
       path: "/searchResult",
       name: "searchResult",
@@ -111,6 +129,15 @@ export default new Router({
         keepAlive: true // 缓存
       },
       component: () => import("@/views/search-result/search_result.vue")
+    },
+    // 投诉建议单
+    {
+      path: "/complaintSlip",
+      name: "complaintSlip",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/complaint-slip/complaint_slip.vue")
     }
   ]
 });

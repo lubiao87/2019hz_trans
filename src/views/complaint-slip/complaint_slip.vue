@@ -1,43 +1,21 @@
 <template>
-  <div class="generating-orders">
+  <div class="complaint-slip">
     <b-head :showBack="true" :title="title"></b-head>
-    <div class="content" :class="{ state2: state === 2, state3: state === 3 }">
+    <div class="content">
       <div class="gray-bg"></div>
       <group class="vux-1px-b group-1 state2-box">
-        <x-input
-          title="当前状态"
-          v-model="stateValue"
-          disabled
-          :show-clear="false"
-          placeholder-align="left"
-        ></x-input>
         <div class="group-btn">
-          <div class="cuidan" v-if="stateValue === '处理中'" @click="cuiDan">
-            催单
-          </div>
-          <div class="cuidan" v-if="stateValue === '待评价'">评价</div>
-          <div class="zhuantousu" @click="zhuanTouSu">转投诉</div>
+          <div class="cuidan">催单</div>
+          <div class="zhuantousu">转投诉</div>
         </div>
       </group>
-      <group v-for="(item, index) in menuList" :key="index" class="vux-1px-b">
-        <x-input
-          :title="item.title"
-          v-model="item.value"
-          :placeholder="item.placeholder"
-          :disabled="item.disabled"
-          :show-clear="false"
-          placeholder-align="right"
-        ></x-input>
-      </group>
-      <div class="gray-bg"></div>
       <group
-        v-for="(item, index) in menuList2"
-        :key="index + 'a'"
+        v-for="(item, index) in menuList"
+        :key="index"
         class="vux-1px-b"
         :class="{ 'product-acc': item.title === '产品账号' }"
       >
         <x-input
-          v-if="item.title !== '装机地址'"
           :title="item.title"
           v-model="item.value"
           :placeholder="item.placeholder"
@@ -47,31 +25,12 @@
         ></x-input>
         <x-icon
           type="ios-arrow-right"
-          v-if="item.title === '产品账号' && state === 1"
+          v-if="item.title === '产品账号'"
           class="cell-x-icon"
           size="26"
         ></x-icon>
-        <!-- 装机地址 -->
-        <div
-          class="weui-cell disabled address-border vux-1px-b"
-          v-if="item.title === '装机地址'"
-        >
-          <div class="weui-cell__hd">
-            <label
-              for="vux-x-input-ttg57"
-              class="weui-label"
-              style="width: 5em;"
-              >装机地址</label
-            >
-          </div>
-          <div
-            class="weui-cell__bd weui-cell__primary vux-x-input-placeholder-right"
-            style="text-align: right;"
-          >
-            {{ item.value }}
-          </div>
-        </div>
       </group>
+
       <div class="gray-bg"></div>
 
       <group class="obstacles" title="报障内容">
@@ -85,22 +44,23 @@
       </group>
       <!-- -----------------上传图片 ------------------ -->
       <img-uploader @childrenData="getChildData" />
-      <group class="obstacles obstacles2" title="期望上门时间">
+
+      <!-- <group class="obstacles obstacles2" title="期望上门时间">
         <div class="pleaseChoose" @click="showdateSingle = true">
           {{ homeTime }}
         </div>
-      </group>
+      </group> -->
 
       <div class="foot-box">
         <div class="cancel-btn vux-1px">
           取消
         </div>
         <div class="confirm-btn vux-1px" @click="confirmOrders">
-          提交
+          确定
         </div>
       </div>
     </div>
-    <date
+    <!-- <date
       :showCalendar.sync="showdateSingle"
       maxDate="12m"
       :options="dateOptionsSingle"
@@ -111,57 +71,43 @@
       :date.sync="showSingle"
       @changeDate="changeDateHours"
     >
-    </date-hours>
-
-    <!-- 确认推送 -->
-    <div v-transfer-dom class="business-card3" v-show="show5">
-      <confirm
-        v-model="show5"
-        ref="confirm5"
-        title="确定将服务单推送给张宇吗？"
-        @on-cancel="onCancel"
-        @on-confirm="onConfirm5"
-        @on-show="onShow5"
-        @on-hide="onHide"
-      >
-      </confirm>
-    </div>
+    </date-hours> -->
+    <float-btn
+      :text="floatText"
+      @onFloatBtnClicked="floatClick"
+      :key="floatText"
+      :itemWidth="130"
+    />
   </div>
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
 import BHead from "@/components/base/B-Head";
 import ImgUploader from "@/components/imgUploader/imgUploader";
-import {
-  XInput,
-  Group,
-  XTextarea,
-  Confirm,
-  TransferDomDirective as TransferDom
-} from "vux";
-import date from "@/components/datepicker/datePicker";
-import dateHours from "@/components/datepicker/dateHours";
+import { XInput, Group, XTextarea } from "vux";
+import FloatBtn from "@/components/dragBox/floatBtn";
 
 export default {
-  directives: {
-    TransferDom
-  },
   components: {
     BHead,
     XInput,
+    FloatBtn,
     Group,
     XTextarea,
-    ImgUploader,
-    date,
-    dateHours,
-    Confirm
+    ImgUploader
   },
   data: function() {
     return {
-      title: "生成服务单",
+      title: "投诉建议单",
       colorChange: false,
       showBack: true,
       menuList: [
+        {
+          title: "投诉单号",
+          value: "NDC233435645",
+          placeholder: "",
+          disabled: true
+        },
         {
           title: "服务单号",
           value: "NDC233435645",
@@ -169,19 +115,13 @@ export default {
           disabled: true
         },
         {
-          title: "用户名称",
-          value: "张宇",
+          title: "类型",
+          value: "",
           placeholder: "",
           disabled: true
         },
         {
-          title: "用户电话",
-          value: "13332147878",
-          placeholder: "",
-          disabled: true
-        },
-        {
-          title: "联系人姓名",
+          title: "投诉联系人",
           value: "",
           placeholder: "请输入联系人姓名",
           disabled: false
@@ -193,47 +133,9 @@ export default {
           disabled: false
         }
       ],
-      menuList2: [
-        {
-          title: "产品账号",
-          value: "ADSL 7758234",
-          placeholder: "",
-          disabled: true
-        },
-        {
-          title: "装机地址",
-          value: "广东省广州市天河区***佳都商务大厦 西塔801",
-          placeholder: "",
-          disabled: true
-        },
-        {
-          title: "装维经理",
-          value: "张三",
-          placeholder: "",
-          disabled: true
-        },
-        {
-          title: "装维电话",
-          value: "13332147878",
-          placeholder: "",
-          disabled: true
-        }
-      ],
       showSingle: "",
       showdateSingle: false,
-      dateOptionsSingle: {
-        // scrollEnd: true, // 滚到最后
-        start: "2019-06-28",
-        maxDate: "24m", // 月份跨度
-        isDoubleCheck: false
-        // startDate: this.formatDate(new Date().getTime())
-      },
-      HHMMListValue: "12:00 ~ 14:00",
-      // HHMMListValue2: "14:00",
-      showdateHours: false,
-      state: 1,
-      stateValue: "",
-      show5: false
+      floatText: "我的投诉记录"
     };
   },
   computed: {
@@ -246,22 +148,9 @@ export default {
     ...mapGetters("collection", {
       //用mapGetters来获取collection.js里面的getters
       arrList: "renderCollects"
-    }),
-    homeTime() {
-      let value = this.showSingle + " " + this.HHMMListValue;
-      return value;
-    }
+    })
   },
-  created() {
-    this.dateOptionsSingle = {
-      // scrollEnd: true, // 滚到最后
-      start: this.getNowFormatDate("-"),
-      maxDate: "24m", // 月份跨度
-      isDoubleCheck: false
-      // startDate: this.formatDate(new Date().getTime())
-    };
-    this.showSingle = this.getNowFormatDate("/");
-  },
+  created() {},
   methods: {
     ...mapActions("collection", [
       //collection是指modules文件夹下的collection.js
@@ -270,80 +159,25 @@ export default {
     textareaEvent(e) {
       console.log(e);
     },
-    changeDateSingle(start, end) {
-      console.log(start, end);
-      if (start) {
-        this.showSingle = start;
-        this.showdateHours = true;
-      }
-    },
-    changeDateHours(value) {
-      console.log("changeDateHours", value);
-      this.HHMMListValue = value[0];
-    },
-    getNowFormatDate(FH) {
-      var date = new Date();
-      var seperator1 = FH;
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      var strDate = date.getDate();
-      if (month >= 1 && month <= 9) {
-        month = "0" + month;
-      }
-      if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-      }
-      var currentdate = year + seperator1 + month + seperator1 + strDate;
-      return currentdate;
-    },
     getChildData(data) {
       console.log(data);
     },
     confirmOrders() {
-      this.show5 = true;
+      // this.state = 2;
     },
-    onShow5() {
-      // this.$refs.confirm5.setInputValue("13802147411");
-      console.log("onShow5");
-    },
-    onConfirm5() {
+    // 点击浮动窗事件
+    floatClick() {
+      // console.log("点击浮动窗");
       const self = this;
-      console.log("onConfirm5");
-      self.$vux.toast.text("推送成功！");
-      self.state = 2;
-    },
-    onHide() {
-      console.log("on hide");
-    },
-    onCancel() {
-      console.log("on cancel");
-    },
-    // 催单
-    cuiDan() {
-      this.$vux.toast.text("催单成功！");
-    },
-    // 转投诉
-    zhuanTouSu() {
-      this.$router.push({ name: "complaintSlip", params: { data: null } });
+      this.$router.push({
+        name: "baoZhan",
+        params: {
+          data: self.floatText
+        }
+      });
     }
   },
-  mounted() {},
-  watch: {
-    state(val) {
-      const self = this;
-      switch (val) {
-        case 2:
-          self.stateValue = "处理中";
-          break;
-        case 3:
-          self.stateValue = "待评价";
-          break;
-
-        default:
-          break;
-      }
-    }
-  }
+  mounted() {}
 };
 </script>
 <style lang="scss" scoped="">
@@ -353,7 +187,7 @@ export default {
   margin-top: 10px;
   @include bg_color($background-color-theme);
 }
-.generating-orders {
+.complaint-slip {
   .content {
     margin-top: 100px;
     overflow-x: hidden;
@@ -361,20 +195,19 @@ export default {
 
     .group-1 {
       position: relative;
-      display: none;
       .group-btn {
         position: absolute;
         right: 40px;
-        top: 26px;
+        top: 30px;
         .cuidan,
         .zhuantousu {
           display: inline-block;
           height: 44px;
           color: $font-color-theme1;
-          line-height: 44px;
+          line-height: 36px;
           background-color: $font-color-theme2;
           text-align: center;
-          padding: 0px 10px;
+          padding: 4px 10px;
           font-size: $font_little;
           letter-spacing: 4px;
           border-radius: 4px;
@@ -464,16 +297,13 @@ export default {
 </style>
 <style lang="scss">
 @import "@/assets/scss/base.scss"; /*引入配置*/
-.generating-orders {
+.complaint-slip {
   .weui-input {
     text-align: right;
     color: $font-color-shallow0;
   }
   // 状态 【处理中】样式
   .state2 {
-    .group-1 {
-      display: block !important;
-    }
     .weui-label {
       color: $font-color-theme;
     }
@@ -531,7 +361,7 @@ export default {
       position: absolute;
       right: 10px;
       top: 50%;
-      margin-top: -26px;
+      margin-top: -28px;
     }
   }
   .vux-x-input.weui-cell {
@@ -562,61 +392,11 @@ export default {
       height: 100%;
       float: left;
     }
-    .HHMMListValue {
-      width: 46%;
-      height: 100%;
-      float: left;
-    }
-    // .HHMMListValue2 {
-    //   width: 23%;
-    //   height: 100%;
-    //   float: left;
-    // }
   }
   .weui-cells__title {
     color: $font-color-shallow0;
     font-size: $font_medium_s;
     margin-top: 10px;
-  }
-}
-// // 弹窗框
-.business-card3 .weui-dialog__bd {
-  display: none;
-}
-.business-card3 .weui-dialog__hd {
-  height: 100px;
-  line-height: 100px;
-  padding: 0;
-}
-.business-card3 .weui-dialog__hd .weui-dialog__title {
-  font-size: $font_medium_s;
-}
-.business-card3 .weui-dialog__ft {
-  padding: 0;
-}
-.business-card3 .weui-dialog__ft > a {
-  height: 80px;
-  line-height: 80px;
-  color: $font-color-theme2;
-}
-.business-card3 .weui-dialog__btn_default {
-  border-right: 1px solid $border-color-theme;
-}
-.business-card3 .weui-dialog {
-  border-radius: 20px;
-}
-// alert
-.vux-alert {
-  // .weui-dialog__bd {
-  //   display: none;
-  // }
-  .weui-dialog > .weui-dialog__hd {
-    padding: 0;
-    height: 100px;
-    line-height: 100px;
-    strong {
-      font-size: $font_medium_s;
-    }
   }
 }
 </style>

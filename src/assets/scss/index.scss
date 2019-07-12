@@ -429,6 +429,7 @@ body .weui-cell:before {
 body .weui-dialog {
   max-width: 100% !important;
   width: 80% !important;
+  border-radius: 4px;
 }
 // 弹窗样式
 body .weui-dialog > div {
@@ -474,4 +475,21 @@ body .vux-rater-box.is-active .vux-rater-inner {
 // tab
 body .vux-tab-wrap {
   height: 30px;
+}
+body .vux-tab .vux-tab-item {
+  font-size: 12px;
+}
+
+// 1px
+body .vux-1px:before {
+  content: " ";
+  border: 1px solid $border-color-theme;
+}
+body .vux-1px-b:after {
+  border-bottom: 1px solid $border-color-theme;
+}
+
+// toast
+ body .weui-toast_text .weui-toast__content {
+  font-size: 8px;
 }

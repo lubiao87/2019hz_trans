@@ -16,44 +16,48 @@
       class="lb-search"
       placeholder="请输入查找"
     ></search>
-    <div
-      class="weui-cells vux-search_show lb-cells"
-      :class="{ topCell: topCell, 'left-animater': leftAnimater && !topCell }"
-    >
-      <div>
-        <div
-          class="weui-cell weui-cell_access"
-          v-for="(item, index) in results"
-          :key="index"
-          @click="cellClick(index)"
-        >
-          <div class="weui-cell__bd weui-cell_primary">
-            <span class="radius" :class="{ select: item.select }"></span>
-            <p>{{ item.title }}</p>
-            <div class="cell-text">{{ item.otherData }}</div>
+    <div class="cells-list" :class="{ topCell: topCell }">
+      <div
+        class="weui-cells vux-search_show lb-cells"
+        :class="{ 'left-animater': leftAnimater && !topCell }"
+      >
+        <div>
+          <div
+            class="weui-cell weui-cell_access"
+            v-for="(item, index) in results"
+            :key="index"
+            @click="cellClick(index)"
+          >
+            <div class="weui-cell__bd weui-cell_primary">
+              <span class="radius" :class="{ select: item.select }"></span>
+              <p>{{ item.title }}</p>
+              <div class="cell-text">{{ item.otherData }}</div>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="fj-icon">
-        <span class="iconfont" @click="backBtn">&#xe635;</span>
-        <span>附近地址</span>
-      </div>
-      <div class="current-location">
-        <div class="location-btn vux-1px-b flex">
-          <div class="location-img">
-            <div></div>
+        <div>
+          <div class="fj-icon">
+            <span class="iconfont" @click="backBtn">&#xe635;</span>
+            <span>附近地址</span>
           </div>
-          <div class="text">惠州电信大厦</div>
-        </div>
-        <div class="panel-boxs">
-          <p class="result">所在区域为您找到 <span>1</span> 名服务工程师</p>
-          <div class="panel-box">
-            <panel
-              :list="panelList"
-              type="1"
-              @on-click-item="onevaSheetLook"
-            ></panel>
-            <span class="iconfont iconfont-set">&#xe68b;</span>
+          <div class="current-location">
+            <div class="location-btn vux-1px-b flex">
+              <div class="location-img">
+                <div></div>
+              </div>
+              <div class="text">惠州电信大厦</div>
+            </div>
+            <div class="panel-boxs">
+              <p class="result">所在区域为您找到 <span>1</span> 名服务工程师</p>
+              <div class="panel-box">
+                <panel
+                  :list="panelList"
+                  type="1"
+                  @on-click-item="onevaSheetLook"
+                ></panel>
+                <span class="iconfont iconfont-set">&#xe68b;</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -205,6 +209,9 @@ export default {
 <style lang="scss" scoped="">
 @import "@/assets/scss/base.scss"; /*引入配置*/
 .area-search {
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
   .base-box {
     position: relative;
     border-bottom: none;
@@ -244,6 +251,9 @@ export default {
     height: 30px;
     width: 20px;
   }
+  .radius.select + p {
+    color: $font-color-theme2;
+  }
   .cell-text {
     color: $font-color-shallow9;
     font-size: $font_little;
@@ -258,15 +268,26 @@ export default {
       float: left;
     }
     & > div:nth-child(2) {
+      width: 50%;
       padding: 10px 20px;
-      display: flex;
-      align-items: center;
+      & > div {
+        width: 100%;
+      }
+      & > div.fj-icon {
+        display: flex;
+        align-items: center;
+        color: $font-color-theme;
+        height: 80px;
+        margin-top: 20px;
+      }
       .iconfont {
         margin-left: 10px;
-
         font-size: $font_large_s;
-        display: block;
+        display: inline-block;
         width: 80px;
+      }
+      .iconfont + span {
+        font-size: $font_medium_s;
       }
       & > span {
         float: left;
@@ -274,11 +295,12 @@ export default {
       }
     }
   }
-  .weui-cells.vux-search_show.lb-cells.topCell {
+  .cells-list.topCell {
+    position: relative;
     & > div {
-      width: 100%;
+      width: 200%;
     }
-    & > div:nth-child(2) {
+    .lb-cells > div:nth-child(2) {
       display: none;
     }
   }
@@ -372,19 +394,28 @@ export default {
   .weui-cells.vux-search_show {
     display: none;
   }
-  .weui-cells.vux-search_show.lb-cells {
-    display: block;
-    max-height: 600px;
+  .cells-list {
     overflow-y: scroll;
+    overflow-x: hidden;
     position: absolute;
-    width: 200%;
+    width: 100%;
+    max-height: 500px;
     bottom: 0;
     left: 0;
-    padding-top: 20px;
+    z-index: 100;
+    .weui-cells.vux-search_show {
+      // display: block;
+      position: relative;
+    }
+  }
+  .weui-cells.vux-search_show.lb-cells {
+    width: 200%;
     transition: left 0.4s;
     -moz-transition: left 0.4s; /* Firefox 4 */
     -webkit-transition: left 0.4s; /* Safari 和 Chrome */
     -o-transition: left 0.4s; /* Opera */
+    display: block;
+    left: 0;
   }
   .weui-cells.vux-search_show.topCell {
     position: relative;
@@ -427,9 +458,19 @@ export default {
     padding-left: 80px;
     display: block;
     position: relative;
+    margin-top: 20px;
+    width: 100%;
   }
   .weui-cells.vux-search_show .weui-cell:last-child {
     margin-bottom: 20px;
+  }
+  .weui-media-box_appmsg .weui-media-box__hd {
+    margin-left: 0;
+    height: 100px;
+    width: 100px;
+  }
+  .lb-cells .weui-media-box {
+    padding-left: 0;
   }
 }
 </style>

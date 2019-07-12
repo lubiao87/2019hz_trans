@@ -40,7 +40,7 @@ export default {
         },
         {
           title: "一键快速报障",
-          routerLink: "home",
+          routerLink: "quickReport",
           imgSrc: "./img/HZTMH_home_icon_Reportingobstacles@3x.png"
         },
         {

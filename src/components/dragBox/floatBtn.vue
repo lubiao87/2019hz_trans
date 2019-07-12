@@ -44,7 +44,9 @@ export default {
     this.clientWidth = document.documentElement.clientWidth;
     this.clientHeight = document.documentElement.clientHeight;
     this.left = this.clientWidth - this.itemWidth - this.gapWidth;
-    this.top = this.clientHeight * this.coefficientHeight;
+    // this.top = this.clientHeight * this.coefficientHeight;
+    this.top = 200;
+    console.log(this.top);
   },
   mounted() {
     window.addEventListener("scroll", this.handleScrollStart);
@@ -145,6 +147,7 @@ export default {
 
   p {
     font-size: 28px;
+    color: $font-color-theme2;
   }
 }
 </style>
