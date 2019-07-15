@@ -13,7 +13,7 @@
         v-for="(item, index) in menuList"
         :key="index"
         class="vux-1px-b"
-        :class="{ 'product-acc': item.title === '产品账号' }"
+        :class="{ 'slip-type': item.title === '类型' }"
       >
         <x-input
           :title="item.title"
@@ -23,12 +23,24 @@
           :show-clear="false"
           placeholder-align="right"
         ></x-input>
-        <x-icon
-          type="ios-arrow-right"
-          v-if="item.title === '产品账号'"
-          class="cell-x-icon"
-          size="26"
-        ></x-icon>
+        <div v-if="item.title === '类型'" class="radio-box">
+          <input
+            type="radio"
+            name="slipType"
+            id="paixu1"
+            value="投诉"
+            v-model="checkedValue"
+          />
+          <label for="paixu1">投诉</label>
+          <input
+            type="radio"
+            name="slipType"
+            id="paixu2"
+            value="建议"
+            v-model="checkedValue"
+          />
+          <label for="paixu2">建议</label>
+        </div>
       </group>
 
       <div class="gray-bg"></div>
@@ -52,7 +64,7 @@
       </group> -->
 
       <div class="foot-box">
-        <div class="cancel-btn vux-1px">
+        <div class="cancel-btn">
           取消
         </div>
         <div class="confirm-btn vux-1px" @click="confirmOrders">
@@ -135,7 +147,8 @@ export default {
       ],
       showSingle: "",
       showdateSingle: false,
-      floatText: "我的投诉记录"
+      floatText: "我的投诉记录",
+      checkedValue: "投诉"
     };
   },
   computed: {
@@ -177,7 +190,12 @@ export default {
       });
     }
   },
-  mounted() {}
+  mounted() {},
+  watch: {
+    checkedValue(val) {
+      console.log(val);
+    }
+  }
 };
 </script>
 <style lang="scss" scoped="">
@@ -256,15 +274,17 @@ export default {
     }
     .foot-box {
       width: 100%;
-      height: 120px;
+      height: 140px;
       box-shadow: $border-color-theme 10px 0px 20px 4px;
       display: flex;
       padding: 20px;
+      margin-top: 20px;
       & > div {
         flex: 1;
         display: flex;
         align-content: center;
         justify-content: center;
+        height: 80px;
         line-height: 80px;
         font-size: $font_medium_s;
         margin: 0 20px;
@@ -275,7 +295,10 @@ export default {
         overflow: hidden;
       }
       .cancel-btn {
+        border-radius: 10px;
+        overflow: hidden;
         color: $border-color-theme2;
+        border: 2px solid $font-color-theme2;
       }
       .confirm-btn.vux-1px:before {
         content: "提交";
@@ -292,6 +315,51 @@ export default {
         opacity: 0.6;
       }
     }
+    .slip-type {
+      .radio-box {
+        overflow: hidden;
+        & > input {
+          display: none;
+        }
+        & > label {
+          position: relative;
+          height: 60px;
+          display: block;
+          width: 50%;
+          float: left;
+          padding-left: 50px;
+        }
+        & > label::before {
+          display: inline-block;
+          content: "";
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          border: 1px solid $background-color-theme1;
+          margin-right: 12px;
+          margin-top: 6px;
+          position: absolute;
+          left: 0px;
+          top: 2px;
+        }
+        & > input:checked + label::before {
+          background-color: $background-color-theme;
+          position: absolute;
+          left: 0px;
+          top: 2px;
+        }
+        & > input:checked + label::after {
+          position: absolute;
+          left: 8px;
+          top: 16px;
+          content: "";
+          width: 16px;
+          height: 16px;
+          border-radius: 50%;
+          background-color: $background-color-theme1;
+        }
+      }
+    }
   }
 }
 </style>
@@ -302,19 +370,17 @@ export default {
     text-align: right;
     color: $font-color-shallow0;
   }
-  // 状态 【处理中】样式
-  .state2 {
-    .weui-label {
-      color: $font-color-theme;
-    }
-    .product-acc .weui-cell .weui-cell__bd {
-      padding-right: 20px;
-    }
-    .weui-textarea-counter {
-      display: none;
+  .slip-type {
+    & > div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & > div {
+        flex: 1;
+      }
     }
   }
-
   .group-1 .weui-input {
     text-align: left;
     padding-left: 30px;

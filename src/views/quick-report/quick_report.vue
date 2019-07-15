@@ -51,7 +51,7 @@
       </group>
 
       <div class="foot-box">
-        <div class="cancel-btn vux-1px">
+        <div class="cancel-btn">
           取消
         </div>
         <div class="confirm-btn vux-1px" @click="confirmOrders">
@@ -315,7 +315,7 @@ export default {
     }
     .foot-box {
       width: 100%;
-      height: 120px;
+      height: 140px;
       box-shadow: $border-color-theme 10px 0px 20px 4px;
       display: flex;
       padding: 20px;
@@ -325,6 +325,7 @@ export default {
         align-content: center;
         justify-content: center;
         line-height: 80px;
+        height: 80px;
         font-size: $font_medium_s;
         margin: 0 20px;
       }
@@ -334,7 +335,10 @@ export default {
         overflow: hidden;
       }
       .cancel-btn {
+        border-radius: 10px;
+        overflow: hidden;
         color: $border-color-theme2;
+        border: 2px solid $font-color-theme2;
       }
       .confirm-btn.vux-1px:before {
         content: "提交";

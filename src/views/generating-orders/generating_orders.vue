@@ -1,21 +1,34 @@
 <template>
   <div class="generating-orders">
     <b-head :showBack="true" :title="title"></b-head>
-    <div class="content" :class="{ state2: state === 2, state3: state === 3 }">
+    <div class="content" :class="{ state2: MyordersData.state !== 1 }">
       <div class="gray-bg"></div>
-      <group class="vux-1px-b group-1 state2-box">
+      <group
+        class="vux-1px-b group-1 state2-box"
+        v-show="MyordersData.state !== 1"
+      >
         <x-input
           title="当前状态"
-          v-model="stateValue"
+          v-model="MyordersData.stateValue"
           disabled
           :show-clear="false"
           placeholder-align="left"
         ></x-input>
         <div class="group-btn">
-          <div class="cuidan" v-if="stateValue === '处理中'" @click="cuiDan">
+          <div
+            class="cuidan"
+            v-if="MyordersData.stateValue === '处理中'"
+            @click="cuiDan"
+          >
             催单
           </div>
-          <div class="cuidan" v-if="stateValue === '待评价'">评价</div>
+          <div
+            class="cuidan"
+            v-if="MyordersData.stateValue === '待评价'"
+            @click="appraiseSheet"
+          >
+            评价
+          </div>
           <div class="zhuantousu" @click="zhuanTouSu">转投诉</div>
         </div>
       </group>
@@ -47,7 +60,7 @@
         ></x-input>
         <x-icon
           type="ios-arrow-right"
-          v-if="item.title === '产品账号' && state === 1"
+          v-if="item.title === '产品账号' && MyordersData.state === 1"
           class="cell-x-icon"
           size="26"
         ></x-icon>
@@ -76,23 +89,71 @@
 
       <group class="obstacles" title="报障内容">
         <x-textarea
+          v-if="MyordersData.state === 1"
           :max="100"
-          :rows="2"
+          :rows="3"
           placeholder="请输入报障内容"
           @on-focus="textareaEvent('focus')"
           @on-blur="textareaEvent('blur')"
+          v-model="textareaValve"
         ></x-textarea>
+        <div
+          data-v-a07515dc=""
+          class="weui-cell vux-x-textarea"
+          v-if="MyordersData.state !== 1"
+        >
+          <div class="weui-cell__bd">
+            <div class="weui-textarea" v-html="textareaValve"></div>
+          </div>
+        </div>
       </group>
       <!-- -----------------上传图片 ------------------ -->
-      <img-uploader @childrenData="getChildData" />
+      <img-uploader @childrenData="getChildData" class="obstacles3" />
+
       <group class="obstacles obstacles2" title="期望上门时间">
         <div class="pleaseChoose" @click="showdateSingle = true">
           {{ homeTime }}
         </div>
       </group>
 
-      <div class="foot-box">
-        <div class="cancel-btn vux-1px">
+      <div class="gray-bg"></div>
+      <group
+        class="obstacles"
+        title="处理回单内容"
+        v-if="MyordersData.state > 2"
+        style="padding-bottom: 0;"
+      >
+        <div class="weui-cell vux-x-textarea" style="overflow: hidden;">
+          <div class="weui-cell__bd">
+            <div class="weui-textarea" v-html="textareaValve2"></div>
+          </div>
+        </div>
+        <div class="vue-uploader">
+          <div class="file-list">
+            <section
+              class="file-item draggable-item"
+              v-for="(item, index) in childData"
+              :key="index + 'img'"
+            >
+              <img alt="" ondragstart="return false;" :src="item.src" />
+              <span class="file-remove">+</span>
+            </section>
+          </div>
+        </div>
+      </group>
+      <group v-if="MyordersData.state > 2">
+        <x-input
+          class="obstacles"
+          title="故障类型"
+          v-model="faultType"
+          disabled
+          :show-clear="false"
+          placeholder-align="right"
+        ></x-input>
+      </group>
+
+      <div class="foot-box" v-if="MyordersData.state === 1">
+        <div class="cancel-btn">
           取消
         </div>
         <div class="confirm-btn vux-1px" @click="confirmOrders">
@@ -231,9 +292,11 @@ export default {
       HHMMListValue: "12:00 ~ 14:00",
       // HHMMListValue2: "14:00",
       showdateHours: false,
-      state: 1,
-      stateValue: "",
-      show5: false
+      show5: false,
+      textareaValve: "",
+      textareaValve2: "你的网络可以正常使用了", // 回单消息
+      childData: {},
+      faultType: "宽带故障"
     };
   },
   computed: {
@@ -245,7 +308,8 @@ export default {
     }),
     ...mapGetters("collection", {
       //用mapGetters来获取collection.js里面的getters
-      arrList: "renderCollects"
+      arrList: "renderCollects",
+      MyordersData: "renderOrdersData"
     }),
     homeTime() {
       let value = this.showSingle + " " + this.HHMMListValue;
@@ -297,7 +361,8 @@ export default {
       return currentdate;
     },
     getChildData(data) {
-      console.log(data);
+      console.log("getChildData", data);
+      this.childData = data;
     },
     confirmOrders() {
       this.show5 = true;
@@ -310,7 +375,24 @@ export default {
       const self = this;
       console.log("onConfirm5");
       self.$vux.toast.text("推送成功！");
-      self.state = 2;
+      // self.state = 2;
+      self.$store.dispatch("collection/ORDERS_DATA", {
+        state: 2,
+        stateValue: "处理中"
+      });
+      setTimeout(() => {
+        self.$vux.alert.show({
+          title: "此单已回单",
+          onHide() {
+            self.$store.dispatch("collection/ORDERS_DATA", {
+              state: 3,
+              stateValue: "待评价"
+            });
+            // self.state = 3;
+            // self.stateValue = "待评价";
+          }
+        });
+      }, 20000);
     },
     onHide() {
       console.log("on hide");
@@ -325,25 +407,13 @@ export default {
     // 转投诉
     zhuanTouSu() {
       this.$router.push({ name: "complaintSlip", params: { data: null } });
+    },
+    // 评价
+    appraiseSheet() {
+      this.$router.push({ name: "appraiseSheet", params: { data: null } });
     }
   },
-  mounted() {},
-  watch: {
-    state(val) {
-      const self = this;
-      switch (val) {
-        case 2:
-          self.stateValue = "处理中";
-          break;
-        case 3:
-          self.stateValue = "待评价";
-          break;
-
-        default:
-          break;
-      }
-    }
-  }
+  mounted() {}
 };
 </script>
 <style lang="scss" scoped="">
@@ -361,7 +431,7 @@ export default {
 
     .group-1 {
       position: relative;
-      display: none;
+      // display: none;
       .group-btn {
         position: absolute;
         right: 40px;
@@ -395,7 +465,7 @@ export default {
         padding: 10px 20px;
       }
       .weui-cell__bd {
-        padding: 10px 0;
+        padding: 10px 20px;
       }
     }
     .obstacles:after {
@@ -413,6 +483,7 @@ export default {
         height: 50px;
         line-height: 50px;
         float: right;
+        padding-right: 20px;
       }
       .date-box {
         position: absolute;
@@ -421,9 +492,12 @@ export default {
         height: 100%;
       }
     }
+    .obstacles3 {
+      padding: 0 20px;
+    }
     .foot-box {
       width: 100%;
-      height: 120px;
+      height: 160px;
       box-shadow: $border-color-theme 10px 0px 20px 4px;
       display: flex;
       padding: 20px;
@@ -432,6 +506,7 @@ export default {
         display: flex;
         align-content: center;
         justify-content: center;
+        height: 80px;
         line-height: 80px;
         font-size: $font_medium_s;
         margin: 0 20px;
@@ -442,7 +517,10 @@ export default {
         overflow: hidden;
       }
       .cancel-btn {
+        border-radius: 10px;
+        overflow: hidden;
         color: $border-color-theme2;
+        border: 2px solid $font-color-theme2;
       }
       .confirm-btn.vux-1px:before {
         content: "提交";
@@ -471,9 +549,6 @@ export default {
   }
   // 状态 【处理中】样式
   .state2 {
-    .group-1 {
-      display: block !important;
-    }
     .weui-label {
       color: $font-color-theme;
     }
@@ -482,6 +557,12 @@ export default {
     }
     .weui-textarea-counter {
       display: none;
+    }
+    .foot-box {
+      display: none !important;
+    }
+    .weui-cells__title {
+      color: $font-color-theme;
     }
   }
 
@@ -506,10 +587,14 @@ export default {
       float: left;
     }
   }
+
   .vux-x-input.weui-cell > div {
     display: flex;
     align-items: center;
     height: 100%;
+  }
+  .vux-x-input.weui-cell > .vux-toast {
+    display: none;
   }
   .weui-cell__ft {
     display: none !important;
@@ -607,9 +692,9 @@ export default {
 }
 // alert
 .vux-alert {
-  // .weui-dialog__bd {
-  //   display: none;
-  // }
+  .weui-dialog__bd {
+    display: none;
+  }
   .weui-dialog > .weui-dialog__hd {
     padding: 0;
     height: 100px;

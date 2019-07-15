@@ -172,9 +172,6 @@ export default {
 };
 </script>
 <style>
-/* .vue-uploader {
-  border: 1px solid #e5e5e5;
-} */
 .vue-uploader .file-list {
   padding: 10px 0px;
 }
@@ -212,7 +209,8 @@ export default {
   transform: rotate(45deg);
   text-align: center;
   background: rgba(0, 0, 0, 0.5);
-  font-size: 60px;
+  font-size: 50px;
+  font-family: "Courier New", Courier, monospace;
 }
 .vue-uploader .file-list .file-item:hover .file-remove {
   display: inline;

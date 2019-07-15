@@ -65,11 +65,6 @@ module.exports = {
       // 为开发环境修改配置...
     }
   },
-  // configureWebpack: {
-  //   externals: {
-  //     BMap: "BMap"
-  //   }
-  // },
   configureWebpack: config => {
     require("vux-loader").merge(config, {
       options: {},

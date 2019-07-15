@@ -13,8 +13,8 @@ Vue.use(infiniteScroll);
 
 Vue.prototype.GLOBAL = "ws://192.168.12.71:50087/chatlineDev/chat/";
 // Vue.prototype.IMGURL = "ws://192.168.12.71:50087/chatlineDev/chat/";
-const FastClick = require("fastclick");
-FastClick.attach(document.body);
+// const FastClick = require("fastclick");
+// FastClick.attach(document.body);
 import { LoadingPlugin, AlertPlugin, ToastPlugin } from "vux";
 Vue.use(LoadingPlugin);
 Vue.use(AlertPlugin);

@@ -1,71 +1,97 @@
 <template>
   <div class="appraise-sheet">
-    <div class="header">
-      <p class="p1">你好修障工作已完成!</p>
-      <p class="p2">请你对张师傅的修障服务评级</p>
-    </div>
-    <div class="user-data">
-      <div class="list">
-        <panel :list="userInfo" type="1"></panel>
+    <v-scroll-full
+      ref="myscrollfull"
+      class="scroll-top"
+      @load="loadData"
+      v-infinite-scroll="loadMores"
+      infinite-scroll-disabled="busy"
+      infinite-scroll-distance="30"
+    >
+      <div class="header">
+        <p class="p1">你好修障工作已完成!</p>
+        <p class="p2">请你对张师傅的修障服务评级</p>
       </div>
-    </div>
-    <div>
-      <div class="sheet-list">
-        <div class="line"></div>
-        <div class="list" v-for="(item, index) in starsEvaluate" :key="index">
-          <span class="text">{{ item.name }}</span>
-          <rater v-model="item.stars" :margin="8" :font-size="30"></rater>
+      <div class="user-data">
+        <div class="list">
+          <panel :list="userInfo" type="1"></panel>
         </div>
       </div>
-      <div class="gray-bg"></div>
-      <div class="check-list">
-        <div class="problem">
-          <span class="problem-span">装维工程师是否提供便民服务? </span>
-          <checker
-            v-model="problemStr"
-            default-item-class="demo1-item"
-            selected-item-class="demo1-item-selected"
-          >
-            <checker-item value="是">
-              <span class="checker-span">是</span>
-              <check-icon :value.sync="checkYes" disabled></check-icon>
-            </checker-item>
-            <checker-item value="否">
-              <span class="checker-span">否</span>
-              <check-icon :value.sync="checkNo" disabled></check-icon>
-            </checker-item>
-          </checker>
+      <div>
+        <div class="sheet-list">
+          <div class="line"></div>
+          <div class="list">
+            <span class="text">{{ startsEnsemble.name }}</span>
+            <rater
+              v-model="startsEnsemble.stars"
+              :margin="8"
+              :font-size="30"
+              disabled
+              :class="{
+                stars5: startsEnsemble.stars > 4 && startsEnsemble.stars < 5,
+                stars4: startsEnsemble.stars > 3 && startsEnsemble.stars < 4,
+                stars3: startsEnsemble.stars > 2 && startsEnsemble.stars < 3,
+                stars2: startsEnsemble.stars > 1 && startsEnsemble.stars < 2,
+                stars1: startsEnsemble.stars > 0 && startsEnsemble.stars < 1
+              }"
+            ></rater>
+          </div>
+          <div class="list" v-for="(item, index) in starsEvaluate" :key="index">
+            <span class="text">{{ item.name }}</span>
+            <rater v-model="item.stars" :margin="8" :font-size="30"></rater>
+          </div>
         </div>
-        <div class="check-box" v-show="checkYes">
-          <checklist
-            title=""
-            :options="commonList"
-            v-model="checkSelect"
-            :max="2"
-            @on-change="checkChange"
-            >23423</checklist
-          >
-          <x-textarea
-            v-show="TextareaShow"
-            :max="10"
-            :rows="1"
-            placeholder="请输入提供的便民服务"
-            @on-focus="onEvent('focus')"
-            @on-blur="onEvent('blur')"
-            v-model="textareaInput"
-          ></x-textarea>
+        <div class="gray-bg"></div>
+        <div class="check-list">
+          <div class="problem">
+            <span class="problem-span">装维工程师是否提供便民服务? </span>
+            <checker
+              v-model="problemStr"
+              default-item-class="demo1-item"
+              selected-item-class="demo1-item-selected"
+            >
+              <checker-item value="是">
+                <span class="checker-span">是</span>
+                <check-icon :value.sync="checkYes" disabled></check-icon>
+              </checker-item>
+              <checker-item value="否">
+                <span class="checker-span">否</span>
+                <check-icon :value.sync="checkNo" disabled></check-icon>
+              </checker-item>
+            </checker>
+          </div>
+          <div class="check-box" v-show="checkYes">
+            <checklist
+              title=""
+              :options="commonList"
+              v-model="checkSelect"
+              :max="2"
+              @on-change="checkChange"
+              >23423</checklist
+            >
+            <x-textarea
+              v-show="TextareaShow"
+              :max="10"
+              :rows="1"
+              placeholder="请输入提供的便民服务"
+              @on-focus="onEvent('focus')"
+              @on-blur="onEvent('blur')"
+              v-model="textareaInput"
+            ></x-textarea>
+          </div>
+        </div>
+        <p class="tc stip" v-show="checkYes">请选择1-2项服务内容</p>
+        <div class="gray-bg"></div>
+        <div class="primary-btn">
+          <x-button @click.native="primarySubmit" type="primary">提交</x-button>
         </div>
       </div>
-      <p class="tc stip" v-show="checkYes">请选择1-2项服务内容</p>
-      <div class="gray-bg"></div>
-      <div class="primary-btn">
-        <x-button @click.native="primarySubmit" type="primary">提交</x-button>
-      </div>
-    </div>
+    </v-scroll-full>
   </div>
 </template>
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
+import VScrollFull from "@/components/mescroll/downScroll";
 import {
   Panel,
   Rater,
@@ -90,7 +116,8 @@ export default {
     CheckerItem,
     Checklist,
     XTextarea,
-    XButton
+    XButton,
+    VScrollFull
   },
   data: function() {
     return {
@@ -109,11 +136,11 @@ export default {
           id: 333
         }
       ],
+      // startsEnsemble: {
+      //   stars: 0,
+      //   name: "总体评价"
+      // },
       starsEvaluate: [
-        {
-          stars: 0,
-          name: "总体评价"
-        },
         {
           stars: 0,
           name: "按约上门"
@@ -121,10 +148,6 @@ export default {
         {
           stars: 0,
           name: "服务态度"
-        },
-        {
-          stars: 0,
-          name: "保障质量"
         }
       ],
       problemStr: "否",
@@ -153,6 +176,9 @@ export default {
     }),
     checkYes: {
       get() {
+        this.$nextTick(() => {
+          this.$refs.myscrollfull.mescroll.scrollTo(9999, 300); // 滚动到底部
+        });
         return this.problemStr === "是";
       },
       set(val) {
@@ -169,10 +195,30 @@ export default {
     },
     TextareaShow: {
       get() {
+        this.$nextTick(() => {
+          this.$refs.myscrollfull.mescroll.scrollTo(9999, 300); // 滚动到底部
+        });
         return this.checkSelect.indexOf("其它") > -1;
       },
       set(val) {
         console.log(val);
+        return val;
+      }
+    },
+    startsEnsemble: {
+      get() {
+        let sum = 0;
+        this.starsEvaluate.forEach(item => {
+          sum += item.stars;
+        });
+        sum = sum / 2;
+        console.log("sum", sum);
+        return {
+          stars: sum,
+          name: "总体评价"
+        };
+      },
+      set(val) {
         return val;
       }
     }
@@ -192,6 +238,15 @@ export default {
     },
     primarySubmit() {
       console.log("提交什么");
+    },
+    loadMores() {
+      console.log("下拉干嘛");
+    },
+    loadData() {
+      const self = this;
+      this.$nextTick(() => {
+        self.$refs.myscrollfull.mescroll.endSuccess(0);
+      });
     }
   }
 };
@@ -203,10 +258,17 @@ export default {
   width: 100%;
   height: 100%;
   font-size: 28px;
-  padding: 30px;
+
   color: $font-color-theme3;
   overflow-x: hidden;
   overflow-y: scroll;
+  .scroll-top {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    padding: 30px;
+  }
   .header {
     width: 582px;
     margin: auto;
