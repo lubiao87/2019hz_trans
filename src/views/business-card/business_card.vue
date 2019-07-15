@@ -287,28 +287,28 @@ export default {
 @import "@/assets/scss/base.scss"; /*引入配置*/
 .business-card .vux-rater-box .vux-rater-inner {
   background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
-  background-size: 80%;
+  background-size: 100%;
 }
 
-.stars5 a:nth-child(6) .vux-rater-inner {
+.business-card .stars5 a:nth-child(6) .vux-rater-inner {
   background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
-  background-size: 80%;
+  background-size: 100%;
 }
-.stars4 a:nth-child(5) .vux-rater-inner {
+.business-card .stars4 a:nth-child(5) .vux-rater-inner {
   background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
-  background-size: 80%;
+  background-size: 100%;
 }
-.stars3 a:nth-child(4) .vux-rater-inner {
+.business-card .stars3 a:nth-child(4) .vux-rater-inner {
   background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
-  background-size: 80%;
+  background-size: 100%;
 }
-.stars2 a:nth-child(3) .vux-rater-inner {
+ .business-card .stars2 a:nth-child(3) .vux-rater-inner {
   background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
-  background-size: 80%;
+  background-size: 100%;
 }
-.stars1 a:nth-child(2) .vux-rater-inner {
+.business-card .stars1 a:nth-child(2) .vux-rater-inner {
   background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
-  background-size: 80%;
+  background-size: 100%;
 }
 // 弹窗框
 .business-card2 .set-prompt-msgbox {

@@ -466,11 +466,11 @@ body .vux-rater-box .vux-rater-inner {
   width: 100%;
   height: 100%;
   background: url(../images/stars-small-no.png) no-repeat center;
-  background-size: 80%;
+  background-size: 100%;
 }
 body .vux-rater-box.is-active .vux-rater-inner {
   background: url(../images/stars-small-select.png) no-repeat center;
-  background-size: 80%
+  background-size: 100%;
 }
 .stars5 a:nth-child(6) .vux-rater-inner {
   background: url(../images/stars-small-half.png) no-repeat center;
@@ -512,4 +512,59 @@ body .vux-1px-b:after {
 // toast
  body .weui-toast_text .weui-toast__content {
   font-size: 8px;
+}
+
+// 选择框
+body .vux-popup-header {
+  height: 30px;
+}
+[class^="vux-popup-header"] {
+  font-size: 14px;
+  padding: 2px;
+}
+body .vux-cell-value {
+  color: $font-color-theme;
+}
+body .vux-cell-primary {
+  padding: 0 10px;
+}
+
+// buttom-tab
+body .vux-button-group > a.vux-button-group-current {
+  background: $border-color-theme2;
+}
+body .vux-button-group {
+  padding: 8px 40px;
+  display: flex;
+  display: -webkit-flex; /* Safari */
+  align-items: center;
+  justify-content: space-between;
+}
+body .vux-button-group > a {
+  font-size: 16px;
+  height: 30px;
+  line-height: 30px;
+  flex: none;
+  width: 40%;
+  border-radius: 30px;
+  color: $font-color-themesec;
+}
+
+body .vux-button-group > a.vux-button-tab-item-first {
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
+body .vux-button-group > a.vux-button-tab-item-last {
+  border-radius: 30px;
+  border-top-right-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+body .vux-button-group > a.vux-button-tab-item-first:after {
+  border: none;
+  display: none;
+}
+body .vux-button-group > a:after {
+  content: "";
+  display: none;
+
 }

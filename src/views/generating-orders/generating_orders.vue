@@ -141,17 +141,41 @@
           </div>
         </div>
       </group>
-      <group v-if="MyordersData.state > 2">
-        <x-input
+      <group
+        v-if="MyordersData.state > 1"
+        title="故障类型"
+        class="enclosure-box obstacles enclosure2"
+      >
+        <!-- <x-input
           class="obstacles"
           title="故障类型"
           v-model="faultType"
           disabled
           :show-clear="false"
           placeholder-align="right"
-        ></x-input>
+        ></x-input> -->
+        <popup-picker
+          :data="list1"
+          v-model="faultType"
+          @on-show="onShow"
+          @on-hide="onHide"
+          @on-change="onChange"
+          placeholder="请选择"
+        >
+          <template slot="title" v-if="MyordersData.state === 2">
+            <span class="iconfont">&#xe656;</span>
+          </template>
+        </popup-picker>
       </group>
-
+      <group
+        class="enclosure-box obstacles vux-1px-t"
+        title="附件"
+        v-if="MyordersData.state > 1"
+      >
+        <div class="in" @click="enclosurePage">
+          在线聊天记录/通话录音
+        </div>
+      </group>
       <div class="foot-box" v-if="MyordersData.state === 1">
         <div class="cancel-btn">
           取消
@@ -198,6 +222,7 @@ import {
   Group,
   XTextarea,
   Confirm,
+  PopupPicker,
   TransferDomDirective as TransferDom
 } from "vux";
 import date from "@/components/datepicker/datePicker";
@@ -215,7 +240,8 @@ export default {
     ImgUploader,
     date,
     dateHours,
-    Confirm
+    Confirm,
+    PopupPicker
   },
   data: function() {
     return {
@@ -296,7 +322,9 @@ export default {
       textareaValve: "",
       textareaValve2: "你的网络可以正常使用了", // 回单消息
       childData: {},
-      faultType: "宽带故障"
+      faultType: [],
+      enclosure: "在线聊天记录/通话录音",
+      list1: [["固话故障", "IPTV故障", "智能组网故障", "宽带故障"]]
     };
   },
   computed: {
@@ -411,6 +439,27 @@ export default {
     // 评价
     appraiseSheet() {
       this.$router.push({ name: "appraiseSheet", params: { data: null } });
+    },
+    // 评价
+    enclosurePage() {
+      this.$router.push({
+        name: "enclosurePage",
+        params: {
+          data: { id: 23 }
+        }
+      });
+    },
+    /****
+     * 故障类型
+     *  */
+    onShow() {
+      console.log("on show");
+    },
+    onHide(type) {
+      console.log("on hide", type);
+    },
+    onChange(val) {
+      console.log("val change", val);
     }
   },
   mounted() {}
@@ -543,6 +592,37 @@ export default {
 <style lang="scss">
 @import "@/assets/scss/base.scss"; /*引入配置*/
 .generating-orders {
+  .enclosure-box {
+    display: flex;
+    align-items: center;
+    .weui-cells__title {
+      flex: 1;
+    }
+    .weui-cells {
+      flex: 3;
+    }
+    .in {
+      float: right;
+      padding-right: 20px;
+      color: $font-color-theme2;
+    }
+    // justify-content: flex-end;
+    .vux-x-input .weui-input {
+      color: $font-color-theme2;
+      -webkit-text-fill-color: $font-color-shallow0;
+    }
+  }
+  // 选择框
+  .enclosure2 {
+    .weui-cell .weui-cell__hd {
+      float: right;
+      width: 60px;
+      span {
+        float: right;
+        color: $font-color-theme;
+      }
+    }
+  }
   .weui-input {
     text-align: right;
     color: $font-color-shallow0;

@@ -44,7 +44,7 @@
 <script>
 import { listSearchMixin } from "../../mixin"; //混淆请求
 import { api } from "../../api/api"; //api配置请求的路径
-import { setTimeout } from "timers";
+
 // import qs from "qs";
 export default {
   // props: {

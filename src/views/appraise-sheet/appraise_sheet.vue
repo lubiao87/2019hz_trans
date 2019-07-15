@@ -1,5 +1,6 @@
 <template>
   <div class="appraise-sheet">
+    <b-head :showBack="true" :title="title"></b-head>
     <v-scroll-full
       ref="myscrollfull"
       class="scroll-top"
@@ -92,6 +93,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
 import VScrollFull from "@/components/mescroll/downScroll";
+import BHead from "@/components/base/B-Head";
 import {
   Panel,
   Rater,
@@ -117,7 +119,8 @@ export default {
     Checklist,
     XTextarea,
     XButton,
-    VScrollFull
+    VScrollFull,
+    BHead
   },
   data: function() {
     return {
@@ -266,7 +269,7 @@ export default {
     width: 100%;
     height: 100%;
     position: fixed;
-    top: 0;
+    top: 100px;
     padding: 30px;
   }
   .header {

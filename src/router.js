@@ -138,6 +138,15 @@ export default new Router({
         keepAlive: true // 缓存
       },
       component: () => import("@/views/complaint-slip/complaint_slip.vue")
+    },
+    // 聊天记录
+    {
+      path: "/enclosurePage",
+      name: "enclosurePage",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/enclosure-page/enclosure_page.vue")
     }
   ]
 });
