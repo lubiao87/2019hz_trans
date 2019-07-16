@@ -3,21 +3,17 @@
     <tab :line-width="0" custom-bar-width="60px">
       <tab-item
         active-class="active-2"
-        @on-item-click="onTabClick('mapArea')"
+        @on-item-click="onTabClick('处理中')"
         selected
         >处理中</tab-item
       >
-      <tab-item active-class="active-2" @on-item-click="onTabClick('accSearch')"
+      <tab-item active-class="active-2" @on-item-click="onTabClick('待评价')"
         >待评价</tab-item
       >
-      <tab-item
-        active-class="active-2"
-        @on-item-click="onTabClick('accountNow')"
+      <tab-item active-class="active-2" @on-item-click="onTabClick('已完成')"
         >已完成</tab-item
       >
-      <tab-item
-        active-class="active-2"
-        @on-item-click="onTabClick('otherSearch')"
+      <tab-item active-class="active-2" @on-item-click="onTabClick('转投诉')"
         >转投诉</tab-item
       >
     </tab>
@@ -84,14 +80,19 @@ export default {
           num3: "2019/6/12 11:30:30",
           num4: "广东省广州市天河区***佳都商务大厦 西塔801"
         }
-      ]
+      ],
+      tabName: "处理中"
     };
   },
   created() {},
   mounted() {
     // this.alertShow();
   },
-  methods: {}
+  methods: {
+    onTabClick(tab) {
+      this.tabName = tab;
+    }
+  }
 };
 </script>
 
@@ -131,7 +132,7 @@ export default {
         top: 32px;
         right: 37px;
         width: 101px;
-        height: 74px;
+        // height: 74px;
       }
       .top {
         display: flex;

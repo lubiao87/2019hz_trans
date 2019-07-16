@@ -78,7 +78,7 @@
         @on-hide="onHide"
       >
         <input v-model="inputIphone" class="set-prompt-msgbox" />
-        <span class="replace-iphone">跟换</span>
+        <span class="replace-iphone">更换</span>
       </confirm>
     </div>
   </div>
@@ -231,6 +231,7 @@ export default {
         .name {
           font-size: $font_medium;
           font-weight: bold;
+          color: $font-color-themesec;
         }
         .lucky-number {
           display: flex;
@@ -302,7 +303,7 @@ export default {
   background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
   background-size: 100%;
 }
- .business-card .stars2 a:nth-child(3) .vux-rater-inner {
+.business-card .stars2 a:nth-child(3) .vux-rater-inner {
   background: url(../../assets/images/stars-small-opcity.png) no-repeat center;
   background-size: 100%;
 }

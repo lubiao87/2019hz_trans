@@ -45,7 +45,7 @@ export default {
         },
         {
           title: "服务进度查询",
-          routerLink: "home",
+          routerLink: "baoZhan",
           imgSrc: "./img/HZTMH_home_icon_query@3x.png"
         },
         {

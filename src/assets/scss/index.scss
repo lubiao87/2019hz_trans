@@ -498,6 +498,7 @@ body .vux-tab-wrap {
 }
 body .vux-tab .vux-tab-item {
   font-size: 12px;
+  color: $font-color-themesec;
 }
 
 // 1px
@@ -567,4 +568,10 @@ body .vux-button-group > a:after {
   content: "";
   display: none;
 
+}
+
+// 新消息圆点
+ body .vux-badge-dot {
+  padding: 5px;
+  margin-left: -10px;
 }

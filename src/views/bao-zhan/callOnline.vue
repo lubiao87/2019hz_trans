@@ -65,11 +65,11 @@ export default {
 <style lang="scss" scoped="">
 @import "@/assets/scss/base.scss"; /*引入配置*/
 .callOnline {
-  background: $background-color-theme;
+  background: $background-color-themesec;
   height: 100%;
   padding: 18px 14px 0 14px;
   .list {
-    background: $background-color-theme;
+    // background: $background-color-theme;
     .item {
       //   margin: 15px;
       border-radius: 5px;

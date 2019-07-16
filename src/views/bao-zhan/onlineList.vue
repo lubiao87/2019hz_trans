@@ -5,6 +5,7 @@
         <div class="top">
           <div class="img">
             <img :src="item.num0" alt />
+            <badge></badge>
           </div>
           <div class="container">
             <div class="left item_commom">
@@ -24,14 +25,11 @@
 <script>
 // import Tab from "vux/src/components/tab";
 // import TabItem from "vux/src/components/tab/tab-item";
-import { Tab, TabItem } from "vux";
-import { XButton } from "vux";
+import { Badge } from "vux";
 
 export default {
   components: {
-    Tab,
-    TabItem,
-    XButton
+    Badge
   },
   data: function() {
     return {
@@ -88,15 +86,15 @@ export default {
         .img {
           display: flex;
           justify-content: center;
-          align-items: center;
-          width: 73px;
-          height: 73px;
+          align-items: flex-start;
+          width: 80px;
+          height: 80px;
           background: rgba(255, 255, 255, 1);
 
-          margin-right: 16px;
+          margin-right: 20px;
           img {
             width: 100%;
-            height: 100%;
+            // height: 100%;
           }
         }
         .container {

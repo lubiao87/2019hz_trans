@@ -198,7 +198,7 @@ export default {
 .vue-uploader .file-list .file-item .file-remove {
   position: absolute;
   right: 26px;
-  display: none;
+  /* display: none; */
   top: -10px;
   width: 40px;
   height: 40px;
@@ -232,7 +232,7 @@ export default {
   float: left;
   text-align: center;
   line-height: 80px;
-  border: 1px dashed #ececec;
+  border: 2px dashed #ddd;
   cursor: pointer;
   padding-top: 20px;
 }

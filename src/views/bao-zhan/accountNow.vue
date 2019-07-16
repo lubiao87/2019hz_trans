@@ -3,21 +3,17 @@
     <tab :line-width="0" custom-bar-width="60px">
       <tab-item
         active-class="active-2"
-        @on-item-click="onTabClick('mapArea')"
+        @on-item-click="onTabClick('处理中')"
         selected
         >处理中</tab-item
       >
-      <tab-item active-class="active-2" @on-item-click="onTabClick('accSearch')"
+      <tab-item active-class="active-2" @on-item-click="onTabClick('待评价')"
         >待评价</tab-item
       >
-      <tab-item
-        active-class="active-2"
-        @on-item-click="onTabClick('accountNow')"
+      <tab-item active-class="active-2" @on-item-click="onTabClick('已完成')"
         >已完成</tab-item
       >
-      <tab-item
-        active-class="active-2"
-        @on-item-click="onTabClick('otherSearch')"
+      <tab-item active-class="active-2" @on-item-click="onTabClick('转投诉')"
         >转投诉</tab-item
       >
     </tab>
@@ -28,27 +24,36 @@
             <img :src="item.num0" alt />
           </div>
           <div class="container">
-            <p>
-              服务单号
-              <span>{{ item.num }}</span>
-            </p>
-            <p>
-              产品账号
-              <span>{{ item.num }}</span>
-            </p>
-            <p>
-              受理时间
-              <span>{{ item.num }}</span>
-            </p>
-            <p>
-              装机地址
-              <span>{{ item.num }}</span>
-            </p>
+            <div class="panel">
+              <div class="title">服务单号</div>
+              <span>{{ item.num1 }}</span>
+            </div>
+            <div class="panel">
+              <div class="title">产品账号</div>
+              <span>{{ item.num2 }}</span>
+            </div>
+            <div class="panel">
+              <div class="title">受理时间</div>
+              <span>{{ item.num3 }}</span>
+            </div>
+            <div class="panel">
+              <div class="title">装机地址</div>
+              <span>{{ item.num4 }}</span>
+            </div>
           </div>
         </div>
         <div class="bottom">
-          <x-button class="commite1">催单</x-button>
-          <x-button class="commite2">转投诉</x-button>
+          <x-button class="commite1" v-show="tabName === '处理中'"
+            >催单</x-button
+          >
+          <x-button
+            class="commite1"
+            v-show="tabName === '待评价' || tabName === '转投诉'"
+            >评价</x-button
+          >
+          <x-button class="commite2" v-show="tabName !== '已完成'"
+            >转投诉</x-button
+          >
         </div>
       </div>
     </div>
@@ -71,26 +76,31 @@ export default {
       lists: [
         {
           num0: "./img/icon.png",
-          num: "F201906101234",
+          num1: "F201906101234",
           num2: "ADSL 7758234",
           num3: "2019/6/12 11:28:30",
           num4: "广东省广州市天河区***佳都商务大厦西塔801"
         },
         {
           num0: "./img/icon.png",
-          num: "PingFang-SC-Medium",
+          num1: "PingFang-SC-Medium",
           num2: "ADSL 7758234",
           num3: "2019/6/12 11:30:30",
           num4: "广东省广州市天河区***佳都商务大厦西塔801"
         }
-      ]
+      ],
+      tabName: "处理中"
     };
   },
   created() {},
   mounted() {
     // this.alertShow();
   },
-  methods: {}
+  methods: {
+    onTabClick(tab) {
+      this.tabName = tab;
+    }
+  }
 };
 </script>
 
@@ -123,7 +133,7 @@ export default {
     .item {
       margin: 15px;
       border-radius: 5px;
-      padding: 39px 41px 33px 22px;
+      padding: 20px;
       background: #fff;
       .top {
         display: flex;
@@ -131,25 +141,33 @@ export default {
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 94px;
+          width: 110px;
           height: 94px;
           background: rgba(255, 255, 255, 1);
           border: 2px solid rgba(224, 221, 216, 1);
           border-radius: 5px;
           margin-right: 16px;
           img {
-            width: 62px;
-            height: 49px;
+            width: 100%;
           }
         }
         .container {
-          p {
-            font-size: 26px;
-            color: rgba(153, 153, 153, 1);
-            margin-bottom: 20px;
+          .panel {
+            overflow: hidden;
+            .title {
+              font-size: $font_little;
+              color: $font-color-theme;
+              margin-bottom: 20px;
+              width: 24%;
+              float: left;
+            }
             span {
-              margin-left: 23px;
+              font-size: $font_little;
+              // margin-left: 23px;
               color: #000;
+              width: 76%;
+              float: left;
+              line-height: 38px;
             }
           }
         }
