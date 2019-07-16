@@ -147,6 +147,15 @@ export default new Router({
         keepAlive: true // 缓存
       },
       component: () => import("@/views/enclosure-page/enclosure_page.vue")
+    },
+    // 投诉记录
+    {
+      path: "/touSu",
+      name: "touSu",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/tou-su/tou_su.vue")
     }
   ]
 });

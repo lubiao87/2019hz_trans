@@ -60,6 +60,9 @@ export default {
           let touch = event.targetTouches[0];
           this.left = touch.clientX - this.itemWidth / 2;
           this.top = touch.clientY - this.itemHeight / 2;
+          if (this.top < 0) {
+            this.top = 0;
+          }
         }
       });
       div.addEventListener("touchend", () => {
@@ -129,7 +132,6 @@ export default {
   padding-left: 14px;
   padding-right: 14px;
   transition: all 0.3s;
-
   display: flex;
   flex-direction: column;
   justify-content: center;

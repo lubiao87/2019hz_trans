@@ -60,7 +60,7 @@ export default {
         },
         {
           title: "投诉建议反馈",
-          routerLink: "chatOnline",
+          routerLink: "complaintSlip",
           imgSrc: "./img/HZTMH_home_icon_feedback@3x.png",
           id: 1
         }

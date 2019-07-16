@@ -63,7 +63,7 @@
         </div>
       </group> -->
 
-      <div class="foot-box">
+      <div class="foot-box" v-if="state === 1">
         <div class="cancel-btn">
           取消
         </div>
@@ -84,6 +84,8 @@
       @changeDate="changeDateHours"
     >
     </date-hours> -->
+    <div class="gray-bg"></div>
+    <complaint-state v-if="state > 1"></complaint-state>
     <float-btn
       :text="floatText"
       @onFloatBtnClicked="floatClick"
@@ -98,7 +100,7 @@ import BHead from "@/components/base/B-Head";
 import ImgUploader from "@/components/imgUploader/imgUploader";
 import { XInput, Group, XTextarea } from "vux";
 import FloatBtn from "@/components/dragBox/floatBtn";
-
+import complaintState from "./complaint_state";
 export default {
   components: {
     BHead,
@@ -106,7 +108,8 @@ export default {
     FloatBtn,
     Group,
     XTextarea,
-    ImgUploader
+    ImgUploader,
+    complaintState
   },
   data: function() {
     return {
@@ -148,7 +151,8 @@ export default {
       showSingle: "",
       showdateSingle: false,
       floatText: "我的投诉记录",
-      checkedValue: "投诉"
+      checkedValue: "投诉",
+      state: 1
     };
   },
   computed: {
@@ -176,14 +180,14 @@ export default {
       console.log(data);
     },
     confirmOrders() {
-      // this.state = 2;
+      this.state = 2;
     },
     // 点击浮动窗事件
     floatClick() {
       // console.log("点击浮动窗");
       const self = this;
       this.$router.push({
-        name: "baoZhan",
+        name: "touSu",
         params: {
           data: self.floatText
         }
@@ -206,6 +210,10 @@ export default {
   @include bg_color($background-color-theme);
 }
 .complaint-slip {
+  .gray-bg {
+    width: 100%;
+    margin-left: 0;
+  }
   .content {
     margin-top: 100px;
     overflow-x: hidden;
