@@ -263,14 +263,15 @@ export default {
   font-size: 28px;
 
   color: $font-color-theme3;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: hidden;
+  // overflow-y: scroll;
   .scroll-top {
     width: 100%;
-    height: 100%;
+    height: 82%;
     position: fixed;
     top: 100px;
     padding: 30px;
+    overflow-x: hidden;
   }
   .header {
     width: 582px;

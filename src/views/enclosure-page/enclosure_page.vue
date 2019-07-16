@@ -69,13 +69,19 @@
     </v-scroll-full>
     <div class="call-box" v-show="pageName === 'callList'">
       <div
-        class="call-list"
+        class="call-list vux-1px-b"
         v-for="(item, index) in callList"
         :key="index + 'cc'"
       >
-        <div>{{ item.date }}</div>
-        <div>{{ item.phone }}</div>
-        <div>{{ item.talkTime }}</div>
+        <span v-if="item.stateIcon === '接通'" class="iconfont connect"
+          >&#xe6ec;</span
+        >
+        <span v-if="item.stateIcon === '未接听'" class="iconfont notConnect"
+          >&#xe635;</span
+        >
+        <div class="date">{{ item.date }}</div>
+        <div class="phone">{{ item.phone }}</div>
+        <div class="talkTime"><span>通话时长：</span> {{ item.talkTime }}</div>
       </div>
     </div>
   </div>
@@ -154,20 +160,20 @@ export default {
         {
           date: "6月11日 17:30",
           phone: 13332147878,
-          talkTime: "通话时长：30:25",
-          stateIcon: ""
+          talkTime: "30:25",
+          stateIcon: "接通"
         },
         {
           date: "6月11日 17:25",
           phone: 13332147878,
-          talkTime: "通话时长：3:25",
+          talkTime: "03:25",
           stateIcon: ""
         },
         {
           date: "6月11日 17:27",
           phone: 13332147878,
-          talkTime: "通话时长：2:25",
-          stateIcon: ""
+          talkTime: "02:25",
+          stateIcon: "未接听"
         }
       ]
     };
@@ -459,7 +465,37 @@ export default {
     width: 100%;
     background-color: $background-color-theme;
     .call-list {
-      padding: 20px;
+      padding: 30px 20px 20px 90px;
+      position: relative;
+      .iconfont {
+        position: absolute;
+        left: 30px;
+        top: 50px;
+      }
+      .connect {
+        color: $font-color-theme2;
+      }
+      .notConnect {
+        color: $font-color-shallow9;
+      }
+      .talkTime {
+        position: absolute;
+        right: 20px;
+        top: 40px;
+        font-size: $font_little_s;
+        width: 240px;
+        span {
+          width: 160px;
+        }
+      }
+      .phone {
+        color: $font-color-shallow9;
+        font-size: $font_little_s;
+        margin-top: 10px;
+      }
+      .date {
+        font-size: $font_little;
+      }
     }
   }
 }
