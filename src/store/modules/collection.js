@@ -1,8 +1,8 @@
 const state = {
   collects: [], //初始化一个colects数组, 示例
   MyordersData: {
-    state: 1,
-    stateValue: "生成单"
+    state: -1,
+    stateValue: ""
   }
 };
 const getters = {

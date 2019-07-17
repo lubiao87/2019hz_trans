@@ -12,7 +12,7 @@ export default new Router({
       path: "/about",
       name: "about",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () =>
         import(/* webpackChunkName: "about" */ "@/views/test/About.vue")
@@ -28,7 +28,7 @@ export default new Router({
       name: "home",
       component: () => import("@/views/home/Home.vue"),
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       }
     },
     {
@@ -36,7 +36,7 @@ export default new Router({
       path: "/chatOnline",
       name: "chatOnline",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/chat-online/chat_online.vue")
     },
@@ -45,7 +45,7 @@ export default new Router({
       path: "/appraiseSheet",
       name: "appraiseSheet",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/appraise-sheet/appraise_sheet.vue")
     },
@@ -54,7 +54,7 @@ export default new Router({
       path: "/generatingOrders",
       name: "generatingOrders",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/generating-orders/generating_orders.vue")
     },
@@ -63,7 +63,7 @@ export default new Router({
       path: "/lookEngineer",
       name: "lookEngineer",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/look-engineer/look_engineer.vue")
     },
@@ -72,7 +72,7 @@ export default new Router({
       path: "/lookEngineer/mapArea",
       name: "mapArea",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/look-engineer/mapArea.vue")
     },
@@ -81,7 +81,7 @@ export default new Router({
       path: "/lookEngineer/accSearch",
       name: "ACCSearch",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/look-engineer/ACCSearch.vue")
     },
@@ -90,7 +90,7 @@ export default new Router({
       path: "/businessCard",
       name: "businessCard",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/business-card/business_card.vue")
     },
@@ -99,7 +99,7 @@ export default new Router({
       path: "/areaSearch",
       name: "areaSearch",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/map-search/area_search.vue")
     },
@@ -108,7 +108,7 @@ export default new Router({
       path: "/baoZhan",
       name: "baoZhan",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/bao-zhan/bao_zhan.vue")
     },
@@ -117,7 +117,7 @@ export default new Router({
       path: "/quickReport",
       name: "quickReport",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/quick-report/quick_report.vue")
     },
@@ -126,7 +126,7 @@ export default new Router({
       path: "/searchResult",
       name: "searchResult",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/search-result/search_result.vue")
     },
@@ -135,7 +135,7 @@ export default new Router({
       path: "/complaintSlip",
       name: "complaintSlip",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/complaint-slip/complaint_slip.vue")
     },
@@ -144,7 +144,7 @@ export default new Router({
       path: "/adviceEvaluate",
       name: "adviceEvaluate",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/advice-evaluate/advice_evaluate.vue")
     },
@@ -153,7 +153,7 @@ export default new Router({
       path: "/enclosurePage",
       name: "enclosurePage",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/enclosure-page/enclosure_page.vue")
     },
@@ -162,16 +162,25 @@ export default new Router({
       path: "/touSu",
       name: "touSu",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/tou-su/tou_su.vue")
+    },
+    //服务单详情
+    {
+      path: "/serviceOrdersDetail",
+      name: "serviceOrdersDetail",
+      meta: {
+        keepAlive: false
+      },
+      component: () => import("@/views/orders-detail/service_orders_detail.vue")
     },
     // 我的工作状态
     {
       path: "/wookTime",
       name: "wookTime",
       meta: {
-        keepAlive: true // 缓存
+        keepAlive: false // 缓存
       },
       component: () => import("@/views/wook-time/wook_time.vue")
     }

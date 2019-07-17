@@ -3,6 +3,8 @@ export default BSEURL => {
     // logout: BSEURL + "/user/logout", // 退出
     // login: BSEURL + "/user/login" // 登录
     uploadFile: BSEURL + "/reporting/reportingObstacles", // 上传文件
+    getOrderId: BSEURL + "/order/creatOrderId",//获取服务单号
     generateOrder: BSEURL + "/order/generateOrder", //生成服务单
+    getOrderDetail: BSEURL + "/order/getOrderDetail", //服务单详情
   };
 };

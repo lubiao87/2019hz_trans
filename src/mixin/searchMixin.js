@@ -28,6 +28,7 @@ export const listSearch = {
         method: params.method || 'POST',
         url: params.url,
         data: params.data || {},
+        params: params.method == 'GET' && params.data ? params.data : {},
         // cache: false,
         // dataType: 'json',
         headers: {
@@ -42,6 +43,9 @@ export const listSearch = {
         }
       }, (error) => {
         self.$vux.loading.hide();
+        if(error.status == 500) {
+          self.$vux.toast.text('网络出错', 'middle');
+        }
         console.log(error)
       })
     }

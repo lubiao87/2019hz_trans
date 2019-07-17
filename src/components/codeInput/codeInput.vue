@@ -20,7 +20,7 @@
       </div>
       <div class="btn-box">
         <div class="cancel" @click="hidePage">取消</div>
-        <div class="submit" @click="submitCode">确认</div>
+        <div class="submit" @click="submitCode">确定</div>
       </div>
     </div>
   </div>

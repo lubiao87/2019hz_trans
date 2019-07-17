@@ -1,8 +1,35 @@
 <template>
-  <div class="generating-orders">
-    <b-head :showBack="true" :title="title"></b-head>
-    <div class="content">
+  <div class="service-orders-detail">
+    <div class="content state2">
       <div class="gray-bg"></div>
+      <group
+        class="vux-1px-b group-1 state2-box"
+      >
+        <x-input
+          title="当前状态"
+          v-model="MyordersData.stateValue"
+          disabled
+          :show-clear="false"
+          placeholder-align="left"
+        ></x-input>
+        <div class="group-btn">
+          <div
+            class="cuidan"
+            v-if="MyordersData.stateValue === '处理中'"
+            @click="cuiDan"
+          >
+            催单
+          </div>
+          <div
+            class="cuidan"
+            v-if="MyordersData.stateValue === '待评价'"
+            @click="appraiseSheet"
+          >
+            评价
+          </div>
+          <div v-if="MyordersData.stateValue !== '已完成'" class="zhuantousu" @click="zhuanTouSu">转投诉</div>
+        </div>
+      </group>
       <group v-for="(item, index) in menuList" :key="index" class="vux-1px-b">
         <x-input
           :title="item.title"
@@ -21,7 +48,6 @@
         :class="{ 'product-acc': item.title === '产品账号' }"
       >
         <x-input
-          v-if="item.title !== '装机地址'"
           :title="item.title"
           v-model="item.value"
           :placeholder="item.placeholder"
@@ -29,87 +55,80 @@
           :show-clear="false"
           placeholder-align="right"
         ></x-input>
-        <x-icon
-          type="ios-arrow-right"
-          v-if="item.title === '产品账号'"
-          class="cell-x-icon"
-          size="26"
-        ></x-icon>
-        <!-- 装机地址 -->
-        <div
-          class="weui-cell disabled address-border vux-1px-b"
-          v-if="item.title === '装机地址'"
-        >
-          <div class="weui-cell__hd">
-            <label
-              for="vux-x-input-ttg57"
-              class="weui-label"
-              style="width: 5em;"
-              >装机地址</label
-            >
-          </div>
-          <div
-            class="weui-cell__bd weui-cell__primary vux-x-input-placeholder-right"
-            style="text-align: right;"
-          >
-            {{ item.value }}
-          </div>
-        </div>
       </group>
       <div class="gray-bg"></div>
 
       <group class="obstacles" title="报障内容">
-        <x-textarea
-          :max="100"
-          :rows="3"
-          placeholder="请输入报障内容"
-          @on-focus="textareaEvent('focus')"
-          @on-blur="textareaEvent('blur')"
-          v-model="textareaValve"
-        ></x-textarea>
+        <div
+          data-v-a07515dc=""
+          class="weui-cell vux-x-textarea"
+        >
+          <div class="weui-cell__bd">
+            <div class="weui-textarea" v-html="textareaValve"></div>
+          </div>
+        </div>
+        <div class="vue-uploader">
+          <div class="file-list">
+            <section
+              class="file-item draggable-item"
+              v-for="(item, index) in obstaclePics"
+              :key="index + 'img'"
+            >
+              <img alt="" ondragstart="return false;" :src="item.src" />
+            </section>
+          </div>
+        </div>
       </group>
-      <!-- -----------------上传图片 ------------------ -->
-      <img-uploader @childrenData="getChildData" class="obstacles3" />
 
       <group class="obstacles obstacles2" title="期望上门时间">
-        <div class="pleaseChoose" @click="showdateSingle = true">
-          {{ homeTime}}
+        <div class="pleaseChoose">
+          {{expectTime}}
         </div>
       </group>
-      <div class="foot-box">
-        <div class="cancel-btn" @click="cancelBack">
-          取消
-        </div>
-        <div class="confirm-btn vux-1px" @click="confirmOrders">
-          提交
-        </div>
-      </div>
-    </div>
-    <date
-      :showCalendar.sync="showdateSingle"
-      maxDate="12m"
-      :options="dateOptionsSingle"
-      @changeDate="changeDateSingle"
-    ></date>
-    <date-hours
-      :showCalendar.sync="showdateHours"
-      :date.sync="showSingle"
-      @changeDate="changeDateHours"
-    >
-    </date-hours>
 
-    <!-- 确认推送 -->
-    <div v-transfer-dom class="business-card3" v-show="show5">
-      <confirm
-        v-model="show5"
-        ref="confirm5"
-        title="确定将服务单推送给张宇吗？"
-        @on-cancel="onCancel"
-        @on-confirm="onConfirm5"
-        @on-show="onShow5"
-        @on-hide="onHide"
+      <div class="gray-bg"></div>
+      <group
+        class="obstacles"
+        title="处理回单内容"
+        style="padding-bottom: 0;"
       >
-      </confirm>
+        <div class="weui-cell vux-x-textarea">
+          <div class="weui-cell__bd">
+            <div class="weui-textarea" v-html="textareaValve2"></div>
+          </div>
+        </div>
+        <div class="vue-uploader">
+          <div class="file-list">
+            <section
+              class="file-item draggable-item"
+              v-for="(item, index) in childData"
+              :key="index + 'img'"
+            >
+              <img alt="" ondragstart="return false;" :src="item.src" />
+            </section>
+          </div>
+        </div>
+      </group>
+      <group
+        class="enclosure-box"
+      >
+        <x-input
+          class="obstacles"
+          title="故障类型"
+          v-model="currFaultType"
+          disabled
+          :show-clear="false"
+          placeholder-align="right"
+        ></x-input>
+      </group>
+      <group
+        class="enclosure-box obstacles vux-1px-t"
+        title="附件"
+      >
+        <div class="in" @click="enclosurePage">
+          在线聊天记录/通话录音
+        </div>
+      </group>
     </div>
   </div>
 </template>
@@ -148,7 +167,6 @@ export default {
   },
   data: function() {
     return {
-      title: '生成服务单',
       colorChange: false,
       showBack: true,
       menuList: [
@@ -160,13 +178,13 @@ export default {
         },
         {
           title: "用户名称",
-          value: "张宇",
+          value: "",
           placeholder: "",
           disabled: true
         },
         {
           title: "用户电话",
-          value: "13332147878",
+          value: "",
           placeholder: "",
           disabled: true
         },
@@ -186,44 +204,51 @@ export default {
       menuList2: [
         {
           title: "产品账号",
-          value: "ADSL 7758234",
+          value: "",
           placeholder: "",
           disabled: true
         },
         {
           title: "装机地址",
-          value: "广东省广州市天河区***佳都商务大厦 西塔801",
+          value: "",
           placeholder: "",
           disabled: true
         },
         {
           title: "装维经理",
-          value: "张三",
+          value: "",
           placeholder: "",
           disabled: true
         },
         {
           title: "装维电话",
-          value: "13332147878",
+          value: "",
           placeholder: "",
           disabled: true
         }
       ],
-      showSingle: "",
+      // showSingle: "",
       showdateSingle: false,
-      dateOptionsSingle: {
-        // scrollEnd: true, // 滚到最后
-        start: "2019-06-28",
-        maxDate: "24m", // 月份跨度
-        isDoubleCheck: false
-        // startDate: this.formatDate(new Date().getTime())
-      },
-      HHMMListValue: "12:00 ~ 14:00",
+      // dateOptionsSingle: {
+      //   // scrollEnd: true, // 滚到最后
+      //   start: "2019-06-28",
+      //   maxDate: "24m", // 月份跨度
+      //   isDoubleCheck: false
+      //   // startDate: this.formatDate(new Date().getTime())
+      // },
+      // HHMMListValue: "12:00 ~ 14:00",
       // HHMMListValue2: "14:00",
       showdateHours: false,
       show5: false,
       textareaValve: "",
+      textareaValve2: "", // 回单消息
       childData: {},
+      faultTypes: ['固话故障' ,'宽带故障' ,'IPTV故障','智能组网故障'],
+      currFaultType: '',
+      enclosure: "在线聊天记录/通话录音",
+      expectTime: '', //期望上门时间
+      orderStatus: ['处理中','待评价','已完成','转投诉'],
+      obstaclePics: [],//报障图片数据
     };
   },
   computed: {
@@ -236,132 +261,165 @@ export default {
     ...mapGetters("collection", {
       //用mapGetters来获取collection.js里面的getters
       arrList: "renderCollects",
+      MyordersData: "renderOrdersData",
     }),
-    homeTime() {
-      let value = this.showSingle + " " + this.HHMMListValue;
-      return value;
-    }
   },
   created() {
-    this.dateOptionsSingle = {
-      // scrollEnd: true, // 滚到最后
-      start: this.getNowFormatDate("-"),
-      maxDate: "24m", // 月份跨度
-      isDoubleCheck: false
-      // startDate: this.formatDate(new Date().getTime())
-    };
-    this.showSingle = this.getNowFormatDate("/");
-    this.getOrderId();
+    // this.dateOptionsSingle = {
+    //   // scrollEnd: true, // 滚到最后
+    //   start: this.getNowFormatDate("-"),
+    //   maxDate: "24m", // 月份跨度
+    //   isDoubleCheck: false
+    //   // startDate: this.formatDate(new Date().getTime())
+    // };
+    // this.showSingle = this.getNowFormatDate("/");
+    this.getOrderDetail();
   },
   methods: {
-    ...mapActions("collection", [
-      //collection是指modules文件夹下的collection.js
-      "invokePushItems" //collection.js文件中的actions里的方法，在上面的@click中执行并传入实参
-    ]),
-    textareaEvent(e) {
-      console.log(e);
+    // ...mapActions("collection", [
+    //   //collection是指modules文件夹下的collection.js
+    //   "invokePushItems" //collection.js文件中的actions里的方法，在上面的@click中执行并传入实参
+    // ]),
+    // changeDateSingle(start, end) {
+    //   console.log(start, end);
+    //   if (start) {
+    //     this.showSingle = start;
+    //     this.showdateHours = true;
+    //   }
+    // },
+    // changeDateHours(value) {
+    //   console.log("changeDateHours", value);
+    //   this.HHMMListValue = value[0];
+    // },
+    // getNowFormatDate(FH) {
+    //   var date = new Date();
+    //   var seperator1 = FH;
+    //   var year = date.getFullYear();
+    //   var month = date.getMonth() + 1;
+    //   var strDate = date.getDate();
+    //   if (month >= 1 && month <= 9) {
+    //     month = "0" + month;
+    //   }
+    //   if (strDate >= 0 && strDate <= 9) {
+    //     strDate = "0" + strDate;
+    //   }
+    //   var currentdate = year + seperator1 + month + seperator1 + strDate;
+    //   return currentdate;
+    // },
+    // getChildData(data) {
+    //   console.log("getChildData", data);
+    //   this.childData = data;
+    // },
+    // confirmOrders() {
+    //   if(!this.textareaValve) {
+    //     this.$vux.toast.show({
+    //       text: '请输入报障内容',
+    //       type: 'text',
+    //       position: 'middle'
+    //     })
+    //     return;
+    //   }
+    //   if(this.textareaValve.length > 100) {
+    //     this.$vux.toast.show({
+    //       text: '请控制在100字以内',
+    //       type: 'text',
+    //       position: 'middle'
+    //     })
+    //     return;
+    //   }
+    //   this.show5 = true;
+    // },
+    // onConfirm5() {
+    //   const self = this;
+    //   console.log("onConfirm5");
+    //   let params = {
+    //     url: api.generateOrder,
+    //     data: {
+    //       "content": this.textareaValve,
+    //       "orderId": this.menuList[0].value,
+    //       "productNumber":"ADSL12345685",
+    //       "custId":"5687445",
+    //       "linkman":"小黄",
+    //       "linkphone":12345678965,
+    //       "productAddress":"天河区建中路66号",
+    //       "expectTime":"2019-07-17 10:00",
+    //       "repairoperId":"6556322",
+    //       "source":0
+    //     }
+    //   }
+    //   self.sendReq(params, (res) => {
+    //     if(res.respHeader.resultCode == 0) {
+    //       self.$vux.toast.text("推送成功！");
+    //       self.$store.dispatch("collection/ORDERS_DATA", {
+    //         state: 2,
+    //         stateValue: "处理中"
+    //       });
+    //     }
+    //   })
+      
+    //   // setTimeout(() => {
+    //   //   self.$vux.alert.show({
+    //   //     title: "此单已回单",
+    //   //     onHide() {
+    //   //       self.$store.dispatch("collection/ORDERS_DATA", {
+    //   //         state: 3,
+    //   //         stateValue: "待评价"
+    //   //       });
+    //   //       // self.state = 3;
+    //   //       // self.stateValue = "待评价";
+    //   //     }
+    //   //   });
+    //   // }, 20000);
+    // },
+    // 催单
+    cuiDan() {
+      this.$vux.toast.text("催单成功！");
     },
-    changeDateSingle(start, end) {
-      console.log(start, end);
-      if (start) {
-        this.showSingle = start;
-        this.showdateHours = true;
-      }
+    // 转投诉
+    zhuanTouSu() {
+      this.$router.push({ name: "complaintSlip", params: { data: null } });
     },
-    changeDateHours(value) {
-      console.log("changeDateHours", value);
-      this.HHMMListValue = value[0];
+    // 评价
+    appraiseSheet() {
+      this.$router.push({ name: "appraiseSheet", params: { data: null } });
     },
-    getNowFormatDate(FH) {
-      var date = new Date();
-      var seperator1 = FH;
-      var year = date.getFullYear();
-      var month = date.getMonth() + 1;
-      var strDate = date.getDate();
-      if (month >= 1 && month <= 9) {
-        month = "0" + month;
-      }
-      if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-      }
-      var currentdate = year + seperator1 + month + seperator1 + strDate;
-      return currentdate;
-    },
-    getChildData(data) {
-      console.log("getChildData", data);
-      this.childData = data;
-    },
-    confirmOrders() {
-      if(!this.textareaValve) {
-        this.$vux.toast.show({
-          text: '请输入报障内容',
-          type: 'text',
-          position: 'middle'
-        })
-        return;
-      }
-      if(this.textareaValve.length > 100) {
-        this.$vux.toast.show({
-          text: '请控制在100字以内',
-          type: 'text',
-          position: 'middle'
-        })
-        return;
-      }
-      this.show5 = true;
-    },
-    onShow5() {
-      // this.$refs.confirm5.setInputValue("13802147411");
-      console.log("onShow5");
-    },
-    onConfirm5() {
-      const self = this;
-      console.log("onConfirm5");
-      let params = {
-        url: api.generateOrder,
-        data: {
-          "content": this.textareaValve,
-          "orderId": this.menuList[0].value,
-          "productNumber":"ADSL12345685",
-          "custId":"5687445",
-          "linkman":"小黄",
-          "linkphone":12345678965,
-          "productAddress":"天河区建中路66号",
-          "expectTime":"2019-07-17 10:00",
-          "repairoperId":"6556322",
-          "source":0
+    // 附件
+    enclosurePage() {
+      this.$router.push({
+        name: "enclosurePage",
+        params: {
+          data: { id: 23 }
         }
-      }
-      self.sendReq(params, (res) => {
-        if(res.respHeader.resultCode == 0) {
-          self.$vux.toast.text("推送成功！");
-          self.$store.dispatch("collection/ORDERS_DATA", {
-            state: 0,
-            stateValue: "处理中"
-          });
-          this.$router.go(-1);
-        }
-      })
+      });
     },
-    onHide() {
-      console.log("on hide");
-    },
-    onCancel() {
-      console.log("on cancel");
-    },
-    getOrderId() {
+    getOrderDetail() {
       let params = {
         method: 'GET',
-        url: api.getOrderId
+        url: api.getOrderDetail,
+        data: {
+          orderId: 'F2019-07-031234'
+        }
       }
       this.sendReq(params, res => {
         if(res.respHeader.resultCode == 0) {
-          this.menuList[0].value = res.respBody.orderId;
+          let orderDetail = res.respBody.orderDetail;
+          this.menuList[0].value = orderDetail.orderId;
+          this.menuList[1].value = orderDetail.linkman;
+          this.menuList[2].value = orderDetail.linkphone;
+          this.menuList[3].value = orderDetail.linkman;
+          this.menuList[4].value = orderDetail.linkphone;
+          this.menuList2[0].value = orderDetail.productNumber;
+          this.menuList2[1].value = orderDetail.productAddress;
+          this.textareaValve = orderDetail.reportContent;
+          this.textareaValve2 = orderDetail.replyContent;
+          this.expectTime = orderDetail.expectTime;
+          this.currFaultType = this.faultTypes[Number(orderDetail.faultType)];
+          this.$store.dispatch("collection/ORDERS_DATA", {
+            state: this.orderDetail.status,
+            stateValue: this.orderStatus[this.orderDetail.status]
+          })
         }
       })
-    },
-    cancelBack() {
-      this.$router.go(-1);
     }
   },
   mounted() {}
@@ -374,7 +432,7 @@ export default {
   margin-top: 10px;
   @include bg_color($background-color-theme);
 }
-.generating-orders {
+.service-orders-detail {
   .content {
     margin-top: 100px;
     overflow-x: hidden;
@@ -493,7 +551,7 @@ export default {
 </style>
 <style lang="scss">
 @import "@/assets/scss/base.scss"; /*引入配置*/
-.generating-orders {
+.service-orders-detail {
   .enclosure-box {
     display: flex;
     align-items: center;
@@ -616,24 +674,27 @@ export default {
     }
   }
   .obstacles2 {
-    .weui-cells__title {
-      width: 40%;
-      float: left;
-    }
-    .weui-cells {
-      width: 60%;
-      float: left;
-    }
-    .showSingle {
-      width: 54%;
-      height: 100%;
-      float: left;
-    }
-    .HHMMListValue {
-      width: 46%;
-      height: 100%;
-      float: left;
-    }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // .weui-cells__title {
+    //   width: 40%;
+    //   float: left;
+    // }
+    // .weui-cells {
+    //   width: 60%;
+    //   float: left;
+    // }
+    // .showSingle {
+    //   width: 54%;
+    //   height: 100%;
+    //   float: left;
+    // }
+    // .HHMMListValue {
+    //   width: 46%;
+    //   height: 100%;
+    //   float: left;
+    // }
     // .HHMMListValue2 {
     //   width: 23%;
     //   height: 100%;

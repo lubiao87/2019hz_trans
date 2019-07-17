@@ -21,7 +21,7 @@ amterasu
             <span class="iconfont icon-xdn-data-close-big">关闭</span>
           </span>
           <span class="title">选择日期</span>
-          <span class="button" @click="successCallback">确认</span>
+          <span class="button" @click="successCallback">确定</span>
         </div>
         <div class="am-calendar-week-bar">
           <span class="weekend">日</span>

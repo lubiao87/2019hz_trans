@@ -68,7 +68,7 @@
         value=""
       />
     </div>
-    <float-btn :text="MyordersData.state==1?'生成服务单':'服务单详情'" @onFloatBtnClicked="floatClick" />
+    <float-btn :text="MyordersData.state==-1?'生成服务单':'服务单详情'" @onFloatBtnClicked="floatClick" />
   </div>
 </template>
 <script>
@@ -164,7 +164,7 @@ export default {
       // console.log("点击浮动窗");
       const self = this;
       this.$router.push({
-        name: "generatingOrders",
+        name: this.MyordersData.state == -1 ? "generatingOrders" : "serviceOrdersDetail",
         params: {
           data: self.floatText
         }
