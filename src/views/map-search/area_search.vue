@@ -37,7 +37,7 @@
         </div>
         <div>
           <div class="fj-icon">
-            <span class="iconfont" @click="backBtn">&#xe635;</span>
+            <span class="iconfont" @click="backBtn">&#xe616;</span>
             <span>附近地址</span>
           </div>
           <div class="current-location">
@@ -282,7 +282,7 @@ export default {
       }
       .iconfont {
         margin-left: 10px;
-        font-size: $font_large_s;
+        font-size: $font_medium;
         display: inline-block;
         width: 80px;
       }
