@@ -1,6 +1,17 @@
 <template>
   <div class="bao-zhan">
-    <b-head :showBack="true" :title="title"></b-head>
+    <!-- <b-head :showBack="true" :title="title" @click="setMyTime"></b-head> -->
+    <div class="base-box">
+      <div class="base-container flex flex-middle">
+        <span class="head-back" @click="goBack">
+          <span class="iconfont">&#xe616;</span>
+        </span>
+        <span class="head-title table-cell" @click="setMyTime"
+          >我的记录(在岗)</span
+        >
+        <span class="head-slot"></span>
+      </div>
+    </div>
     <div class="content">
       <tab :line-width="0">
         <tab-item
@@ -53,7 +64,7 @@ export default {
   },
   data: function() {
     return {
-      title: "我的报障记录",
+      title: "我的记录(在岗)",
       viewsName: "onlineList"
     };
   },
@@ -64,6 +75,13 @@ export default {
   methods: {
     onTabClick(link) {
       this.viewsName = link;
+    },
+    setMyTime() {
+      console.log("setMyTime");
+      this.$router.push({ name: "wookTime", params: { data: null } });
+    },
+    goBack() {
+      this.$router.go(-1);
     }
   }
 };
@@ -89,10 +107,44 @@ export default {
     line-height: 61px !important;
   }
   .base-box {
-    position: relative;
-
-    .head-title {
-      color: #000 !important;
+    width: 100%;
+    height: 100px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9;
+    border-bottom: 1px solid $border-color-theme;
+    background-color: $background-color-theme;
+    .base-container {
+      position: relative;
+      height: 100%;
+      .head-back {
+        position: absolute;
+        left: 30px;
+        display: inline-block;
+        width: 40px;
+        height: 100%;
+        line-height: 28px;
+        font-size: 28px;
+        // top: 20px;
+        color: $font-color-theme;
+        // background: url("../../assets/images/return.png") no-repeat center;
+        background-size: 100%;
+        background-position: center;
+        // overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .head-title {
+        font-size: $font_medium_s;
+        font-weight: bold;
+        color: $font-color-themesec;
+      }
+      .head-slot {
+        position: absolute;
+        right: 30px;
+      }
     }
   }
   .content {
@@ -114,6 +166,18 @@ export default {
   font-size: $font_little;
   .base-box {
     border-bottom: 0.01333rem solid #fff;
+    position: relative;
+    .head-title {
+      position: relative;
+    }
+    .head-title::after {
+      content: "﹀";
+      display: inline-block;
+      position: absolute;
+      top: 8px;
+      color: $font-color-theme;
+      right: -60px;
+    }
   }
   .vux-tab-wrap {
     height: 102px;

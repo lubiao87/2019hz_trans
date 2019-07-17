@@ -170,7 +170,7 @@ div:focus {
 .weui-toast_text {
   border-radius: 10px;
   .weui-toast__content {
-    font-size: 32px;
+    // font-size: 16px;
   }
 }
 // loading公共样式
@@ -189,7 +189,7 @@ div:focus {
     }
     .weui-toast__content {
       margin: 0 0 30px;
-      font-size: 32px;
+      // font-size: 16px;
     }
   }
 }
@@ -356,7 +356,7 @@ body .weui-media-box__desc .user-text{
 }
 // loding
 body .weui-loading_toast .weui-toast .weui-toast__content {
-  font-size: 7px;
+  // font-size: 7px;
   color: $font-color-theme1;
 }
 body .weui-loading_toast .weui-toast {
@@ -512,7 +512,7 @@ body .vux-1px-b:after {
 
 // toast
  body .weui-toast_text .weui-toast__content {
-  font-size: 8px;
+  font-size: 6px;
 }
 
 // 选择框
@@ -574,4 +574,50 @@ body .vux-button-group > a:after {
  body .vux-badge-dot {
   padding: 5px;
   margin-left: -10px;
+}
+
+// lb-popup
+body .lb-popup {
+  overflow: hidden;
+  // border-radius: 2px;
+  background-color: $background-color-theme;
+  & > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 20px;
+    padding: 0;
+    margin-left: 0;
+    .weui-cell__hd {
+      flex: 4;
+      .weui-label {
+        text-align: right;
+        color: $font-color-theme;
+      }
+    }
+    .vux-cell-primary {
+      margin:0 10px;
+      flex: 5;
+      border-bottom: 1px solid $border-color-theme;
+      height: 30px;
+    }
+    .weui-cell__ft {
+      position: relative;
+      flex: 1;
+      height: 100%;
+    }
+
+  }
+  .weui-cell_access {
+    .weui-cell__ft:after {
+      width: 5px;
+      height: 5px;
+      margin-top: -2.5px;
+    }
+  }
+
+}
+body .vux-cell-box:not(:first-child):before {
+  left: 0;
+  display: none;
 }

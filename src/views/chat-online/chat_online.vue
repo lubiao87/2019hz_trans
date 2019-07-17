@@ -68,7 +68,7 @@
         value=""
       />
     </div>
-    <float-btn :text="floatText" @onFloatBtnClicked="floatClick" />
+    <float-btn :text="MyordersData.state==1?'生成服务单':'服务单详情'" @onFloatBtnClicked="floatClick" />
   </div>
 </template>
 <script>
@@ -132,7 +132,6 @@ export default {
       animationTime: null,
       left: 0,
       top: 0,
-      floatText: "生成服务单"
     };
   },
   computed: {
@@ -144,7 +143,8 @@ export default {
     }),
     ...mapGetters("collection", {
       //用mapGetters来获取collection.js里面的getters
-      arrList: "renderCollects"
+      arrList: "renderCollects",
+      MyordersData: "renderOrdersData",
     })
   },
   created() {

@@ -12,7 +12,7 @@ export const listSearch = {
       // 加载中
       loading: false,
       // 页面的列表数据
-      listData: []
+      listData: [],
     }
   },
   methods: {
@@ -20,7 +20,10 @@ export const listSearch = {
      * 发送请求
      */
     sendReq (params, callback) {
-      let self = this
+      let self = this;
+      self.$vux.loading.show({
+        text: 'Loading'
+       })
       request({
         method: params.method || 'POST',
         url: params.url,
@@ -31,12 +34,14 @@ export const listSearch = {
           'Content-type': params.contentType || 'application/json'
         }
       }).then((res) => {
+        self.$vux.loading.hide();
         // console.log(res)
         // 如果该请求不需要干扰到loading，那么需要设置 doNotDisturbLoading 为 true
         if (res && res.data) {
           callback && callback(res.data)
         }
       }, (error) => {
+        self.$vux.loading.hide();
         console.log(error)
       })
     }

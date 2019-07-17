@@ -206,7 +206,7 @@ export default {
   },
   mounted() {
     this.mapintialize();
-    // this.getWXSignature();
+    this.getWXSignature();
   }
 };
 </script>

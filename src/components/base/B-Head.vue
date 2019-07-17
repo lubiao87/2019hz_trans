@@ -77,7 +77,7 @@ export default {
     .head-title {
       font-size: $font_medium_s;
       font-weight: bold;
-      color: $font-color-theme;
+      color: $font-color-themesec;
     }
     .head-slot {
       position: absolute;

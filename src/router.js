@@ -165,6 +165,15 @@ export default new Router({
         keepAlive: true // 缓存
       },
       component: () => import("@/views/tou-su/tou_su.vue")
+    },
+    // 我的工作状态
+    {
+      path: "/wookTime",
+      name: "wookTime",
+      meta: {
+        keepAlive: true // 缓存
+      },
+      component: () => import("@/views/wook-time/wook_time.vue")
     }
   ]
 });

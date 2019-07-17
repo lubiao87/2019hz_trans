@@ -227,8 +227,11 @@ import {
 } from "vux";
 import date from "@/components/datepicker/datePicker";
 import dateHours from "@/components/datepicker/dateHours";
+import  { listSearchMixin } from "@/mixin";
+import {api} from "@/api/api"
 
 export default {
+  mixins: [listSearchMixin],
   directives: {
     TransferDom
   },
@@ -245,7 +248,7 @@ export default {
   },
   data: function() {
     return {
-      title: "生成服务单",
+      title: '生成服务单',
       colorChange: false,
       showBack: true,
       menuList: [
@@ -337,7 +340,7 @@ export default {
     ...mapGetters("collection", {
       //用mapGetters来获取collection.js里面的getters
       arrList: "renderCollects",
-      MyordersData: "renderOrdersData"
+      MyordersData: "renderOrdersData",
     }),
     homeTime() {
       let value = this.showSingle + " " + this.HHMMListValue;
@@ -393,6 +396,22 @@ export default {
       this.childData = data;
     },
     confirmOrders() {
+      if(!this.textareaValve) {
+        this.$vux.toast.show({
+          text: '请输入报障内容',
+          type: 'text',
+          position: 'middle'
+        })
+        return;
+      }
+      if(this.textareaValve.length > 100) {
+        this.$vux.toast.show({
+          text: '请控制在100字以内',
+          type: 'text',
+          position: 'middle'
+        })
+        return;
+      }
       this.show5 = true;
     },
     onShow5() {
@@ -402,25 +421,44 @@ export default {
     onConfirm5() {
       const self = this;
       console.log("onConfirm5");
-      self.$vux.toast.text("推送成功！");
-      // self.state = 2;
-      self.$store.dispatch("collection/ORDERS_DATA", {
-        state: 2,
-        stateValue: "处理中"
-      });
-      setTimeout(() => {
-        self.$vux.alert.show({
-          title: "此单已回单",
-          onHide() {
-            self.$store.dispatch("collection/ORDERS_DATA", {
-              state: 3,
-              stateValue: "待评价"
-            });
-            // self.state = 3;
-            // self.stateValue = "待评价";
-          }
-        });
-      }, 20000);
+      let params = {
+        url: api.generateOrder,
+        data: {
+          "content": this.textareaValve,
+          "orderId":"DNI1245755",
+          "productNumber":"ADSL12345685",
+          "custId":"5687445",
+          "linkman":"小黄",
+          "linkphone":12345678965,
+          "productAddress":"天河区建中路66号",
+          "expectTime":"2019-07-17 10:00",
+          "repairoperId":"6556322",
+          "source":0
+        }
+      }
+      self.sendReq(params, (res) => {
+        if(res.respHeader.resultCode == 0) {
+          self.$vux.toast.text("推送成功！");
+          self.$store.dispatch("collection/ORDERS_DATA", {
+            state: 2,
+            stateValue: "处理中"
+          });
+        }
+      })
+      
+      // setTimeout(() => {
+      //   self.$vux.alert.show({
+      //     title: "此单已回单",
+      //     onHide() {
+      //       self.$store.dispatch("collection/ORDERS_DATA", {
+      //         state: 3,
+      //         stateValue: "待评价"
+      //       });
+      //       // self.state = 3;
+      //       // self.stateValue = "待评价";
+      //     }
+      //   });
+      // }, 20000);
     },
     onHide() {
       console.log("on hide");
