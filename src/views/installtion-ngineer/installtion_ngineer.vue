@@ -1,14 +1,12 @@
 <template>
-  <div class="bao-zhan">
+  <div class="installtion-ngineer">
     <!-- <b-head :showBack="true" :title="title" @click="setMyTime"></b-head> -->
     <div class="base-box">
       <div class="base-container flex flex-middle">
         <span class="head-back" @click="goBack">
           <span class="iconfont">&#xe616;</span>
         </span>
-        <span class="head-title table-cell" @click="setMyTime"
-          >我的服务记录</span
-        >
+        <span class="head-title table-cell" @click="setMyTime">在岗</span>
         <span class="head-slot"></span>
       </div>
     </div>
@@ -50,10 +48,10 @@
 // import TabItem from "vux/src/components/tab/tab-item";
 import { Tab, TabItem } from "vux";
 import BHead from "@/components/base/B-Head";
-import accountNow from "@/views/bao-zhan/accountNow.vue";
-import onlineList from "@/views/bao-zhan/onlineList.vue";
-import callOnline from "@/views/bao-zhan/callOnline.vue";
-import serviceList from "@/views/bao-zhan/serviceList.vue";
+import accountNow from "@/views/installtion-ngineer/accountNow.vue";
+import onlineList from "@/views/installtion-ngineer/onlineList.vue";
+import callOnline from "@/views/installtion-ngineer/callOnline.vue";
+import serviceList from "@/views/installtion-ngineer/serviceList.vue";
 export default {
   components: {
     BHead,
@@ -96,7 +94,7 @@ export default {
 <!--Add"scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 @import "@/assets/scss/base.scss"; /*引入配置*/
-.bao-zhan {
+.installtion-ngineer {
   .router-box {
     height: 100%;
   }
@@ -172,7 +170,7 @@ export default {
 }
 </style>
 <style lang="scss">
-.bao-zhan {
+.installtion-ngineer {
   @import "@/assets/scss/base.scss"; /*引入配置*/
   font-size: $font_little;
   .base-box {
@@ -180,6 +178,14 @@ export default {
     position: relative;
     .head-title {
       position: relative;
+    }
+    .head-title::after {
+      content: "﹀";
+      display: inline-block;
+      position: absolute;
+      top: 8px;
+      color: $font-color-theme;
+      right: -60px;
     }
   }
   .vux-tab-wrap {

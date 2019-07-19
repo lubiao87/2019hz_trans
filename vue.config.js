@@ -11,12 +11,16 @@ module.exports = {
   devServer: {
     port: 80,
     // assetsPublicPath: "/txfwapp/",
+    /***
+     *   host 改成这样有两种方式查看页面，
+     *    本地访问: http://localhost，
+     *    局域网访问自己IP地址,列如: http://192.168.11.188
+     *  */
     host: "0.0.0.0",
-    // host: "localhost",
-    // host: "hztxfw.gdyuhui.net",
+    // host: "hztxfw.gdyuhui.net", // 域名访问需要百度一下，再改系统文件
     proxy: {
       "/transApp": {
-        target: "http://192.168.12.71/transApp",
+        target: "http://192.168.1.75:8099/transApp",
         // target: "http://192.168.1.141:8090/microModule",
         changeOrigin: true,
         ws: true,

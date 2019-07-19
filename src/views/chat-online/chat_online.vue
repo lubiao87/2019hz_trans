@@ -450,8 +450,10 @@ export default {
     //   this.$store.dispatch("footerStatus/showFooter"); //这里改为'footerStatus/showFooter',
     //   //意思是指footerStatus.js里actions里的showFooter方法
     // }
-    'MyordersData.state'(newV,oldV) {
-        if(newV == 0) {
+    //聊天记录中添加服务单详情
+    MyordersData: {
+       handler(newV,oldV) {
+        if(newV.state == 0) {
           this.chatList.push(
             {
               name: "服务单详情", 
@@ -466,6 +468,9 @@ export default {
             },
           )
         }
+       },
+        immediate: true,
+       deep: true
     }
   },
   // 进入路由时,恢复列表状态

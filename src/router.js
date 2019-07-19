@@ -183,6 +183,34 @@ export default new Router({
         keepAlive: false // 缓存
       },
       component: () => import("@/views/wook-time/wook_time.vue")
+    },
+    //装维工程师/服务单详情
+    {
+      path: "/ngineerServiceOrdersDetail",
+      name: "ngineerServiceOrdersDetail",
+      meta: {
+        keepAlive: true
+      },
+      component: () => import("@/views/installation-ngineer/ngineer_service_orders_detail.vue")
+    },
+    // 在岗
+    {
+      path: "/installtionNgineer",
+      name: "installtionNgineer",
+      meta: {
+        keepAlive: false // 缓存
+      },
+      component: () =>
+        import("@/views/installtion-ngineer/installtion_ngineer.vue")
+    },
+    // 一键呼叫记录
+    {
+      path: "/callRecord",
+      name: "callRecord",
+      meta: {
+        keepAlive: false // 缓存
+      },
+      component: () => import("@/views/call-record/call_record.vue")
     }
   ]
 });

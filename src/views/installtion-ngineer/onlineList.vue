@@ -1,27 +1,20 @@
 <template>
-  <div class="callOnline">
+  <div class="onlineList">
     <div class="list">
-      <div
-        class="item"
-        v-for="(item, index) in lists"
-        :key="index"
-        @click="lookDetails(item)"
-      >
+      <div class="item" v-for="(item, index) in lists" :key="index">
         <div class="top">
           <div class="img">
             <img :src="item.num0" alt />
+            <badge></badge>
           </div>
           <div class="container">
             <div class="left item_commom">
               <span>{{ item.num }}</span>
               <span class="item2">{{ item.num3 }}</span>
             </div>
-            <div class="right item_commom1">
-              <div class="more1">
-                <span>{{ item.num2 }}</span>
-                <span class="item2 ansower">{{ item.TaklTime }}</span>
-              </div>
-              <img class="more2" src="img/turn_right.png" />
+            <div class="right item_commom">
+              <span>{{ item.num2 }}</span>
+              <span class="item2 ansower">回复</span>
             </div>
           </div>
         </div>
@@ -32,31 +25,26 @@
 <script>
 // import Tab from "vux/src/components/tab";
 // import TabItem from "vux/src/components/tab/tab-item";
-// import { Tab, TabItem } from "vux";
-// import { XButton } from "vux";
+import { Badge } from "vux";
 
 export default {
   components: {
-    // Tab,
-    // TabItem,
-    // XButton
+    Badge
   },
   data: function() {
     return {
       lists: [
         {
-          num0: "./img/call.png",
+          num0: "./img/kehu-1.png",
           num: "苏大强",
-          num2: "6月11日 17:30",
-          num3: "13332147878",
-          TaklTime: "通话时长：30:25"
+          num2: "下午 09：33",
+          num3: "最后一条消息记录"
         },
         {
-          num0: "./img/call.png",
-          num: "苏小强",
-          num2: "6月11日 17:30",
-          num3: "13332147878",
-          TaklTime: "通话时长：30:25"
+          num0: "./img/kehu-1.png",
+          num: "苏大强",
+          num2: "下午 09：33",
+          num3: "最后一条消息记录"
         }
       ]
     };
@@ -65,81 +53,61 @@ export default {
   mounted() {
     // this.alertShow();
   },
-  methods: {
-    lookDetails(item) {
-      console.log(item);
-      this.$router.push({
-        name: "callRecord",
-        params: {
-          data: { id: 23 }
-        }
-      });
-    }
-  }
+  methods: {}
 };
 </script>
 
+<!--Add"scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped="">
 @import "@/assets/scss/base.scss"; /*引入配置*/
-.callOnline {
-  background: $background-color-themesec;
+</style>
+<style lang="scss">
+@import "@/assets/scss/base.scss"; /*引入配置*/
+.onlineList {
+  background: rgba(239, 239, 244, 1);
   height: 100%;
   padding: 18px 14px 0 14px;
+  .vux-tab {
+    background: rgba(239, 239, 244, 1) !important;
+  }
+  .vux-tab-wrap {
+    background: rgba(239, 239, 244, 1);
+  }
   .list {
-    // background: $background-color-theme;
+    background: rgba(239, 239, 244, 1);
     .item {
       //   margin: 15px;
       border-radius: 5px;
       padding: 42px 30px 38px 22px;
       margin-bottom: 9px;
-      background: $background-color-theme;
+      background: #fff;
       .top {
         display: flex;
-        align-items: center;
         .img {
           display: flex;
           justify-content: center;
-          align-items: center;
-          width: 26px;
-          height: 27px;
-          background: $background-color-theme;
+          align-items: flex-start;
+          width: 80px;
+          height: 80px;
+          background: rgba(255, 255, 255, 1);
 
-          margin-right: 16px;
+          margin-right: 20px;
           img {
             width: 100%;
-            height: 100%;
+            // height: 100%;
           }
         }
         .container {
-          font-size: $font_little;
+          font-size: 32px;
           font-family: PingFang-SC-Medium;
           font-weight: 500;
-          color: $font-color-themesec;
+          color: rgba(0, 0, 0, 1);
           display: flex;
           justify-content: space-between;
           width: 100%;
-          .item_commom1 {
-            flex-direction: row;
-            display: flex;
-            align-items: center;
-            .more1 {
-              flex-direction: column;
-              display: flex;
-              font-size: $font_little_s;
-              span {
-                padding-top: 10px;
-              }
-            }
-            .more2 {
-              width: 42px;
-              height: 42px;
-              margin-left: 12px;
-            }
-          }
           .item_commom {
             display: flex;
             flex-direction: column;
-
             .item2 {
               margin-top: 20px;
             }
@@ -152,7 +120,7 @@ export default {
       }
       .bottom {
         margin-top: 21px;
-        color: $background-color-theme;
+        color: #fff;
         font-size: 26px;
         display: flex;
         align-items: center;
@@ -161,14 +129,14 @@ export default {
           width: 100px;
           height: 44px;
           line-height: 44px;
-          background: $background-color-theme1;
+          background: rgba(68, 135, 246, 1);
           border-radius: 6px;
         }
         .commite2 {
           width: 133px;
           line-height: 44px;
           height: 44px;
-          background: $background-color-theme1;
+          background: rgba(68, 135, 246, 1);
           border-radius: 6px;
           margin-left: 28px;
         }

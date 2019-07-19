@@ -1,7 +1,12 @@
 <template>
   <div class="onlineList">
     <div class="list">
-      <div class="item" v-for="(item, index) in lists" :key="index">
+      <div
+        class="item"
+        v-for="(item, index) in lists"
+        :key="index"
+        @click="lookDetails(item)"
+      >
         <div class="top">
           <div class="img">
             <img :src="item.num0" alt />
@@ -42,7 +47,7 @@ export default {
         },
         {
           num0: "./img/kehu-1.png",
-          num: "苏大强",
+          num: "苏强",
           num2: "下午 09：33",
           num3: "最后一条消息记录"
         }
@@ -53,7 +58,18 @@ export default {
   mounted() {
     // this.alertShow();
   },
-  methods: {}
+  methods: {
+    lookDetails(item) {
+      console.log(item);
+      // this.$router.push({ name: "enclosurePage", params: { data: null } });
+      this.$router.push({
+        name: "enclosurePage",
+        params: {
+          data: { id: 23 }
+        }
+      });
+    }
+  }
 };
 </script>
 

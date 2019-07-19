@@ -1,12 +1,7 @@
 <template>
   <div class="callOnline">
     <div class="list">
-      <div
-        class="item"
-        v-for="(item, index) in lists"
-        :key="index"
-        @click="lookDetails(item)"
-      >
+      <div class="item" v-for="(item, index) in lists" :key="index">
         <div class="top">
           <div class="img">
             <img :src="item.num0" alt />
@@ -19,7 +14,7 @@
             <div class="right item_commom1">
               <div class="more1">
                 <span>{{ item.num2 }}</span>
-                <span class="item2 ansower">{{ item.TaklTime }}</span>
+                <span class="item2 ansower">回复</span>
               </div>
               <img class="more2" src="img/turn_right.png" />
             </div>
@@ -47,16 +42,14 @@ export default {
         {
           num0: "./img/call.png",
           num: "苏大强",
-          num2: "6月11日 17:30",
-          num3: "13332147878",
-          TaklTime: "通话时长：30:25"
+          num2: "下午 09：33",
+          num3: "最后一条消息记录"
         },
         {
           num0: "./img/call.png",
-          num: "苏小强",
-          num2: "6月11日 17:30",
-          num3: "13332147878",
-          TaklTime: "通话时长：30:25"
+          num: "苏大强",
+          num2: "下午 09：33",
+          num3: "最后一条消息记录"
         }
       ]
     };
@@ -65,17 +58,7 @@ export default {
   mounted() {
     // this.alertShow();
   },
-  methods: {
-    lookDetails(item) {
-      console.log(item);
-      this.$router.push({
-        name: "callRecord",
-        params: {
-          data: { id: 23 }
-        }
-      });
-    }
-  }
+  methods: {}
 };
 </script>
 
@@ -111,7 +94,7 @@ export default {
           }
         }
         .container {
-          font-size: $font_little;
+          font-size: 32px;
           font-family: PingFang-SC-Medium;
           font-weight: 500;
           color: $font-color-themesec;
@@ -125,10 +108,6 @@ export default {
             .more1 {
               flex-direction: column;
               display: flex;
-              font-size: $font_little_s;
-              span {
-                padding-top: 10px;
-              }
             }
             .more2 {
               width: 42px;

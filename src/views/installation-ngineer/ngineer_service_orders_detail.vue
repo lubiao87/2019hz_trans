@@ -1,8 +1,19 @@
 <template>
-  <div class="generating-orders">
+  <div class="ngineer-service-orders-detail">
     <b-head :showBack="true" :title="title"></b-head>
     <div class="content">
       <div class="gray-bg"></div>
+      <group
+        class="vux-1px-b"
+      >
+        <x-input
+          title="当前状态"
+          v-model="orderStatus"
+          disabled
+          :show-clear="false"
+          placeholder-align="right"
+        ></x-input>
+      </group>
       <group v-for="(item, index) in menuList" :key="index" class="vux-1px-b">
         <x-input
           :title="item.title"
@@ -57,23 +68,76 @@
         </div>
       </group>
       <div class="gray-bg"></div>
-
       <group class="obstacles" title="报障内容">
+        <div
+          data-v-a07515dc=""
+          class="weui-cell vux-x-textarea"
+        >
+          <div class="weui-cell__bd">
+            <div class="weui-textarea" v-html="textareaValve"></div>
+          </div>
+        </div>
+        <div class="vue-uploader">
+          <div class="file-list">
+            <section
+              class="file-item draggable-item"
+              v-for="(item, index) in obstaclePics"
+              :key="index + 'img'"
+            >
+              <img alt="" ondragstart="return false;" :src="item.src" />
+            </section>
+          </div>
+        </div>
+      </group>
+      <group class="obstacles obstacles2" title="期望上门时间">
+        <div class="pleaseChoose" @click="showdateSingle = true">
+          {{ homeTime}}
+        </div>
+      </group>
+      <div class="gray-bg"></div>
+      <group class="obstacles" title="处理回单内容">
         <x-textarea
           :max="100"
           :rows="3"
-          placeholder="请输入报障内容"
+          placeholder="请输入处理内容"
           @on-focus="textareaEvent('focus')"
           @on-blur="textareaEvent('blur')"
-          v-model="textareaValve"
+          v-model="textareaValve2"
         ></x-textarea>
       </group>
       <!-- -----------------上传图片 ------------------ -->
       <img-uploader @childrenData="getChildData" class="obstacles3" />
-
-      <group class="obstacles obstacles2" title="期望上门时间">
-        <div class="pleaseChoose" @click="showdateSingle = true">
-          {{ homeTime}}
+      <group
+        title="故障类型"
+        class="enclosure-box obstacles enclosure2"
+      >
+        <!-- <x-input
+          class="obstacles"
+          title="故障类型"
+          v-model="faultType"
+          disabled
+          :show-clear="false"
+          placeholder-align="right"
+        ></x-input> -->
+        <popup-picker
+          :data="list1"
+          v-model="faultType"
+          @on-show="onShow"
+          @on-hide="onHide"
+          @on-change="onChange"
+          placeholder="请选择"
+        >
+          <template slot="title">
+            <span class="iconfont">&#xe656;</span>
+          </template>
+        </popup-picker>
+      </group>
+      <group
+        class="enclosure-box obstacles vux-1px-t"
+        title="附件"
+      >
+        <div class="in" @click="enclosurePage">
+          在线聊天记录/通话录音
         </div>
       </group>
       <div class="foot-box">
@@ -148,7 +212,7 @@ export default {
   },
   data: function() {
     return {
-      title: '生成服务单',
+      title: '服务单详情',
       colorChange: false,
       showBack: true,
       menuList: [
@@ -224,6 +288,11 @@ export default {
       show5: false,
       textareaValve: "",
       childData: {},
+      orderStatus: '处理中',
+      textareaValve2: '',
+      obstaclePics: [], //报障图片
+      list1: [["固话故障", "IPTV故障", "智能组网故障", "宽带故障"]],
+      faultType: []
     };
   },
   computed: {
@@ -294,10 +363,9 @@ export default {
     confirmOrders() {
       if(!this.textareaValve) {
         this.$vux.toast.show({
-          text: '请输入报障内容',
+          text: '请输入处理内容',
           type: 'text',
-          position: 'middle',
-          width: '50%'
+          position: 'middle'
         })
         return;
       }
@@ -318,31 +386,24 @@ export default {
     onConfirm5() {
       const self = this;
       console.log("onConfirm5");
-      let formData = new FormData();
-      formData.append("reportContent",this.textareaValve);
-      formData.append("orderId",this.menuList[0].value);
-      formData.append("productNumber",'ADSL12345685');
-      formData.append("custId",'6845555');
-      formData.append("linkman","小黄");
-      formData.append("linkphone",1344445555);
-      formData.append("productAddress","天河区建中路66号");
-      formData.append("expectTime","2019-07-17 10:00");
-      formData.append("repairoperId","9999855");
-      formData.append("source",0);
-      formData.append("file",this.childData);
       let params = {
         url: api.generateOrder,
-        contentType: 'form-data',
-        data: formData
+        data: {
+          "content": this.textareaValve,
+          "orderId": this.menuList[0].value,
+          "productNumber":"ADSL12345685",
+          "custId":"5687445",
+          "linkman":"小黄",
+          "linkphone":12345678965,
+          "productAddress":"天河区建中路66号",
+          "expectTime":"2019-07-17 10:00",
+          "repairoperId":"6556322",
+          "source":0
+        }
       }
       self.sendReq(params, (res) => {
         if(res.respHeader.resultCode == 0) {
-          self.$vux.toast.show({
-            text: '推送成功！',
-            type: 'text',
-            position: 'middle',
-            width: '50%'
-          })
+          self.$vux.toast.text("推送成功！");
           self.$store.dispatch("collection/ORDERS_DATA", {
             state: 0,
             stateValue: "处理中"
@@ -370,6 +431,27 @@ export default {
     },
     cancelBack() {
       this.$router.go(-1);
+    },
+    /****
+     * 故障类型
+     *  */
+    onShow() {
+      console.log("on show");
+    },
+    onHide(type) {
+      console.log("on hide", type);
+    },
+    onChange(val) {
+      console.log("val change", val);
+    },
+    //查看聊天记录
+    enclosurePage() {
+      this.$router.push({
+        name: "enclosurePage",
+        params: {
+          data: { id: 23 }
+        }
+      });
     }
   },
   mounted() {}
@@ -382,7 +464,7 @@ export default {
   margin-top: 10px;
   @include bg_color($background-color-theme);
 }
-.generating-orders {
+.ngineer-service-orders-detail {
   .content {
     margin-top: 100px;
     overflow-x: hidden;
@@ -501,7 +583,7 @@ export default {
 </style>
 <style lang="scss">
 @import "@/assets/scss/base.scss"; /*引入配置*/
-.generating-orders {
+.ngineer-service-orders-detail {
   .enclosure-box {
     display: flex;
     align-items: center;

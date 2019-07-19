@@ -43,22 +43,15 @@
           </div>
         </div>
         <div class="bottom">
-          <x-button
-            class="commite1"
-            v-show="tabName === '处理中'"
-            @click.native="cuiDan"
+          <x-button class="commite1" v-show="tabName === '处理中'"
             >催单</x-button
           >
           <x-button
             class="commite1"
-            @click.native="appraiseSheet"
             v-show="tabName === '待评价' || tabName === '转投诉'"
             >评价</x-button
           >
-          <x-button
-            class="commite2"
-            v-show="tabName !== '已完成'"
-            @click.native="complaintSlip"
+          <x-button class="commite2" v-show="tabName !== '已完成'"
             >转投诉</x-button
           >
         </div>
@@ -86,7 +79,7 @@ export default {
           num1: "F201906101234",
           num2: "ADSL 7758234",
           num3: "2019/6/12 11:28:30",
-          num4: "广东省广州市天河区***佳都商务大厦西塔802"
+          num4: "广东省广州市天河区***佳都商务大厦西塔801"
         },
         {
           num0: "./img/icon.png",
@@ -106,18 +99,6 @@ export default {
   methods: {
     onTabClick(tab) {
       this.tabName = tab;
-    },
-    // 跳转服务单评价
-    appraiseSheet() {
-      this.$router.push({ name: "appraiseSheet", params: { data: null } });
-    },
-    // 跳转服务单评价
-    complaintSlip() {
-      console.log("complaintSlip");
-      this.$router.push({ name: "complaintSlip", params: { data: null } });
-    },
-    cuiDan() {
-      this.$vux.toast.text("催单成功！");
     }
   }
 };

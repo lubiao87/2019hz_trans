@@ -4,17 +4,17 @@
     <button-tab class="lb-tab">
       <button-tab-item
         :selected="tableName === '聊天记录'"
-        @on-item-click="consoleIndex('chatList')"
+        @on-item-click="consoleIndex('聊天记录')"
         >聊天记录
       </button-tab-item>
       <button-tab-item
         :selected="tableName === '通话记录'"
-        @on-item-click="consoleIndex('callList')"
+        @on-item-click="consoleIndex('通话记录')"
         >通话记录
       </button-tab-item>
     </button-tab>
     <v-scroll-full
-      v-show="pageName === 'chatList'"
+      v-show="tableName === '聊天记录'"
       ref="myscrollfull"
       @load="loadData"
       class="scroll-top"
@@ -71,7 +71,7 @@
         </div>
       </div>
     </v-scroll-full>
-    <div class="call-box" v-show="pageName === 'callList'">
+    <div class="call-box" v-show="tableName === '通话记录'">
       <div
         class="call-list vux-1px-b"
         v-for="(item, index) in callList"
@@ -159,7 +159,6 @@ export default {
       left: 0,
       top: 0,
       floatText: "生成服务单",
-      pageName: "chatList",
       callList: [
         {
           date: "6月11日 17:30",
@@ -265,7 +264,7 @@ export default {
       });
     },
     consoleIndex(tab) {
-      this.pageName = tab;
+      this.tableName = tab;
     }
   },
   mounted() {

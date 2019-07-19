@@ -19,6 +19,7 @@
     </tab>
     <div class="list">
       <div class="item" v-for="(item, index) in lists" :key="index">
+        <img class="has_call" src="img/has_call.png" />
         <div class="top">
           <div class="img">
             <img :src="item.num0" alt />
@@ -26,7 +27,7 @@
           <div class="container">
             <div class="panel">
               <div class="title">服务单号</div>
-              <span>{{ item.num1 }}</span>
+              <span>{{ item.num }}</span>
             </div>
             <div class="panel">
               <div class="title">产品账号</div>
@@ -42,26 +43,10 @@
             </div>
           </div>
         </div>
-        <div class="bottom">
-          <x-button
-            class="commite1"
-            v-show="tabName === '处理中'"
-            @click.native="cuiDan"
-            >催单</x-button
-          >
-          <x-button
-            class="commite1"
-            @click.native="appraiseSheet"
-            v-show="tabName === '待评价' || tabName === '转投诉'"
-            >评价</x-button
-          >
-          <x-button
-            class="commite2"
-            v-show="tabName !== '已完成'"
-            @click.native="complaintSlip"
-            >转投诉</x-button
-          >
-        </div>
+        <!-- <div class="bottom">
+          <x-button class="commite1">催单</x-button>
+          <x-button class="commite2">转投诉</x-button>
+        </div> -->
       </div>
     </div>
   </div>
@@ -83,17 +68,17 @@ export default {
       lists: [
         {
           num0: "./img/icon.png",
-          num1: "F201906101234",
+          num: "F201906101234",
           num2: "ADSL 7758234",
           num3: "2019/6/12 11:28:30",
-          num4: "广东省广州市天河区***佳都商务大厦西塔802"
+          num4: "广东省广州市天河区***佳都商务大厦 西塔801"
         },
         {
           num0: "./img/icon.png",
-          num1: "PingFang-SC-Medium",
+          num: "F201906105678",
           num2: "ADSL 7758234",
           num3: "2019/6/12 11:30:30",
-          num4: "广东省广州市天河区***佳都商务大厦西塔801"
+          num4: "广东省广州市天河区***佳都商务大厦 西塔801"
         }
       ],
       tabName: "处理中"
@@ -106,18 +91,6 @@ export default {
   methods: {
     onTabClick(tab) {
       this.tabName = tab;
-    },
-    // 跳转服务单评价
-    appraiseSheet() {
-      this.$router.push({ name: "appraiseSheet", params: { data: null } });
-    },
-    // 跳转服务单评价
-    complaintSlip() {
-      console.log("complaintSlip");
-      this.$router.push({ name: "complaintSlip", params: { data: null } });
-    },
-    cuiDan() {
-      this.$vux.toast.text("催单成功！");
     }
   }
 };
@@ -130,44 +103,52 @@ export default {
 .accountNow {
   .active-2 {
     padding-bottom: 2px;
-    border-bottom: 2px solid #4487f6 !important;
-
-    color: #4487f6 !important;
+    border-bottom: 1px solid $font-color-theme2 !important;
+    color: $font-color-theme2 !important;
   }
 }
 </style>
 <style lang="scss">
 @import "@/assets/scss/base.scss"; /*引入配置*/
 .accountNow {
-  background: rgba(239, 239, 244, 1);
+  font-size: $font_little;
+  background: $background-color-themesec;
   height: 100%;
   .vux-tab {
-    background: rgba(239, 239, 244, 1) !important;
+    background: $background-color-theme !important;
   }
   .vux-tab-wrap {
-    background: rgba(239, 239, 244, 1);
+    background: $background-color-theme;
   }
   .list {
-    background: rgba(239, 239, 244, 1);
     .item {
       margin: 15px;
       border-radius: 5px;
-      padding: 20px;
-      background: #fff;
+      padding: 39px 41px 33px 22px;
+      background: $background-color-theme;
+      position: relative;
+      .has_call {
+        position: absolute;
+        top: 32px;
+        right: 37px;
+        width: 101px;
+        // height: 74px;
+      }
       .top {
         display: flex;
         .img {
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 110px;
+          width: 94px;
           height: 94px;
-          background: rgba(255, 255, 255, 1);
-          border: 2px solid rgba(224, 221, 216, 1);
+          background: $background-color-theme;
+          border: 2px solid $border-color-theme;
           border-radius: 5px;
           margin-right: 16px;
           img {
-            width: 100%;
+            width: 62px;
+            height: 49px;
           }
         }
         .container {
@@ -193,7 +174,7 @@ export default {
       }
       .bottom {
         margin-top: 21px;
-        color: #fff;
+        color: $background-color-theme;
         font-size: 26px;
         display: flex;
         align-items: center;
@@ -202,46 +183,19 @@ export default {
           width: 100px;
           height: 44px;
           line-height: 44px;
-          background: rgba(68, 135, 246, 1);
+          background: $font-color-theme2;
           border-radius: 6px;
         }
         .commite2 {
           width: 133px;
           line-height: 44px;
           height: 44px;
-          background: rgba(68, 135, 246, 1);
+          background: $font-color-theme2;
           border-radius: 6px;
           margin-left: 28px;
         }
       }
     }
-  }
-}
-</style>
-<style lang="scss">
-.accountNow {
-  .weui-btn_default {
-    color: #fff;
-    background-color: #f8f8f8;
-  }
-  .weui-btn + .weui-btn {
-    margin-top: 0;
-  }
-  .weui-btn {
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .vux-tab {
-    background: rgba(239, 239, 244, 1) !important;
-    padding: 26px 44px 15px 60px;
-  }
-  .vux-tab .vux-tab-item {
-    width: 89px !important;
-    height: 44px !important;
-    line-height: 44px !important;
-  }
-  .vux-tab-container {
-    background: rgba(239, 239, 244, 1);
   }
 }
 </style>
