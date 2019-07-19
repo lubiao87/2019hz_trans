@@ -17,22 +17,25 @@
         <tab-item
           active-class="active-1"
           @on-item-click="onTabClick('onlineList')"
-          selected
+          :selected="this.viewsName=='onlineList'?true:false"
           >在线聊天</tab-item
         >
         <tab-item
           active-class="active-1"
           @on-item-click="onTabClick('callOnline')"
+          :selected="this.viewsName=='callOnline'?true:false"
           >一键呼叫</tab-item
         >
         <tab-item
           active-class="active-1"
           @on-item-click="onTabClick('accountNow')"
+          :selected="this.viewsName=='accountNow'?true:false"
           >一键报障</tab-item
         >
         <tab-item
           active-class="active-1"
           @on-item-click="onTabClick('serviceList')"
+          :selected="this.viewsName=='serviceList'?true:false"
           >我的服务单</tab-item
         >
       </tab>
@@ -65,10 +68,13 @@ export default {
   data: function() {
     return {
       title: "我的记录(在岗)",
-      viewsName: "onlineList"
+      viewsName: ''
     };
   },
-  created() {},
+  created() {
+    console.log(this.$route.params.tabName)
+    this.viewsName = this.$route.params.tabName || "onlineList";
+  },
   mounted() {
     // this.alertShow();
   },
@@ -156,6 +162,11 @@ export default {
       background: rgba(68, 135, 246, 1);
       border-radius: 30px;
       color: #fff !important;
+    }
+    .accountNow {
+      .vux-tab {
+        background-color: #efeff4 !important;
+      }
     }
   }
 }

@@ -139,6 +139,15 @@ export default {
     },
     onConfirm5() {
       console.log(this.inputIphone);
+      this.$router.push({
+        name: "enclosurePage",
+        params: {
+          data: {
+            name: "通话记录",
+            id: 345
+          }
+        }
+      });
       // this.$refs.confirm5.setInputValue("");
       // this.$vux.toast.text("input value: " + this.inputIphone);
     },

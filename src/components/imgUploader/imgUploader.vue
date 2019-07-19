@@ -4,20 +4,22 @@
       <section
         class="file-item draggable-item"
         v-for="(file, index) in files"
-        :key="index"
+        :key="index + 'js'"
+        v-if="index < imgNumber"
       >
         <img :src="file.src" alt="" ondragstart="return false;" />
         <!-- <p class="file-name">{{ file.name }}</p> -->
         <span class="file-remove" @click="remove(index)">+</span>
       </section>
       <section
-        v-if="status === 'ready' && files.length < 3"
+        v-if="status === 'ready' && files.length < imgNumber"
         class="file-item flex-middle"
       >
-        <div @click="add" class="add">
+        <div v-show="files.length == 0" @click="add" class="add">
           <span class="iconfont">&#xe644;</span>
           <p>上传凭证 （最多3张）</p>
         </div>
+        <div v-show="files.length > 0" @click="add" class="add add-icon">+</div>
       </section>
     </div>
 
@@ -66,18 +68,30 @@ export default {
       indexs: 0
     };
   },
+  props: {
+    imgNumber: {
+      type: Number,
+      default: 3
+    }
+  },
   methods: {
     add() {
-      if (this.files.length < 3) {
+      if (this.files.length < this.imgNumber) {
         this.$refs.file.click();
       }
     },
+    // 上传图片代码示例 -- 复制代码到父组件进行业务逻辑
     submit() {
       if (this.files.length === 0) {
         console.log("no file!");
         return;
       }
       this.formData = new FormData();
+      if (this.formData.length > 3) {
+        alert("最多选择三张");
+        return;
+      }
+      // this.files 通过父组件 @childrenData="" 接受
       this.files.forEach(item => {
         this.formData.append("file", item.file);
         this.formData.append("content", item.name);
@@ -94,7 +108,7 @@ export default {
     },
     fileChanged() {
       const list = this.$refs.file.files;
-      console.log(list);
+      // console.log(list);
       for (let i = 0; i < list.length; i++) {
         if (!this.isContain(list[i])) {
           const item = {
@@ -108,6 +122,7 @@ export default {
           this.$emit("childrenData", this.files);
         }
       }
+
       // this.html5Reader(list);
       this.$refs.file.value = "";
     },
@@ -173,7 +188,7 @@ export default {
 </script>
 <style>
 .vue-uploader .file-list {
-  padding: 10px 0px;
+  padding: 10px 38px;
 }
 .vue-uploader .file-list:after {
   content: "";
@@ -187,8 +202,9 @@ export default {
 .vue-uploader .file-list .file-item {
   float: left;
   position: relative;
-  width: 33%;
+  /* width: 33%; */
   text-align: center;
+  margin-right: 44px;
 }
 .vue-uploader .file-list .file-item img {
   width: 160px;
@@ -197,7 +213,7 @@ export default {
 }
 .vue-uploader .file-list .file-item .file-remove {
   position: absolute;
-  right: 26px;
+  right: 0;
   /* display: none; */
   top: -10px;
   width: 40px;
@@ -235,6 +251,14 @@ export default {
   border: 2px dashed #ddd;
   cursor: pointer;
   padding-top: 20px;
+}
+.vue-uploader .add-icon {
+  background-color: #ededed;
+  border: 0;
+  padding: 0;
+  font-size: 60px;
+  color: #a7a7a7;
+  line-height: 160px;
 }
 .vue-uploader .add p {
   line-height: 30px;

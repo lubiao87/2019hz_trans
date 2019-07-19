@@ -3,12 +3,12 @@
     <b-head :showBack="true" :title="title"></b-head>
     <div class="content">
       <div class="gray-bg"></div>
-      <group class="vux-1px-b group-1 state2-box">
+      <!-- <group class="vux-1px-b group-1 state2-box">
         <div class="group-btn">
           <div class="cuidan">催单</div>
           <div class="zhuantousu">转投诉</div>
         </div>
-      </group>
+      </group> -->
       <group
         v-for="(item, index) in menuList"
         :key="index"
@@ -40,6 +40,7 @@
           placeholder="请输入报障内容"
           @on-focus="textareaEvent('focus')"
           @on-blur="textareaEvent('blur')"
+          v-model="textareaValve"
         ></x-textarea>
       </group>
       <!-- -----------------上传图片 ------------------ -->
@@ -51,7 +52,7 @@
       </group>
 
       <div class="foot-box">
-        <div class="cancel-btn">
+        <div class="cancel-btn" @click="cancelBack">
           取消
         </div>
         <div class="confirm-btn vux-1px" @click="confirmOrders">
@@ -87,8 +88,11 @@ import { XInput, Group, XTextarea } from "vux";
 import date from "@/components/datepicker/datePicker";
 import dateHours from "@/components/datepicker/dateHours";
 import FloatBtn from "@/components/dragBox/floatBtn";
+import  { listSearchMixin } from "@/mixin";
+import {api} from "@/api/api"
 
 export default {
+  mixins: [listSearchMixin],
   components: {
     BHead,
     XInput,
@@ -108,7 +112,7 @@ export default {
       menuList: [
         {
           title: "服务单号",
-          value: "NDC233435645",
+          value: "",
           placeholder: "",
           disabled: true
         },
@@ -155,7 +159,8 @@ export default {
       HHMMListValue: "12:00 ~ 14:00",
       // HHMMListValue2: "14:00",
       showdateHours: false,
-      floatText: "我的报障记录"
+      floatText: "我的报障记录",
+      textareaValve: ''//报障内容
     };
   },
   computed: {
@@ -183,6 +188,7 @@ export default {
       // startDate: this.formatDate(new Date().getTime())
     };
     this.showSingle = this.getNowFormatDate("/");
+    this.getOrderId();
   },
   methods: {
     ...mapActions("collection", [
@@ -221,9 +227,6 @@ export default {
     getChildData(data) {
       console.log(data);
     },
-    confirmOrders() {
-      // this.state = 2;
-    },
     // 点击浮动窗事件
     floatClick() {
       // console.log("点击浮动窗");
@@ -231,9 +234,70 @@ export default {
       this.$router.push({
         name: "baoZhan",
         params: {
-          data: self.floatText
+          tabName: 'accountNow'
         }
       });
+    },
+    getOrderId() {
+      let params = {
+        method: 'GET',
+        url: api.getOrderId
+      }
+      this.sendReq(params, res => {
+        if(res.respHeader.resultCode == 0) {
+          this.menuList[0].value = res.respBody.orderId;
+        }
+      })
+    },
+    cancelBack() {
+      this.$router.go(-1);
+    },
+    //提交报障
+    confirmOrders() {
+      if(!this.textareaValve) {
+        this.$vux.toast.show({
+          text: '请输入报障内容',
+          type: 'text',
+          position: 'middle',
+          width: '50%'
+        })
+        return;
+      }
+      if(this.textareaValve.length > 100) {
+        this.$vux.toast.show({
+          text: '请控制在100字以内',
+          type: 'text',
+          position: 'middle',
+          width: '50%'
+        })
+        return;
+      }
+      let params = {
+        url: api.reportingObstacles,
+        data: {
+          "reportContent": this.textareaValve,
+          "orderId": this.menuList[0].value,
+          "productNumber": "JJJ348-44848",
+          "custId": "iiiii0000",
+          "linkman": "小李",
+          "linkphone": 1342555666,
+          "productAddress": "广州天河建中路66号西塔801",
+          "expectTime": "2019-07-18 10:00-18:00",
+          "repairoperId": "234231",
+          "source": 2
+        }
+      }
+      this.sendReq(params, res => {
+        if(res.respHeader.resultCode == 0) {
+          this.$vux.toast.show({
+            text: "提交成功！",
+            type: 'text',
+            position: 'middle',
+            width: '50%'
+          });
+          this.$router.push({name: 'baoZhan', params: {tabName: 'accountNow'}});
+        }
+      })
     }
   },
   mounted() {}

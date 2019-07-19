@@ -2,10 +2,14 @@
   <div class="enclosure-page">
     <b-head :showBack="showBack" :title="title"></b-head>
     <button-tab class="lb-tab">
-      <button-tab-item selected @on-item-click="consoleIndex('chatList')"
+      <button-tab-item
+        :selected="tableName === '聊天记录'"
+        @on-item-click="consoleIndex('chatList')"
         >聊天记录
       </button-tab-item>
-      <button-tab-item @on-item-click="consoleIndex('callList')"
+      <button-tab-item
+        :selected="tableName === '通话记录'"
+        @on-item-click="consoleIndex('callList')"
         >通话记录
       </button-tab-item>
     </button-tab>
@@ -175,7 +179,8 @@ export default {
           talkTime: "02:25",
           stateIcon: "未接听"
         }
-      ]
+      ],
+      tableName: "聊天记录"
     };
   },
   computed: {
@@ -196,10 +201,9 @@ export default {
     this.animationTime = Date.now();
     console.log(this.$route.params.data.id);
     this.chatList = this.chatList.reverse(); // 假数据倒序，记得注释掉
-    // self.$vux.loading.show({
-    //   text: "正在连接中..."
-    // });
-    // this.initWebSocket();
+    if ((this.ID = this.$route.params.data.name === "通话记录")) {
+      this.tableName = "通话记录";
+    }
   },
   methods: {
     // 点击浮动窗事件

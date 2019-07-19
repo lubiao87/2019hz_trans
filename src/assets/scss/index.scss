@@ -589,35 +589,50 @@ body .lb-popup {
     padding: 0;
     margin-left: 0;
     .weui-cell__hd {
-      flex: 4;
+      flex: 6;
+      margin-left: 10px;
+      height: 14px;
+
       .weui-label {
-        text-align: right;
+        text-align: left;
         color: $font-color-theme;
       }
     }
     .vux-cell-primary {
-      margin:0 10px;
-      flex: 5;
-      border-bottom: 1px solid $border-color-theme;
-      height: 30px;
+      padding-right: 24px;
+      flex: 8;
+      // height: 36px;
+
     }
     .weui-cell__ft {
       position: relative;
       flex: 1;
       height: 100%;
+      margin-right:4px;
     }
 
   }
+
   .weui-cell_access {
     .weui-cell__ft:after {
       width: 5px;
       height: 5px;
-      margin-top: -2.5px;
+      margin-top: -4.5px;
+      right: 12px;
     }
   }
 
 }
+body .wook-time .lb-group {
+  & > div > div:nth-child(1) {
+    padding-top: 5px;
+  }
+}
 body .vux-cell-box:not(:first-child):before {
   left: 0;
   display: none;
+}
+
+.vux-toast .weui-toast {
+  padding: 15px;
 }

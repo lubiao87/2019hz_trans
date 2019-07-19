@@ -95,17 +95,17 @@ export default {
       showBack: true,
       inputVal: "",
       chatList: [
-        {
-          name: "服务单详情", // 评价单
-          list: [
-            {
-              src: "./img/evaSheet.png",
-              title: "",
-              desc: "您有一张服务单待评价请点击进行评价>>>",
-              id: 384
-            }
-          ]
-        },
+        // {
+        //   name: "服务单详情", // 评价单
+        //   list: [
+        //     {
+        //       src: "./img/evaSheet.png",
+        //       title: "",
+        //       desc: "您有一张服务单待评价请点击进行评价>>>",
+        //       id: 384
+        //     }
+        //   ]
+        // },
         {
           name: "用户1",
           gender: "man",
@@ -283,11 +283,11 @@ export default {
     onImgError(item, $event) {
       console.log(item, $event);
     },
-    // 查看评价
+    // 查看服务详情
     onevaSheetLook(item) {
       console.log(item);
       this.$router.push({
-        name: "generatingOrders",
+        name: "serviceOrdersDetail",
         params: {
           data: item
         }
@@ -450,6 +450,23 @@ export default {
     //   this.$store.dispatch("footerStatus/showFooter"); //这里改为'footerStatus/showFooter',
     //   //意思是指footerStatus.js里actions里的showFooter方法
     // }
+    'MyordersData.state'(newV,oldV) {
+        if(newV == 0) {
+          this.chatList.push(
+            {
+              name: "服务单详情", 
+              list: [
+                {
+                  src: "./img/evaSheet.png",
+                  title: "",
+                  desc: "您有一张服务单待评价请点击进行评价>>>",
+                  id: 384
+                }
+              ]
+            },
+          )
+        }
+    }
   },
   // 进入路由时,恢复列表状态
   beforeRouteEnter(to, from, next) {

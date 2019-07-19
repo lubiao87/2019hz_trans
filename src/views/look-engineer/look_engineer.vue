@@ -33,7 +33,7 @@
         <acc-search></acc-search>
       </div>
       <div class="router-box">
-        <other-search></other-search>
+        <other-search @childrenData="getChildData"></other-search>
       </div>
       <codeInput :showFlag="showInputBox" @childrenData="getChildData" />
     </div>
@@ -105,6 +105,7 @@ export default {
   },
   methods: {
     onTabClick(value) {
+      console.log(value);
       this.$refs.myscrollfull.scrollTop = value;
     },
     getChildData(data) {
@@ -169,6 +170,7 @@ export default {
     -moz-transition: all 0.4s; /* Firefox 4 */
     -webkit-transition: all 0.4s; /* Safari 和 Chrome */
     -o-transition: all 0.4s; /* Opera */
+    width: 100%;
     .router-box {
       background-color: $background-color-themesec;
       width: 100%;

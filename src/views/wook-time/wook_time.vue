@@ -19,8 +19,8 @@
           class="lb-popup"
         >
         </popup-picker>
-        <div class="query">确定</div>
       </group>
+      <div class="query">确定</div>
       <!-- <group class="lb-group">
         <popup-picker
           title="忙碌时间段"
@@ -96,7 +96,6 @@ export default {
     .lb-group {
       border-radius: 10px;
       overflow: hidden;
-      // margin-top: 10px;
     }
     .query {
       width: 80%;
@@ -114,5 +113,21 @@ export default {
 <style lang="scss">
 @import "@/assets/scss/base.scss"; /*引入配置*/
 .wook-time {
+  .lb-group {
+    .lb-popup {
+      .weui-cell__hd,
+      .vux-cell-primary {
+        height: 70px;
+        border-bottom: 0.5px solid $border-color-theme;
+      }
+    }
+    .lb-popup:last-child {
+      .weui-cell__hd,
+      .vux-cell-primary {
+        height: 70px;
+        border-bottom: none;
+      }
+    }
+  }
 }
 </style>

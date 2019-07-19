@@ -12,39 +12,26 @@
       <div class="this-stip">手机号</div>
     </div>
     <div class="engineer-list">
-      <div class="engineer">
-        <div class="index vux-1px">01</div>
-        <p class="text-1">惠州市惠城区XXX小区16栋708</p>
-        <p class="text-2">
-          业务号码 <span class="businees-number">ADSL454545XXXXXX</span>
+      <div
+        class="engineer"
+        v-for="(item, index) in dataList"
+        :key="index + 'jse'"
+      >
+        <div class="index vux-1px">{{ item.number }}</div>
+        <p class="text-1">{{ item.account }}</p>
+        <p class="text-2" @click="generatingOrders">
+          业务号码 <span class="businees-number">{{ item.account }}</span>
         </p>
         <div class="eg-box vux-1px-t">
           <div class="stip">
             所在区域服务工程师
           </div>
           <panel
-            :list="panelList"
+            :list="item.panelData"
             type="1"
             @on-click-item="onevaSheetLook"
-          ></panel>
-          <span class="iconfont iconfont-set">&#xe68b;</span>
-        </div>
-      </div>
-      <div class="engineer">
-        <div class="index vux-1px">02</div>
-        <p class="text-1">惠州市惠城区XXX小区16栋709</p>
-        <p class="text-2">
-          业务号码 <span class="businees-number">ADSL454545XXXXXX</span>
-        </p>
-        <div class="eg-box vux-1px-t">
-          <div class="stip">
-            所在区域服务工程师
-          </div>
-          <panel
-            :list="panelList2"
-            type="1"
-            @on-click-item="onevaSheetLook"
-          ></panel>
+          >
+          </panel>
           <span class="iconfont iconfont-set">&#xe68b;</span>
         </div>
       </div>
@@ -67,20 +54,32 @@ export default {
   data: function() {
     return {
       title: "绑定账号查",
-      panelList: [
+      dataList: [
         {
-          src: "./img/kehu-1.png",
-          title: "李克虎",
-          desc: "江北营销服务中心",
-          id: 384
-        }
-      ],
-      panelList2: [
+          number: "01",
+          address: "惠州市惠城区XXX小区16栋708",
+          account: "ADSL454545XXXXXX",
+          panelData: [
+            {
+              src: "./img/kehu-1.png",
+              title: "李克虎",
+              desc: "江北营销服务中心",
+              id: 384
+            }
+          ]
+        },
         {
-          src: "./img/kehu-1.png",
-          title: "彭于浩",
-          desc: "江北营销服务中心",
-          id: 384
+          number: "02",
+          address: "惠州市惠城区XXX小区16栋708",
+          account: "ADSL454545XXXXXX",
+          panelData: [
+            {
+              src: "./img/kehu-1.png",
+              title: "张科",
+              desc: "江北营销服务中心",
+              id: 382
+            }
+          ]
         }
       ]
     };
@@ -96,6 +95,15 @@ export default {
         name: "businessCard",
         params: {
           data: item
+        }
+      });
+    },
+    // 服务单详情
+    generatingOrders() {
+      this.$router.push({
+        name: "serviceOrdersDetail",
+        params: {
+          data: null
         }
       });
     }
@@ -155,7 +163,7 @@ export default {
       border-radius: 16px;
       position: relative;
       width: 621px;
-      height: 344px;
+      // height: 344px;
       padding: 20px;
       border: 1px solid $border-color-theme;
       margin-top: 20px;

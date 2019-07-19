@@ -6,5 +6,6 @@ export default BSEURL => {
     getOrderId: BSEURL + "/order/creatOrderId",//获取服务单号
     generateOrder: BSEURL + "/order/generateOrder", //生成服务单
     getOrderDetail: BSEURL + "/order/getOrderDetail", //服务单详情
+    reportingObstacles: BSEURL + "/reporting/reportingObstacles", //一键报障
   };
 };
