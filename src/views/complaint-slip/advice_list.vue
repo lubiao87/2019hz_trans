@@ -1,12 +1,16 @@
 <template>
-  <div class="complaint-slip">
+  <div class="advice-list">
     <b-head :showBack="true" :title="title"></b-head>
     <div class="content">
       <div class="gray-bg"></div>
-      <group class="vux-1px-b group-1 state2-box">
+      <group>
         <div class="group-btn">
-          <div class="cuidan">催单</div>
-          <div class="zhuantousu">转投诉</div>
+          <div class="cuidan">当前状态</div>
+          <div class="stetus">
+            <div :class="{stetus1:status==1}"  v-if="status==1" >待评价</div>
+            <div class="stetus1" @click="evaluate" v-else>待评价</div>
+            <div :class="{stetus2:status!=1}">评价</div>
+          </div>
         </div>
       </group>
       <group
@@ -35,43 +39,21 @@
 
       <group class="obstacles" title="投诉建议内容">
         <x-textarea
-          :max="100"
-          :rows="2"
           placeholder="请输入报障内容"
           @on-focus="textareaEvent('focus')"
           @on-blur="textareaEvent('blur')"
-          v-model="textContent"
+          v-model="receves"
         ></x-textarea>
       </group>
-      <!-- -----------------上传图片 ------------------ -->
-      <img-uploader @childrenData="getChildData" />
-
-      <!-- <group class="obstacles obstacles2" title="期望上门时间">
-        <div class="pleaseChoose" @click="showdateSingle = true">
-          {{ homeTime }}
-        </div>
-      </group>-->
-
-      <div class="foot-box" v-if="state === 1">
-        <div class="cancel-btn">取消</div>
-        <div class="confirm-btn vux-1px" @click="submit">确定</div>
+    </div>
+    <div class="getImg" v-if="imgs.length<0" style="display:'imgs.length<0'?'none':'block'">
+      <div class="imgs" v-for="(item, index) in imgs" :key="index">
+        <img :src="item.img1" alt />
       </div>
     </div>
-    <!-- <date
-      :showCalendar.sync="showdateSingle"
-      maxDate="12m"
-      :options="dateOptionsSingle"
-      @changeDate="changeDateSingle"
-    ></date>
-    <date-hours
-      :showCalendar.sync="showdateHours"
-      :date.sync="showSingle"
-      @changeDate="changeDateHours"
-    >
-    </date-hours>-->
     <div class="gray-bg"></div>
-    <!-- <complaint-state v-if="state > 1"></complaint-state> -->
-    <float-btn :text="floatText" @onFloatBtnClicked="floatClick" :key="floatText" :itemWidth="130" />
+    <complaint-state v-if="status==1 || status==2"></complaint-state>
+    <!-- <float-btn :text="floatText" @onFloatBtnClicked="floatClick" :key="floatText" :itemWidth="130" /> -->
   </div>
 </template>
 <script>
@@ -83,6 +65,7 @@ import FloatBtn from "@/components/dragBox/floatBtn";
 import complaintState from "./complaint_state";
 import { listSearchMixin } from "@/mixin";
 import { api } from "@/api/api";
+
 export default {
   mixins: [listSearchMixin],
   components: {
@@ -96,51 +79,45 @@ export default {
   },
   data: function() {
     return {
-      title: "投诉建议单",
+      receves: "",
+      title: "投诉建议单详情",
       colorChange: false,
       showBack: true,
-      textContent: "",
       menuList: [
         {
-          title: "投诉单号",
-          value: "F201906101234",
-          placeholder: ""
-          // disabled: true
+          title: "投诉/建议单号",
+          value: "",
+          placeholder: "",
+          disabled: true
         },
         {
-          title: "服务单号",
-          value: "F201906101234",
-          placeholder: ""
-          // disabled: true
-        },
-        {
-          title: "类型",
+          title: "投诉建议类型",
           value: "",
           placeholder: "",
           disabled: true
         },
         {
           title: "用户名称",
-          value: "李四",
+          value: "",
           placeholder: "",
-          disabled: false
+          disabled: true
         },
         {
           title: "用户电话",
           value: "13332147878",
-          placeholder: "",
+          // placeholder: "13332147878",
           disabled: false
         },
         {
           title: "联系人姓名",
-          value: "李四",
-          placeholder: "请输入联系人姓名",
+          value: "",
+          // placeholder: "请输入联系人电话",
           disabled: false
         },
         {
           title: "联系人电话",
-          value: "13332147878",
-          placeholder: "请输入联系人电话",
+          value: "",
+          // placeholder: "请输入联系人电话",
           disabled: false
         }
       ],
@@ -148,7 +125,16 @@ export default {
       showdateSingle: false,
       floatText: "我的投诉记录",
       checkedValue: "投诉",
-      state: 1
+      state: 1,
+      status:0,
+      imgs: [
+        // {
+        //   img1: "./img/evaSheet.png"
+        // },
+        // {
+        //   img1: "./img/evaSheet.png"
+        // }
+      ]
     };
   },
   computed: {
@@ -163,7 +149,9 @@ export default {
       arrList: "renderCollects"
     })
   },
-  created() {},
+  created() {
+    this.adviceLists();
+  },
   methods: {
     ...mapActions("collection", [
       //collection是指modules文件夹下的collection.js
@@ -174,64 +162,43 @@ export default {
     },
     getChildData(data) {
       console.log(data);
-      this.files = data;
-      console.log(this.files);
     },
-    postData() {
+    confirmOrders() {
+      this.state = 2;
+    },
+    evaluate() {
+      this.$router.push({ name: "adviceEvaluate" });
+    },
+    adviceLists() {
+      console.log(this.checkedValue);
+      // this.state = 2;
       const self = this;
       console.log("onConfirm5");
       let params = {
-        url: api.generateComplain,
-        data: self.formData
+        method: "get",
+        url: api.getComplainDetail + "?complainId=" + "T2019/07/04-2344"
       };
-
       self.sendReq(params, res => {
         console.log(res);
-        // if (res.respHeader.resultCode == 9999) {
-        //   console.log("000");
-        // this.$router.push({
-        //   name: "adviceList",
-        //   params: {
-        //     data: self.floatText
-        //   }
-        // });
-        // }
-      });
-      this.$router.push({
-        name: "adviceList",
-        params: {
-          data: self.floatText
+        if (res.respHeader.resultCode == 0) {
+          
+          let respBody=res.respBody.complainDetail;
+          let picPaths=res.respBody.picPaths
+          
+          self.menuList[0].value = respBody.complainId;
+          self.menuList[1].value = respBody.type;
+          self.menuList[2].value =respBody.custname;
+
+          self.menuList[3].value = respBody.linkname;
+          self.menuList[4].value = respBody.linkphone;
+          self.receves =respBody.content;
+          self.status =respBody.status;
+          self.imgs =picPaths;
+          picPaths
+
+          console.log( self.imgs)
         }
       });
-    },
-    submit() {
-      // if (this.files.length === 0) {
-      //   console.log("no file!");
-      //   return;
-      // }
-      this.formData = new FormData();
-      if (this.formData.length > 3) {
-        alert("最多选择三张");
-        return;
-      }
-
-      // this.files 通过父组件 @childrenData="" 接受
-      if (this.files) {
-        this.files.forEach(item => {
-          this.formData.append("file", item.file);
-          this.formData.append("content", item.name);
-        });
-      }
-  
-      this.formData.append("complainId", this.menuList[0].value);
-      this.formData.append("type", this.checkedValue);
-      this.formData.append("custId", this.menuList[3].value);
-      this.formData.append("linkname", this.menuList[5].value);
-      this.formData.append("linkphone", this.menuList[6].value);
-      this.formData.append("content", this.textContent);
-      this.formData.append("source", 0);
-      this.uploading = true;
-      this.postData();
     },
     // 点击浮动窗事件
     floatClick() {
@@ -245,7 +212,9 @@ export default {
       });
     }
   },
-  mounted() {},
+  mounted() {
+    
+  },
   watch: {
     checkedValue(val) {
       console.log(val);
@@ -260,17 +229,48 @@ export default {
   margin-top: 10px;
   @include bg_color($background-color-theme);
 }
-.complaint-slip {
+.advice-list {
   .gray-bg {
     width: 100%;
     margin-left: 0;
-    display: none;
   }
   .content {
     margin-top: 100px;
     overflow-x: hidden;
     font-size: $font_little;
 
+    .group-btn {
+      align-items: center;
+      height: 100px;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #e9eaee;
+      .stetus {
+        display: flex;
+        .stetus2 {
+          width: 100px;
+          height: 44px;
+          background: rgba(68, 135, 246, 1);
+          border-radius: 6px;
+          font-size: 28px;
+          font-family: PingFang-SC-Medium;
+          font-weight: 500;
+          color: rgba(255, 255, 255, 1);
+          text-align: center;
+        }
+        .stetus1 {
+          width: 100px;
+          height: 44px;
+          background: #fff;
+          // border-radius: 6px;
+          font-size: 28px;
+          font-family: PingFang-SC-Medium;
+          font-weight: 500;
+          color: rgba(2, 2, 2, 1);
+        }
+      }
+    }
     .group-1 {
       position: relative;
       .group-btn {
@@ -332,10 +332,11 @@ export default {
         height: 100%;
       }
     }
+
     .foot-box {
       width: 100%;
       height: 140px;
-      // box-shadow: $border-color-theme 10px 0px 20px 4px;
+      box-shadow: $border-color-theme 10px 0px 20px 4px;
       display: flex;
       padding: 20px;
       margin-top: 20px;
@@ -421,11 +422,41 @@ export default {
       }
     }
   }
+  .getImg {
+    padding: 26px 142px 44px 43px;
+    display: flex;
+    box-sizing: content-box;
+    justify-content: flex-start;
+    .imgs {
+      margin-right: 44px;
+      width: 159px;
+      height: 159px;
+      img {
+        width: 100%;
+      }
+    }
+  }
 }
 </style>
 <style lang="scss">
 @import "@/assets/scss/base.scss"; /*引入配置*/
-.complaint-slip {
+.advice-list {
+  .vux-x-textarea.weui-cell {
+    height: 87px;
+    background: rgba(239, 239, 244, 1);
+    padding: 0 !important ;
+  }
+  .weui-textarea {
+    height: 87px;
+  }
+  .obstacles {
+    .weui-cells {
+      height: 87px;
+    }
+    .weui-cell__bd {
+      height: 100%;
+    }
+  }
   .weui-input {
     text-align: right;
     color: $font-color-shallow0;
@@ -452,12 +483,12 @@ export default {
   .weui-cell {
     display: block;
     .weui-cell__bd {
-      width: 70%;
+      width: 68%;
       padding-right: 20px;
       float: left;
     }
     .weui-cell__hd {
-      width: 30%;
+      width: 32%;
       padding-left: 20px;
       float: left;
     }
@@ -501,10 +532,12 @@ export default {
     .weui-cell {
       .weui-cell__bd {
         width: 100%;
+        height: 87px;
       }
     }
   }
   .obstacles2 {
+    height: 87px;
     .weui-cells__title {
       width: 40%;
       float: left;

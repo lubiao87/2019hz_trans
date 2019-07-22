@@ -3,38 +3,37 @@
     <b-head :showBack="true" :title="title"></b-head>
     <div class="content">
       <tab :line-width="0">
-        <tab-item
-          active-class="active-1"
-          @on-item-click="onTabClick('处理中')"
-          selected
-          >处理中</tab-item
-        >
-        <tab-item active-class="active-1" @on-item-click="onTabClick('待评价')"
-          >待评价</tab-item
-        >
-        <tab-item active-class="active-1" @on-item-click="onTabClick('已完成')"
-          >已完成</tab-item
-        >
+        <tab-item active-class="active-1" @on-item-click="onTabClick('0')" selected>处理中</tab-item>
+        <tab-item active-class="active-1" @on-item-click="onTabClick('1')">待评价</tab-item>
+        <tab-item active-class="active-1" @on-item-click="onTabClick('2')">已完成</tab-item>
       </tab>
-      <div class="router-box">
-        <div class="list" v-for="(item, index) in dataList" :key="index + 'jw'">
-          <div class="user-name">
-            <div class="title">用户名称</div>
-            <div class="txt">{{ item.userName }}</div>
+      <div
+        ref="myscrollfull"
+        class="scroll-top"
+        v-infinite-scroll="loadMores"
+        infinite-scroll-disabled="busy"
+        infinite-scroll-distance="30"
+      >
+        <div class="router-box">
+          <div class="list" v-for="(item, index) in dataList" :key="index + 'jw'">
+            <div class="user-name">
+              <div class="title">用户名称</div>
+              <div class="txt">{{ item.userName }}</div>
+            </div>
+            <div class="odd-number">
+              <div class="title">投诉单号</div>
+              <div class="txt">{{ item.accNumber }}</div>
+            </div>
+            <div class="complaint-details">
+              <div class="title">投诉内容</div>
+              <div class="txt">{{ item.contentComplaint }}</div>
+            </div>
+            <div class="ping-jia" v-if="tableName === '待评价'">
+              <div class="btn">评价</div>
+            </div>
           </div>
-          <div class="odd-number">
-            <div class="title">投诉单号</div>
-            <div class="txt">{{ item.accNumber }}</div>
-          </div>
-          <div class="complaint-details">
-            <div class="title">投诉内容</div>
-            <div class="txt">{{ item.contentComplaint }}</div>
-          </div>
-          <div class="ping-jia" v-if="tableName === '待评价'">
-            <div class="btn">评价</div>
-          </div>
+          <!-- <component v-bind:is="viewsName" :key="viewsName"></component> -->
         </div>
-        <!-- <component v-bind:is="viewsName" :key="viewsName"></component> -->
       </div>
     </div>
   </div>
@@ -44,9 +43,14 @@
 // import TabItem from "vux/src/components/tab/tab-item";
 import { Tab, TabItem } from "vux";
 import BHead from "@/components/base/B-Head";
+import { listSearchMixin } from "@/mixin";
+import { api } from "@/api/api";
+import VScrollFull from "@/components/mescroll/downScroll";
 
 export default {
+  mixins: [listSearchMixin],
   components: {
+    VScrollFull,
     BHead,
     Tab,
     TabItem
@@ -54,9 +58,43 @@ export default {
   },
   data: function() {
     return {
+      page: 1,
+      rows: 5,
+
+      status: 0,
       title: "我的投诉记录",
       tableName: "处理中",
       dataList: [
+        {
+          userName: "张宇",
+          accNumber: "F201906101234",
+          contentComplaint: "装维工程师服务态度不好"
+        },
+        {
+          userName: "张宇",
+          accNumber: "F201906101234",
+          contentComplaint: "装维工程师服务态度不好"
+        },
+        {
+          userName: "张宇",
+          accNumber: "F201906101234",
+          contentComplaint: "装维工程师服务态度不好"
+        },
+        {
+          userName: "张宇",
+          accNumber: "F201906101234",
+          contentComplaint: "装维工程师服务态度不好"
+        },
+        {
+          userName: "张宇",
+          accNumber: "F201906101234",
+          contentComplaint: "装维工程师服务态度不好"
+        },
+        {
+          userName: "张宇",
+          accNumber: "F201906101234",
+          contentComplaint: "装维工程师服务态度不好"
+        },
         {
           userName: "张宇",
           accNumber: "F201906101234",
@@ -73,10 +111,46 @@ export default {
   created() {},
   mounted() {
     // this.alertShow();
+    this.evaluteList();
   },
   methods: {
+    loadMores: function() {
+      let that = this;
+
+      this.busy = true;
+
+      setTimeout(() => {
+        that.evaluteList();
+        that.busy = false;
+      }, 1000);
+    },
+    evaluteList() {
+      const self = this;
+
+      let params = {
+        method: "get",
+        url:
+          api.getLists +
+          "?custId=" +
+          "T2019/07/04-2344" +
+          "&status=" +
+          this.status +
+          "&page=" +
+          this.page +
+          "&rows=" +
+          this.rows,
+        data: {
+          custId: "F201906101234",
+          status: this.status
+        }
+      };
+      self.sendReq(params, res => {
+        console.log(res);
+      });
+    },
     onTabClick(link) {
-      this.tableName = link;
+      this.status = link;
+      this.evaluteList();
     }
   }
 };
@@ -169,6 +243,14 @@ export default {
   .vux-tab-wrap {
     height: 102px;
     padding-top: 0;
+  }
+}
+</style>
+<style lang="scss" scoped>
+.tou-su {
+  @import "@/assets/scss/base.scss"; /*引入配置*/
+  .content {
+    background: #efeff4;
   }
 }
 </style>

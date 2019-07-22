@@ -139,6 +139,15 @@ export default new Router({
       },
       component: () => import("@/views/complaint-slip/complaint_slip.vue")
     },
+    // 投诉建议单列表
+    {
+      path: "/adviceList",
+      name: "adviceList",
+      meta: {
+        keepAlive: false // 缓存
+      },
+      component: () => import("@/views/complaint-slip/advice_list.vue")
+    },
     // 投诉建议评价
     {
       path: "/adviceEvaluate",
