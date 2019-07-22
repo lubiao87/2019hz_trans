@@ -36,6 +36,14 @@ module.exports = {
         pathRewrite: {
           "^/wx-course": "/"
         }
+      },
+      "/transApp2": {
+        target: "http://192.168.12.118:8099/transApp", // 刘炯
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          "^/transApp2": "/"
+        }
       }
     },
     disableHostCheck: true
