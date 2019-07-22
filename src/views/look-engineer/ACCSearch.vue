@@ -17,11 +17,13 @@
         v-for="(item, index) in dataList"
         :key="index + 'jse'"
       >
-        <div class="index vux-1px">{{ item.number }}</div>
-        <p class="text-1">{{ item.account }}</p>
-        <p class="text-2" @click="generatingOrders">
-          业务号码 <span class="businees-number">{{ item.account }}</span>
-        </p>
+        <div @click="generatingOrders(item.account)">
+          <div class="index vux-1px">{{ item.number }}</div>
+          <p class="text-1">{{ item.account }}</p>
+          <p class="text-2">
+            业务号码 <span class="businees-number">{{ item.account }}</span>
+          </p>
+        </div>
         <div class="eg-box vux-1px-t">
           <div class="stip">
             所在区域服务工程师
@@ -99,7 +101,13 @@ export default {
       });
     },
     // 服务单详情
-    generatingOrders() {
+    generatingOrders(account) {
+      let enginerrCanRoute = JSON.parse(localStorage.getItem('enginerrCanRoute'));
+      if(!enginerrCanRoute) {
+        this.$store.commit('lookEngineer/setProductCount', account,{root: true});
+        this.$router.go(-1);
+        return
+      }
       this.$router.push({
         name: "serviceOrdersDetail",
         params: {

@@ -1,5 +1,6 @@
 <template>
   <div class="call-record">
+    <b-head :title="title"></b-head>
     <div class="list">
       <div
         class="item"
@@ -32,15 +33,17 @@
 // import TabItem from "vux/src/components/tab/tab-item";
 // import { Tab, TabItem } from "vux";
 // import { XButton } from "vux";
-
+import BHead from "@/components/base/B-Head";
 export default {
   components: {
+    BHead
     // Tab,
     // TabItem,
     // XButton
   },
   data: function() {
     return {
+      title: "张宇",
       lists: [
         {
           num0: "./img/call.png",
@@ -78,6 +81,7 @@ export default {
   padding: 18px 14px 0 14px;
   .list {
     // background: $background-color-theme;
+    margin-top: 100px;
     .item {
       //   margin: 15px;
       border-radius: 5px;

@@ -22,6 +22,7 @@
           :disabled="item.disabled"
           :show-clear="false"
           placeholder-align="right"
+          @click.native="getProductCount(item.title)"
         ></x-input>
         <x-icon
           type="ios-arrow-right"
@@ -56,7 +57,7 @@
           取消
         </div>
         <div class="confirm-btn vux-1px" @click="confirmOrders">
-          确定
+          确定2
         </div>
       </div>
     </div>
@@ -114,23 +115,23 @@ export default {
           title: "服务单号",
           value: "",
           placeholder: "",
-          disabled: true
+          disabled: true,
         },
         {
           title: "产品账号",
           value: "",
           placeholder: "请查询产品账号",
-          disabled: true
+          disabled: true,
         },
         {
           title: "用户名称",
-          value: "张宇",
+          value: "",
           placeholder: "",
-          disabled: true
+          disabled: true,
         },
         {
           title: "用户电话",
-          value: "13332147878",
+          value: "",
           placeholder: "",
           disabled: true
         },
@@ -166,13 +167,16 @@ export default {
   computed: {
     ...mapState({
       //这里的...是超引用，ES6的语法，意思是state里有多少属性值我可以在这里放多少属性值
-      isShow: state => state.footerStatus.showFooter //注意这些与上面的区别就是state.footerStatus,
+      isShow: state => state.footerStatus.showFooter, //注意这些与上面的区别就是state.footerStatus,
       // arrList: state => state.collection.collects
       //里面定义的showFooter是指footerStatus.js里state的showFooter
     }),
     ...mapGetters("collection", {
       //用mapGetters来获取collection.js里面的getters
-      arrList: "renderCollects"
+      arrList: "renderCollects",
+    }),
+    ...mapGetters("lookEngineer", {
+      productCount: 'getProductCount'
     }),
     homeTime() {
       let value = this.showSingle + " " + this.HHMMListValue;
@@ -272,20 +276,22 @@ export default {
         })
         return;
       }
+      let formData = new FormData();
+      formData.append("reportContent",this.textareaValve);
+      formData.append("orderId",this.menuList[0].value);
+      formData.append("productNumber",this.menuList[1].value);
+      formData.append("custId",'6845555');
+      formData.append("linkman","小黄");
+      formData.append("linkphone",1344446666);
+      formData.append("productAddress","天河区建中路66号");
+      formData.append("expectTime","2019-07-17 10:00");
+      formData.append("repairoperId","9999855");
+      formData.append("source",2);
+      formData.append("file",this.childData);
       let params = {
         url: api.reportingObstacles,
-        data: {
-          "reportContent": this.textareaValve,
-          "orderId": this.menuList[0].value,
-          "productNumber": "JJJ348-44848",
-          "custId": "iiiii0000",
-          "linkman": "小李",
-          "linkphone": 1342555666,
-          "productAddress": "广州天河建中路66号西塔801",
-          "expectTime": "2019-07-18 10:00-18:00",
-          "repairoperId": "234231",
-          "source": 2
-        }
+        contentType: 'form-data',
+        data: formData
       }
       this.sendReq(params, res => {
         if(res.respHeader.resultCode == 0) {
@@ -298,6 +304,19 @@ export default {
           this.$router.push({name: 'baoZhan', params: {tabName: 'accountNow'}});
         }
       })
+    },
+    getProductCount(name) {
+      if(name === '产品账号') {
+        this.$router.push({name: 'lookEngineer',params: {routerName: 'quickReport'}})
+      }
+    }
+  },
+  watch: {
+    productCount: {
+      handler(count,old) {
+        this.menuList[1].value = count;
+      },
+      immediate: true,
     }
   },
   mounted() {}

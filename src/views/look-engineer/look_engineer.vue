@@ -87,7 +87,7 @@ export default {
           topX: 820
         }
       ],
-      heightBox1: 0
+      heightBox1: 0,
     };
   },
   created() {},
@@ -142,6 +142,17 @@ export default {
         this.setTabNull();
         this.tabList[2].selected = true;
       }
+    }
+  },
+  beforeRouteEnter(to,from,next) {
+    if(from.name == "quickReport") {
+      next(vm => {
+        localStorage.setItem('enginerrCanRoute',JSON.stringify(false));
+      })
+    }else {
+      next(vm => {
+        localStorage.setItem('enginerrCanRoute',JSON.stringify(true));
+      })
     }
   }
 };
