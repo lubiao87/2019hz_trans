@@ -1,7 +1,7 @@
 <template>
   <div class="bao-zhan">
     <!-- <b-head :showBack="true" :title="title" @click="setMyTime"></b-head> -->
-    <div class="base-box">
+    <!-- <div class="base-box">
       <div class="base-container flex flex-middle">
         <span class="head-back" @click="goBack">
           <span class="iconfont">&#xe616;</span>
@@ -11,7 +11,7 @@
         >
         <span class="head-slot"></span>
       </div>
-    </div>
+    </div> -->
     <div class="content">
       <tab :line-width="0">
         <tab-item
@@ -72,7 +72,6 @@ export default {
     };
   },
   created() {
-    console.log(this.$route.params.tabName);
     this.viewsName = this.$route.params.tabName || "onlineList";
   },
   mounted() {
@@ -99,6 +98,8 @@ export default {
 .bao-zhan {
   .router-box {
     height: 100%;
+    padding-top: 102px;
+    box-sizing: border-box;
   }
   .vux-tab-container {
     height: 100% !important;
@@ -155,6 +156,7 @@ export default {
   }
   .content {
     height: 100%;
+    position: relative;
     .active-1 {
       width: 153px;
       height: 61px;
@@ -177,14 +179,18 @@ export default {
   font-size: $font_little;
   .base-box {
     border-bottom: 0.01333rem solid #fff;
-    position: relative;
+    // position: relative;
     .head-title {
       position: relative;
     }
   }
   .vux-tab-wrap {
+    width: 100%;
     height: 102px;
     padding-top: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
   }
 }
 </style>

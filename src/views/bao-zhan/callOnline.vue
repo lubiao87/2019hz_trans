@@ -1,32 +1,43 @@
 <template>
   <div class="callOnline">
-    <div class="list">
-      <div
-        class="item"
-        v-for="(item, index) in lists"
-        :key="index"
-        @click="lookDetails(item)"
-      >
-        <div class="top">
-          <div class="img">
-            <img :src="item.num0" alt />
-          </div>
-          <div class="container">
-            <div class="left item_commom">
-              <span>{{ item.num }}</span>
-              <span class="item2">{{ item.num3 }}</span>
+    <v-scroll-full
+      ref="myscrollfull"
+      @load="loadData"
+      class="scroll-top"
+      v-infinite-scroll="loadMores"
+      infinite-scroll-disabled="busy"
+      infinite-scroll-distance="30"
+    >
+      <div class="list">
+        <div
+          class="item"
+          v-for="(item, index) in lists"
+          :key="index"
+          @click="lookDetails(item)"
+        >
+          <div class="top">
+            <div class="img">
+              <span class="iconfont icon-huchu img_icon_blue" v-if="item.callingPhone"></span>
+              <span class="iconfont icon-tonghua img_icon_blue" v-if="item.calledPhone&&!item.callingPhone"></span>
+              <span class="iconfont icon-weijiedianhua img_icon_grey" v-if="item.STATUS!=0"></span>
             </div>
-            <div class="right item_commom1">
-              <div class="more1">
-                <span>{{ item.num2 }}</span>
-                <span class="item2 ansower">{{ item.TaklTime }}</span>
+            <div class="container">
+              <div class="left item_commom">
+                <span>{{ item.repairoperName }}</span>
+                <span class="item2" :class="{'redColor':item.status==1}">{{ item.callingPhone || item.calledPhone|| '未知' }}</span>
               </div>
-              <img class="more2" src="img/turn_right.png" />
+              <div class="right item_commom1">
+                <div class="more1">
+                  <span>{{ changeDate('Y-M-D h:m',item.startTime) || '未知'}}</span>
+                  <span class="item2 ansower">通话时长：{{ callTime(item.startTime,item.endTime) }}</span>
+                </div>
+                <img class="more2" src="img/turn_right.png" />
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </v-scroll-full>
   </div>
 </template>
 <script>
@@ -34,9 +45,15 @@
 // import TabItem from "vux/src/components/tab/tab-item";
 // import { Tab, TabItem } from "vux";
 // import { XButton } from "vux";
+import  { listSearchMixin } from "@/mixin";
+import {api4} from "@/api/api"
+import {formatDate,calculateTime} from '@/utils/public.js'
+import VScrollFull from "@/components/mescroll/downScroll";
 
 export default {
+  mixins: [listSearchMixin],
   components: {
+    VScrollFull
     // Tab,
     // TabItem,
     // XButton
@@ -44,24 +61,28 @@ export default {
   data: function() {
     return {
       lists: [
-        {
-          num0: "./img/call.png",
-          num: "苏大强",
-          num2: "6月11日 17:30",
-          num3: "13332147878",
-          TaklTime: "通话时长：30:25"
-        },
-        {
-          num0: "./img/call.png",
-          num: "苏小强",
-          num2: "6月11日 17:30",
-          num3: "13332147878",
-          TaklTime: "通话时长：30:25"
-        }
-      ]
+        // {
+        //   repairoperName: "苏大强",
+        //   startTime: "6月11日 17:30",
+        //   callingPhone: "13332147878",
+        //   TaklTime: "通话时长：30:25"
+        // },
+        // {
+        //   repairoperName: "苏小强",
+        //   startTime: "6月11日 17:30",
+        //   calledPhone: "13332147878",
+        //   TaklTime: "通话时长：30:25"
+        // }
+      ],
+      userId: '5456',
+      totalNum: '',
+      pageNum: 1,
+      rows: 8
     };
   },
-  created() {},
+  created() {
+    this.getCallLists();
+  },
   mounted() {
     // this.alertShow();
   },
@@ -74,7 +95,46 @@ export default {
           data: { id: 23 }
         }
       });
-    }
+    },
+    getCallLists() {
+      let params = {
+        method: 'GET',
+        url: api4.callListByCustId,
+        data: {
+          custId: this.userId,
+          page: this.pageNum,
+          rows: this.rows
+        }
+      };
+      this.sendReq(params, res => {
+        console.log(res)
+        if(res.respHeader.resultCode == 0) {
+          let resData = res.respBody;
+          this.lists = this.lists.concat(resData.callList);
+          this.totalNum = resData.total;
+        }
+      })
+    },
+    //改变时间格式
+    changeDate(format, time) {
+      return formatDate(format, time);
+    },
+    //计算通话时长
+    callTime(timeS,timeE) {
+      return calculateTime(timeS,timeE)
+    },
+    loadData() {
+      this.pageNum = 1;
+      this.getCallLists();
+    },
+    loadMores() {
+      let currTotal = this.pageNum * this.rows;
+      console.log(currTotal)
+      if(currTotal < this.totalNum) {
+        this.pageNum ++;
+        this.getCallLists();
+      }
+    },
   }
 };
 </script>
@@ -85,6 +145,7 @@ export default {
   background: $background-color-themesec;
   height: 100%;
   padding: 18px 14px 0 14px;
+  // overflow-y: auto;
   .list {
     // background: $background-color-theme;
     .item {
@@ -105,11 +166,14 @@ export default {
           background: $background-color-theme;
 
           margin-right: 16px;
-          img {
-            width: 100%;
-            height: 100%;
+          .img_icon_blue {
+            color: #4487F6;
+          }
+          .img_icon_grey {
+            color: #999;
           }
         }
+        
         .container {
           font-size: $font_little;
           font-family: PingFang-SC-Medium;
@@ -146,6 +210,9 @@ export default {
             .ansower {
               color: #999999;
               text-align: right;
+            }
+            .redColor {
+              color: #ED4343;
             }
           }
         }

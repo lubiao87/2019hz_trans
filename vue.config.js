@@ -44,7 +44,15 @@ module.exports = {
         pathRewrite: {
           "^/transApp2": "/"
         }
-      }
+      },
+      "/DtransApp": {
+        target: "http://192.168.1.35:8099/transApp", //段聪聪
+        changeOrigin: true,
+        ws: true,
+        pathRewrite: {
+          "^/DtransApp": "/"
+        }
+      },
     },
     disableHostCheck: true
   },

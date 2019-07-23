@@ -18,7 +18,12 @@
       >
     </tab>
     <div class="list">
-      <div class="item" v-for="(item, index) in lists" :key="index">
+      <div
+        class="item"
+        v-for="(item, index) in lists"
+        :key="index"
+        @click="serviceOrdersDetail"
+      >
         <img class="has_call" src="img/has_call.png" />
         <div class="top">
           <div class="img">
@@ -91,6 +96,13 @@ export default {
   methods: {
     onTabClick(tab) {
       this.tabName = tab;
+    },
+    serviceOrdersDetail() {
+      console.log("serviceOrdersDetail");
+      this.$router.push({
+        name: "serviceOrdersDetail",
+        params: { data: null }
+      });
     }
   }
 };
@@ -185,6 +197,7 @@ export default {
           line-height: 44px;
           background: $font-color-theme2;
           border-radius: 6px;
+          font-size: $font_little;
         }
         .commite2 {
           width: 133px;
@@ -193,6 +206,7 @@ export default {
           background: $font-color-theme2;
           border-radius: 6px;
           margin-left: 28px;
+          font-size: $font_little;
         }
       }
     }

@@ -204,6 +204,7 @@ export default {
           line-height: 44px;
           background: rgba(68, 135, 246, 1);
           border-radius: 6px;
+          font-size: $font_little;
         }
         .commite2 {
           width: 133px;
@@ -212,6 +213,7 @@ export default {
           background: rgba(68, 135, 246, 1);
           border-radius: 6px;
           margin-left: 28px;
+          font-size: $font_little;
         }
       }
     }

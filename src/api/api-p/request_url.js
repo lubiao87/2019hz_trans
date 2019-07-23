@@ -10,5 +10,6 @@ export default BSEURL => {
     getComplainDetail: BSEURL + "/complain/getComplainDetail",//投诉建议单详情
     reportingObstacles: BSEURL + "/reporting/reportingObstacles", //一键报障
     getLists: BSEURL + "/complain/getComplainByCustIdAndStatus", //我的投诉记录
+    callListByCustId: BSEURL + "/call/callListByCustId", //用户一键呼叫记录
   };
 };

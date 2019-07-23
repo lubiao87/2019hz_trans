@@ -15,18 +15,18 @@
         infinite-scroll-distance="30"
       >
         <div class="router-box">
-          <div class="list" v-for="(item, index) in dataList" :key="index + 'jw'">
+          <div class="list" v-for="(item, index) in complainLists" :key="index + 'jw'">
             <div class="user-name">
               <div class="title">用户名称</div>
-              <div class="txt">{{ item.userName }}</div>
+              <div class="txt">{{ item.custId }}</div>
             </div>
             <div class="odd-number">
               <div class="title">投诉单号</div>
-              <div class="txt">{{ item.accNumber }}</div>
+              <div class="txt">{{ item.complainId }}</div>
             </div>
             <div class="complaint-details">
               <div class="title">投诉内容</div>
-              <div class="txt">{{ item.contentComplaint }}</div>
+              <div class="txt">{{ item.content }}</div>
             </div>
             <div class="ping-jia" v-if="tableName === '待评价'">
               <div class="btn">评价</div>
@@ -58,8 +58,10 @@ export default {
   },
   data: function() {
     return {
-      page: 1,
-      rows: 5,
+      page: 1, //页数
+      rows: 5, //数量
+      busy: true,
+      flag: false,
 
       status: 0,
       title: "我的投诉记录",
@@ -105,7 +107,8 @@ export default {
           accNumber: "F201906101234",
           contentComplaint: "装维工程师服务态度不好"
         }
-      ]
+      ],
+      complainLists: []
     };
   },
   created() {},
@@ -119,10 +122,11 @@ export default {
 
       this.busy = true;
 
-      setTimeout(() => {
-        that.evaluteList();
-        that.busy = false;
-      }, 1000);
+      
+        this.page++;
+        that.evaluteList(true);
+        
+     
     },
     evaluteList() {
       const self = this;
@@ -132,7 +136,7 @@ export default {
         url:
           api.getLists +
           "?custId=" +
-          "T2019/07/04-2344" +
+          "testId" +
           "&status=" +
           this.status +
           "&page=" +
@@ -145,12 +149,36 @@ export default {
         }
       };
       self.sendReq(params, res => {
-        console.log(res);
+        if (res.respHeader.resultCode == 0) {
+          // let respBody = res.respBody;
+          // let complainList = res.respBody.complainList;
+          if (this.flag) {
+            this.complainLists = this.complainLists.concat( res.respBody.complainList); //concat数组串联进行合并
+            if (this.complainLists.length>=res.respBody.total) {
+              //如果数据加载完 那么禁用滚动时间 this.busy设置为true
+              // console.log("res.result.count" + res.result.count);
+              // console.log(this.goodsList);
+              this.busy = true;
+              console.log("this.busy:" + this.busy);
+            } else {
+              this.busy = false;
+              console.log("res.result.count" + res.result.count);
+            }
+          }else{//第一次进入页面 完全不需要数据拼接的
+          console.log('000')
+						this.complainLists= res.respBody.complainList;
+            this.busy=false;
+            	this.flag=true;
+					}
+
+        }
       });
     },
     onTabClick(link) {
+      this.page = 1;
       this.status = link;
       this.evaluteList();
+
     }
   }
 };
@@ -168,6 +196,7 @@ export default {
       background-color: $background-color-theme;
       margin-bottom: 20px;
       border-radius: 8px;
+      // padding: 60px 0;
       & > div {
         overflow: hidden;
         & > div {

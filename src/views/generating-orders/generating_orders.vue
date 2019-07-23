@@ -73,7 +73,7 @@
 
       <group class="obstacles obstacles2" title="期望上门时间">
         <div class="pleaseChoose" @click="showdateSingle = true">
-          {{ homeTime}}
+          {{ homeTime }}
         </div>
       </group>
       <div class="foot-box">
@@ -127,8 +127,8 @@ import {
 } from "vux";
 import date from "@/components/datepicker/datePicker";
 import dateHours from "@/components/datepicker/dateHours";
-import  { listSearchMixin } from "@/mixin";
-import {api} from "@/api/api"
+import { listSearchMixin } from "@/mixin";
+import { api } from "@/api/api";
 
 export default {
   mixins: [listSearchMixin],
@@ -148,7 +148,7 @@ export default {
   },
   data: function() {
     return {
-      title: '生成服务单',
+      title: "生成服务单",
       colorChange: false,
       showBack: true,
       menuList: [
@@ -223,7 +223,7 @@ export default {
       showdateHours: false,
       show5: false,
       textareaValve: "",
-      childData: {},
+      childData: {}
     };
   },
   computed: {
@@ -235,7 +235,7 @@ export default {
     }),
     ...mapGetters("collection", {
       //用mapGetters来获取collection.js里面的getters
-      arrList: "renderCollects",
+      arrList: "renderCollects"
     }),
     homeTime() {
       let value = this.showSingle + " " + this.HHMMListValue;
@@ -292,21 +292,21 @@ export default {
       this.childData = data;
     },
     confirmOrders() {
-      if(!this.textareaValve) {
+      if (!this.textareaValve) {
         this.$vux.toast.show({
-          text: '请输入报障内容',
-          type: 'text',
-          position: 'middle',
-          width: '50%'
-        })
+          text: "请输入报障内容",
+          type: "text",
+          position: "middle",
+          width: "50%"
+        });
         return;
       }
-      if(this.textareaValve.length > 100) {
+      if (this.textareaValve.length > 100) {
         this.$vux.toast.show({
-          text: '请控制在100字以内',
-          type: 'text',
-          position: 'middle'
-        })
+          text: "请控制在100字以内",
+          type: "text",
+          position: "middle"
+        });
         return;
       }
       this.show5 = true;
@@ -319,37 +319,37 @@ export default {
       const self = this;
       console.log("onConfirm5");
       let formData = new FormData();
-      formData.append("reportContent",this.textareaValve);
-      formData.append("orderId",this.menuList[0].value);
-      formData.append("productNumber",'ADSL12345685');
-      formData.append("custId",'6845555');
-      formData.append("linkman","小黄");
-      formData.append("linkphone",1344445555);
-      formData.append("productAddress","天河区建中路66号");
-      formData.append("expectTime","2019-07-17 10:00");
-      formData.append("repairoperId","9999855");
-      formData.append("source",0);
-      formData.append("file",this.childData);
+      formData.append("reportContent", this.textareaValve);
+      formData.append("orderId", this.menuList[0].value);
+      formData.append("productNumber", "ADSL12345685");
+      formData.append("custId", "6845555");
+      formData.append("linkman", "小黄");
+      formData.append("linkphone", 1344445555);
+      formData.append("productAddress", "天河区建中路66号");
+      formData.append("expectTime", "2019-07-17 10:00");
+      formData.append("repairoperId", "9999855");
+      formData.append("source", 0);
+      formData.append("file", this.childData);
       let params = {
         url: api.generateOrder,
-        contentType: 'form-data',
+        contentType: "form-data",
         data: formData
-      }
-      self.sendReq(params, (res) => {
-        if(res.respHeader.resultCode == 0) {
+      };
+      self.sendReq(params, res => {
+        if (res.respHeader.resultCode == 0) {
           self.$vux.toast.show({
-            text: '推送成功！',
-            type: 'text',
-            position: 'middle',
-            width: '50%'
-          })
+            text: "推送成功！",
+            type: "text",
+            position: "middle",
+            width: "50%"
+          });
           self.$store.dispatch("collection/ORDERS_DATA", {
             state: 0,
             stateValue: "处理中"
           });
           this.$router.go(-1);
         }
-      })
+      });
     },
     onHide() {
       console.log("on hide");
@@ -359,14 +359,14 @@ export default {
     },
     getOrderId() {
       let params = {
-        method: 'GET',
+        method: "GET",
         url: api.getOrderId
-      }
+      };
       this.sendReq(params, res => {
-        if(res.respHeader.resultCode == 0) {
+        if (res.respHeader.resultCode == 0) {
           this.menuList[0].value = res.respBody.orderId;
         }
-      })
+      });
     },
     cancelBack() {
       this.$router.go(-1);
@@ -456,10 +456,11 @@ export default {
     }
     .foot-box {
       width: 100%;
-      height: 160px;
+      height: 140px;
       box-shadow: $border-color-theme 10px 0px 20px 4px;
       display: flex;
-      padding: 20px;
+      padding: 0 20px;
+      align-items: center;
       & > div {
         flex: 1;
         display: flex;

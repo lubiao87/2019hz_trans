@@ -1,5 +1,5 @@
 <template>
-  <div id="app" style="width: 100%;height: 100%;">
+  <div id="app" style="width: 100%;height: 100%;overflow:hidden">
     <transition :name="transitionName">
       <keep-alive>
         <router-view class="child-view" v-if="$route.meta.keepAlive">

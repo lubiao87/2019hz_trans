@@ -6,7 +6,7 @@
         <span class="head-back" @click="goBack">
           <span class="iconfont">&#xe616;</span>
         </span>
-        <span class="head-title table-cell" @click="setMyTime">在岗</span>
+        <span class="head-title table-cell">在岗</span>
         <span class="head-slot"></span>
       </div>
     </div>
@@ -40,6 +40,12 @@
       <div class="router-box">
         <component v-bind:is="viewsName" :key="viewsName"></component>
       </div>
+      <img
+        src="../../assets/images/set-wooks.png"
+        class="set-wooks"
+        alt="设置工作状态"
+        @click="setMyTime"
+      />
     </div>
   </div>
 </template>
@@ -167,6 +173,13 @@ export default {
       }
     }
   }
+  .set-wooks {
+    position: absolute;
+    right: 40px;
+    bottom: 40px;
+    width: 104px;
+    height: 104px;
+  }
 }
 </style>
 <style lang="scss">
@@ -179,14 +192,14 @@ export default {
     .head-title {
       position: relative;
     }
-    .head-title::after {
-      content: "﹀";
-      display: inline-block;
-      position: absolute;
-      top: 8px;
-      color: $font-color-theme;
-      right: -60px;
-    }
+    // .head-title::after {
+    //   content: "﹀";
+    //   display: inline-block;
+    //   position: absolute;
+    //   top: 8px;
+    //   color: $font-color-theme;
+    //   right: -60px;
+    // }
   }
   .vux-tab-wrap {
     height: 102px;

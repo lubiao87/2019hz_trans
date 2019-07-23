@@ -8,6 +8,8 @@ const BASEURL =
   process.env.NODE_ENV === "development" ? "/transApp" : "/transApp";
 const BASEURL2 =
   process.env.NODE_ENV === "development" ? "/transApp2" : "/transApp2";
+const BASEURL4 =
+  process.env.NODE_ENV === "development" ? "/DtransApp" : "/DtransApp";
 const txfwapp =
   process.env.NODE_ENV === "development" ? "/wx-course" : "/wx-course";
 // console.log(process.env);
@@ -20,4 +22,7 @@ export const api2 = {
 export const api3 = {
   ...reqUrl3(BASEURL2)
 };
-export default [api, api2, api3];
+export const api4 = {
+  ...reqUrl(BASEURL4)
+};
+export default [api, api2, api3,api4];
