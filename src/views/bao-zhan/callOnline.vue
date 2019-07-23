@@ -88,11 +88,12 @@ export default {
   },
   methods: {
     lookDetails(item) {
-      console.log(item);
       this.$router.push({
         name: "callRecord",
         params: {
-          data: { id: 23 }
+          repairoperId: item.repairoperId,
+          custId: item.custId,
+          repairoperName: item.repairoperName
         }
       });
     },
@@ -113,6 +114,10 @@ export default {
           this.lists = this.lists.concat(resData.callList);
           this.totalNum = resData.total;
         }
+        //数据渲染成功后,隐藏下拉刷新的状态
+        this.$nextTick(() => {
+          this.$refs.myscrollfull.mescroll.endSuccess();
+        });
       })
     },
     //改变时间格式
@@ -125,6 +130,7 @@ export default {
     },
     loadData() {
       this.pageNum = 1;
+      this.lists = [];
       this.getCallLists();
     },
     loadMores() {

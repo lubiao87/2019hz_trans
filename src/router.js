@@ -36,7 +36,7 @@ export default new Router({
       path: "/chatOnline",
       name: "chatOnline",
       meta: {
-        keepAlive: false // 缓存
+        keepAlive: true // 缓存
       },
       component: () => import("@/views/chat-online/chat_online.vue")
     },
@@ -200,7 +200,8 @@ export default new Router({
       meta: {
         keepAlive: true
       },
-      component: () => import("@/views/installation-ngineer/ngineer_service_orders_detail.vue")
+      component: () =>
+        import("@/views/installation-ngineer/ngineer_service_orders_detail.vue")
     },
     // 在岗
     {

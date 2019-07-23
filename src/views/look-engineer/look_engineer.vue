@@ -8,8 +8,7 @@
         active-class="active-1"
         @on-item-click="onTabClick(item.topX)"
         :selected="item.selected"
-        >{{ item.name }}</tab-item
-      >
+      >{{ item.name }}</tab-item>
     </tab>
     <!-- <div> -->
     <!-- <div class="gray-bg"></div> -->
@@ -22,20 +21,15 @@
       infinite-scroll-distance="3000"
     >
       <div class="router-box" ref="routerBox1">
-        <!-- <component
-            v-bind:is="viewsName"
-            :key="viewsName"
-            @childrenData="getChildData"
-          ></component> -->
-        <map-area></map-area>
+        <map-area :datasMap="datasMap"></map-area>
       </div>
       <div class="router-box" ref="routerBox2">
-        <acc-search></acc-search>
+        <acc-search :datasAccount="datasAccount"></acc-search>
       </div>
       <div class="router-box">
-        <other-search @childrenData="getChildData"></other-search>
+        <other-search @childrenData="getChildData1"></other-search>
       </div>
-      <codeInput :showFlag="showInputBox" @childrenData="getChildData" />
+      <codeInput :showFlag="showInputBox" @childrenData2="getChildData2" />
     </div>
     <!-- </div> -->
   </div>
@@ -49,8 +43,11 @@ import mapArea from "@/views/look-engineer/mapArea.vue";
 import accSearch from "@/views/look-engineer/ACCSearch.vue";
 import otherSearch from "@/views/look-engineer/otherSearch.vue";
 import CodeInput from "@/components/codeInput/codeInput";
+import { listSearchMixin } from "@/mixin";
+import { api3, api } from "@/api/api";
 // import VScrollFull from "@/components/mescroll/downScroll";
 export default {
+  mixins: [listSearchMixin],
   components: {
     BHead,
     Tab,
@@ -67,6 +64,8 @@ export default {
       viewsName: "mapArea",
       showInputBox: false,
       scrollTop: 0,
+      datasMap: [],
+      datasAccount:[],
       tabList: [
         {
           name: "区域查询",
@@ -93,6 +92,9 @@ export default {
   created() {},
   mounted() {
     // this.alertShow();
+    this.engineerNum();
+    this.engineerIndex();
+
     this.$nextTick(() => {
       this.heightBox1 = this.$refs.routerBox1.offsetHeight;
       this.heightBox2 = this.$refs.routerBox2.offsetHeight;
@@ -104,6 +106,122 @@ export default {
     });
   },
   methods: {
+    engineerIndex() {
+      console.log("111");
+      const self = this;
+      let params = {
+        url:
+          api3.findenginnerByLAL +
+          "?longitude=" +
+          "2829711" +
+          "&latitude=" +
+          "123456"
+      };
+      // let params = {
+      //   url: api.findenginnerByOtherCode,
+      //   data: {
+      //     longitude: "2829711",
+      //     latitude: "123456"
+      //   }
+      // };
+      console.log(params);
+      self.sendReq(params, res => {
+        console.log(res);
+        if (res.respHeader.resultCode == 0) {
+          console.log("000");
+          let datas = res.respBody.data;
+          let arr = [];
+          arr.push(datas);
+          res.respBody.arr = arr;
+          res.respBody.arr[0].src = datas.repairoperPhoto;
+          res.respBody.arr[0].title = datas.repairoperName;
+          res.respBody.arr[0].desc = datas.branchName;
+          res.respBody.arr[0].id = datas.id;
+          console.log("888");
+          console.log(arr);
+          console.log(res.respBody.arr);
+          self.datasMap = res.respBody.arr;
+        }
+      });
+    },
+    engineerNum() {
+      console.log("111");
+      const self = this;
+      let params = {
+        method: "get",
+        url: api.findenginnerByBdCode
+      };
+
+      console.log(params);
+      self.sendReq(params, res => {
+        console.log(res);
+        if (res.respHeader.resultCode == 0) {
+          console.log(res);
+          if (res.respHeader.resultCode == 0) {
+            console.log("000");
+            let datas = res.respBody.data;
+            let arr = [];
+            datas.map((item, index) => {
+              item.accDetail.idx='0'+index;
+              arr.push(item.enginner);
+              item.enginner = arr;
+              item.enginner[0].src = item.enginner[0].repairoperPhoto;
+              item.enginner[0].title = item.enginner[0].repairoperName;
+              item.enginner[0].desc = item.enginner[0].branchName;
+              item.enginner[0].id = item.enginner[0].id;
+            });
+            console.log(8910);
+            console.log(datas);
+            self.datasAccount = datas;
+          }
+        }
+      });
+    },
+    getChildData1(data) {
+      console.log(789);
+      this.valuePhone = data.valuePhone;
+      this.showInputBox = data.showInputBox;
+    },
+    //  getChildData2(data){
+    //     console.log(data)
+    // },
+    getChildData2(data) {
+      data.code = data.code.toString().replace(/,/g, "");
+      data.valuePhone = this.valuePhone;
+      console.log(data);
+      if (data.routerLink) {
+        this.$router.push({ name: data.routerLink, params: data });
+      }
+      // this.state = 2;
+      // const self = this;
+      // console.log("onConfirm5");
+      // let params = {
+      //   method: "post",
+      //   url: api.findenginnerByOtherCode,
+      //   data: {
+      //     phone: this.valuePhone,
+      //     card: this.code
+      //   }
+      // };
+      // console.log(params.data);
+      // self.sendReq(params, res => {
+      //   // console.log(res);
+      //   // if (res.respHeader.resultCode == 0) {
+      //   //   let respBody=res.respBody.complainDetail;
+      //   //   let picPaths=res.respBody.picPaths
+      //   //   self.menuList[0].value = respBody.complainId;
+      //   //   self.menuList[1].value = respBody.type;
+      //   //   self.menuList[2].value =respBody.custname;
+      //   //   self.menuList[3].value = respBody.linkname;
+      //   //   self.menuList[4].value = respBody.linkphone;
+      //   //   self.receves =respBody.content;
+      //   //   self.status =respBody.status;
+      //   //   self.imgs =picPaths;
+      //   //   picPaths
+      //   //   console.log( self.imgs)
+      //   // }
+      // });
+    },
     onTabClick(value) {
       console.log(value);
       this.$refs.myscrollfull.scrollTop = value;

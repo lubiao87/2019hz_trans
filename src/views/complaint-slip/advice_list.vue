@@ -51,7 +51,7 @@
         <img :src="item.img1" alt />
       </div>
     </div>
-    <div class="gray-bg"></div>
+    <div class="gray-bg"  v-if="status==1 || status==2"></div>
     <complaint-state v-if="status==1 || status==2"></complaint-state>
     <!-- <float-btn :text="floatText" @onFloatBtnClicked="floatClick" :key="floatText" :itemWidth="130" /> -->
   </div>
@@ -167,7 +167,7 @@ export default {
       this.state = 2;
     },
     evaluate() {
-      this.$router.push({ name: "adviceEvaluate" });
+      this.$router.push({ name: "adviceEvaluate",params:{  data: this.menuList[0].value} });
     },
     adviceLists() {
       console.log(this.checkedValue);

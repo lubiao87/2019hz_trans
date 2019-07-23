@@ -7,7 +7,7 @@ import reqUrl3 from "./api-p/request2_url";
 const BASEURL =
   process.env.NODE_ENV === "development" ? "/transApp" : "/transApp";
 const BASEURL2 =
-  process.env.NODE_ENV === "development" ? "/transApp2" : "/transApp2";
+  process.env.NODE_ENV === "development" ? "/lTransApp" : "/lTransApp";
 const BASEURL4 =
   process.env.NODE_ENV === "development" ? "/DtransApp" : "/DtransApp";
 const txfwapp =

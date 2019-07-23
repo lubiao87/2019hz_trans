@@ -11,23 +11,13 @@
         <div class="modules1 vux-1px-b">
           <group class="group1">
             <div class="title">1. 投诉问题是否解决</div>
-            <radio
-              class="lb-radio"
-              :options="radio001"
-              @on-change="change1"
-              v-model="optionModel1"
-            ></radio>
+            <radio class="lb-radio" :options="radio001" @on-change="change1" v-model="optionModel1"></radio>
           </group>
         </div>
         <div class="modules1 vux-1px-b">
           <group class="group1">
             <div class="title">2. 处理过程是否满意</div>
-            <radio
-              class="lb-radio"
-              :options="radio002"
-              @on-change="change2"
-              v-model="optionModel2"
-            ></radio>
+            <radio class="lb-radio" :options="radio002" @on-change="change2" v-model="optionModel2"></radio>
           </group>
           <group class="obstacles" v-show="optionModel2 === '否'">
             <x-textarea
@@ -36,18 +26,14 @@
               placeholder="请输入不满意的原因"
               @on-focus="textareaEvent('focus')"
               @on-blur="textareaEvent('blur')"
+              v-model="textContent1"
             ></x-textarea>
           </group>
         </div>
         <div class="modules1 vux-1px-b">
           <group class="group1">
             <div class="title">3. 意见或者建议</div>
-            <radio
-              class="lb-radio"
-              :options="radio003"
-              @on-change="change3"
-              v-model="optionModel3"
-            ></radio>
+            <radio class="lb-radio" :options="radio003" @on-change="change3" v-model="optionModel3"></radio>
           </group>
           <group class="obstacles" v-show="optionModel3 === '否'">
             <x-textarea
@@ -56,23 +42,27 @@
               placeholder="请输入投诉建议内容 拷贝"
               @on-focus="textareaEvent2('focus')"
               @on-blur="textareaEvent2('blur')"
+              v-model="textContent2"
             ></x-textarea>
           </group>
         </div>
       </div>
+      <div class="bottom" @click="evaluteList">提交</div>
     </div>
   </div>
 </template>
 <script>
 import { Rater } from "vux";
 import { Radio } from "vux";
+import { api } from "@/api/api";
 // import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
 import BHead from "@/components/base/B-Head";
 // import ImgUploader from "@/components/imgUploader/imgUploader";
 import { XInput, Group, XTextarea } from "vux";
 import FloatBtn from "@/components/dragBox/floatBtn";
-
+import { listSearchMixin } from "@/mixin";
 export default {
+  mixins: [listSearchMixin],
   components: {
     BHead,
     Rater,
@@ -89,12 +79,38 @@ export default {
       radio002: ["是", "否"],
       optionModel2: "否",
       radio003: ["是", "否"],
-      optionModel3: "否"
+      optionModel3: "否",
+      textContent1: "",
+      textContent2: ""
     };
   },
   computed: {},
   created() {},
   methods: {
+    evaluteList() {
+      const self = this;
+
+      let params = {
+        method: "post",
+        url: api.evaluationComplain,
+        data: {
+          "serviceId ": this.danhao,
+          "type  ": 1,
+          "custId  ": "T2019/07/04-2344",
+          "totalityStar   ": this.startValue,
+          "isResolve    ": this.optionModel1,
+          "isSatisfied    ": this.optionModel1,
+          "ussatisfiedReason  ": this.textContent1,
+          "suggestContent  ": this.textContent2
+        }
+      };
+      self.sendReq(params, res => {
+        console.log(res);
+        if (res.respHeader.resultCode == 0) {
+          this.$router.go(-1);
+        }
+      });
+    },
     change1(value, label) {
       console.log("change:", value, label);
     },
@@ -111,7 +127,10 @@ export default {
       console.log(e);
     }
   },
-  mounted() {},
+  mounted() {
+    this.danhao = this.$route.params.data;
+    console.log(this.danhao);
+  },
   watch: {}
 };
 </script>
@@ -150,6 +169,7 @@ export default {
 <style lang="scss">
 @import "@/assets/scss/base.scss"; /*引入配置*/
 .advice {
+  position: relative;
   .vux-rater a {
     margin-right: 30px !important;
   }
@@ -202,6 +222,22 @@ export default {
   .weui-check__label:active {
     /* background-color: #ECECEC; */
     display: flex;
+  }
+  .bottom {
+    width: 703px;
+    height: 80px;
+    line-height: 80px;
+    background: rgba(68, 135, 246, 1);
+    border-radius: 10px;
+    font-size: 34px;
+    font-family: PingFang-SC-Medium;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 1);
+    margin: 0 auto;
+    text-align: center;
+    position: absolute;
+    bottom: 20px;
+    left: 24px;
   }
 
   .middle {

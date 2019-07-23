@@ -55,6 +55,7 @@ export default {
   },
   methods: {
     handleInput(e, index) {
+      console.log(this.code)
       this.currentIndex = index;
       e.target.value = this.validateNumber(e.target.value);
       e.target.value !== "" && ++this.currentIndex;
@@ -75,14 +76,15 @@ export default {
       let data = {
         showInputBox: false
       };
-      this.$emit("childrenData", data);
+      // this.$emit("childrenData", data);
     },
     submitCode() {
       let data = {
         showInputBox: false,
-        routerLink: "searchResult"
+        routerLink: "searchResult",
+        code:this.code
       };
-      this.$emit("childrenData", data);
+      this.$emit("childrenData2", data);
     }
   },
   data() {

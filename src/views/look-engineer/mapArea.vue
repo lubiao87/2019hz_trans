@@ -8,9 +8,7 @@
     </div>
     <div id="locationMap" class="locationMap"></div>
     <div class="current-location">
-      <div class="stip">
-        当前位置
-      </div>
+      <div class="stip">当前位置</div>
       <div class="location-btn vux-1px-b flex" @click="routerGo">
         <div class="location-img">
           <div></div>
@@ -21,14 +19,13 @@
         </div>
       </div>
       <div class="panel-boxs">
-        <p class="result">所在区域为您找到 <span>1</span> 名服务工程师</p>
+        <p class="result">
+          所在区域为您找到
+          <span>1</span> 名服务工程师
+        </p>
         <div class="panel-box">
-          <panel
-            :list="panelList"
-            type="1"
-            @on-click-item="onevaSheetLook"
-          ></panel>
-          <span class="iconfont iconfont-set">&#xe68b;</span>
+          <panel :list="datasMap" type="1" @on-click-item="onevaSheetLook"></panel>
+          <span class="iconfont iconfont-set" @click="change">&#xe68b;</span>
         </div>
       </div>
     </div>
@@ -61,6 +58,14 @@ import { api2 } from "../../api/api"; //api配置请求的路径
 import qs from "qs";
 
 export default {
+  props: {
+    datasMap: {
+      type: Array,
+      default: function() {
+        return [];
+      }
+    }
+  },
   components: {
     Search,
     Panel
@@ -182,6 +187,10 @@ export default {
     checkJsApiSuccess(res) {
       alert("纬度: " + res.latitude + ", 经度： " + res.longitude);
       console.log("checkJsApiSuccess :" + res);
+    },
+    change() {
+      console.log(this.datas);
+      console.log("11199");
     },
     // 点击名片
     onevaSheetLook(item) {

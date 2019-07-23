@@ -1,37 +1,23 @@
 <template>
-  <div class="acc-search">
-    <div class="title">
-      绑定账号查
-    </div>
-    <div class="stip">
-      当前绑定账号
-    </div>
+  <div class="acc-search-engineer">
+    <div class="title">绑定账号查</div>
+    <div class="stip">当前绑定账号</div>
     <div class="phone-box">
       <span class="iconfont">&#xe61b;</span>
       <div class="phone-number">189****4556</div>
       <div class="this-stip">手机号</div>
     </div>
     <div class="engineer-list">
-      <div
-        class="engineer"
-        v-for="(item, index) in datasAccount"
-        :key="index + 'jse'"
-      >
-        <div class="index vux-1px">{{ item.accDetail.accNum}}</div>
-        <p class="text-1">{{ item.accDetail.addressDesc}}</p>
+      <div class="engineer" v-for="(item, index) in datas" :key="index + 'jse'">
+        <div class="index vux-1px">{{ item.accDetail.accNum }}</div>
+        <p class="text-1">{{ item.accDetail.addressDesc }}</p>
         <p class="text-2" @click="generatingOrders">
-          业务号码 <span class="businees-number">{{item.accDetail.contactPhone}}</span>
+          业务号码
+          <span class="businees-number">{{item.accDetail.contactPhone}}</span>
         </p>
         <div class="eg-box vux-1px-t">
-          <div class="stip">
-            所在区域服务工程师
-          </div>
-          <panel
-            :list="item.enginner"
-            type="1"
-            @on-click-item="onevaSheetLook"
-          >
-          </panel>
+          <div class="stip">所在区域服务工程师</div>
+          <panel :list="item.enginner" type="1" @on-click-item="onevaSheetLook"></panel>
           <span class="iconfont iconfont-set">&#xe68b;</span>
         </div>
       </div>
@@ -46,8 +32,8 @@
 // import qs from "qs";
 import Panel from "vux/src/components/panel";
 export default {
-   props: {
-    datasAccount: {
+  props: {
+    datas: {
       type: Array,
       default: function() {
         return [];
@@ -58,10 +44,12 @@ export default {
     // Search,
     Panel
   },
+  watch:{},
   // mixins: [listSearchMixin],
   data: function() {
     return {
       title: "绑定账号查",
+      enginner:[],
       dataList: [
         {
           number: "01",
@@ -116,12 +104,14 @@ export default {
       });
     }
   },
-  mounted() {}
+  mounted() {
+      
+  }
 };
 </script>
 <style lang="scss" scoped="">
 @import "@/assets/scss/base.scss"; /*引入配置*/
-.acc-search {
+.acc-search-engineer {
   background-color: $background-color-theme;
   padding: 20px 40px;
   border-radius: 10px;
@@ -173,7 +163,7 @@ export default {
       width: 621px;
       // height: 344px;
       padding: 20px;
-      border: 1px solid $border-color-theme;
+      border: 2px solid #DEDEDE;
       margin-top: 20px;
       .index {
         position: absolute;
@@ -224,13 +214,13 @@ export default {
 </style>
 <style lang="scss">
 @import "@/assets/scss/base.scss"; /*引入配置*/
-.acc-search .weui-media-box_appmsg .weui-media-box__hd {
+.acc-search-engineer .weui-media-box_appmsg .weui-media-box__hd {
   margin-left: 0;
   height: 100px;
   margin-right: 20px;
   width: 100px;
 }
-.acc-search .weui-media-box__desc {
+.acc-search-engineer .weui-media-box__desc {
   margin-top: 10px;
 }
 </style>

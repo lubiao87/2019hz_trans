@@ -37,12 +37,12 @@ module.exports = {
           "^/wx-course": "/"
         }
       },
-      "/transApp2": {
+      "/lTransApp": {
         target: "http://192.168.12.118:8099/transApp", // 刘炯
         changeOrigin: true,
         ws: true,
         pathRewrite: {
-          "^/transApp2": "/"
+          "^/lTransApp": "/"
         }
       },
       "/DtransApp": {

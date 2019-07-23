@@ -68,7 +68,10 @@
         value=""
       />
     </div>
-    <float-btn :text="MyordersData.state==-1?'生成服务单':'服务单详情'" @onFloatBtnClicked="floatClick" />
+    <float-btn
+      :text="MyordersData.state == -1 ? '生成服务单' : '服务单详情'"
+      @onFloatBtnClicked="floatClick"
+    />
   </div>
 </template>
 <script>
@@ -131,7 +134,7 @@ export default {
       ID: null,
       animationTime: null,
       left: 0,
-      top: 0,
+      top: 0
     };
   },
   computed: {
@@ -144,19 +147,19 @@ export default {
     ...mapGetters("collection", {
       //用mapGetters来获取collection.js里面的getters
       arrList: "renderCollects",
-      MyordersData: "renderOrdersData",
+      MyordersData: "renderOrdersData"
     })
   },
   created() {
     const self = this;
-    this.ID = this.$route.params.data.id;
+    this.ID = this.$route.params.data.id || "123abc";
     this.animationTime = Date.now();
     console.log(this.$route.params.data.id);
     this.chatList = this.chatList.reverse(); // 假数据倒序，记得注释掉
-    // self.$vux.loading.show({
-    //   text: "正在连接中..."
-    // });
-    // this.initWebSocket();
+    self.$vux.loading.show({
+      text: "正在连接中..."
+    });
+    this.initWebSocket();
   },
   methods: {
     // 点击浮动窗事件
@@ -164,7 +167,10 @@ export default {
       // console.log("点击浮动窗");
       const self = this;
       this.$router.push({
-        name: this.MyordersData.state == -1 ? "generatingOrders" : "serviceOrdersDetail",
+        name:
+          this.MyordersData.state == -1
+            ? "generatingOrders"
+            : "serviceOrdersDetail",
         params: {
           data: self.floatText
         }
@@ -241,7 +247,7 @@ export default {
         self.chatList.unshift({
           name: "用户2",
           gender: "man",
-          text: "真的吗？ ",
+          text: "真的吗？",
           time: "2019-6-10 14:30:36"
         });
         self.chatList.unshift({
@@ -267,7 +273,7 @@ export default {
         self.chatList.unshift({
           name: "用户2",
           gender: "man",
-          text: "兄弟借点钱吧，100给不给 ",
+          text: "兄弟借点钱吧，100给不给",
           time: "2019-6-10 14:30:36"
         });
         //数据渲染成功后,隐藏下拉刷新的状态
@@ -315,7 +321,7 @@ export default {
     // 连接成功发送消息
     websocketonopen2() {
       const self = this;
-      const toSocketid = self.ID === 1 ? 2 : 1;
+      const toSocketid = "7890abc";
       const time = self.getNowFormatDate();
       let data = {
         type: "QUIT", //消息类型    "ENTER";  //用户登录  "SPEAK";  //广播 "QUIT";  //私聊 "WARN";  //警告
@@ -343,10 +349,10 @@ export default {
         this.initWebSocket();
       } else {
         this.showPlugin();
-        setTimeout(() => {
-          self.$vux.loading.hide();
-          self.$router.push({ name: "home" });
-        }, 2000);
+        // setTimeout(() => {
+        //   self.$vux.loading.hide();
+        //   self.$router.push({ name: "home" });
+        // }, 2000);
       }
     },
     //数据已接收
@@ -410,6 +416,18 @@ export default {
           ? "0" + (date.getMonth() + 1)
           : date.getMonth() + 1;
       var strDate = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+      let hours = date.getHours();
+      let Minutes = date.getMinutes();
+      let Seconds = date.getSeconds();
+      if (hours < 10) {
+        hours += "0";
+      }
+      if (Minutes < 10) {
+        Minutes += "0";
+      }
+      if (Seconds < 10) {
+        Seconds += "0";
+      }
       var currentdate =
         date.getFullYear() +
         seperator1 +
@@ -417,21 +435,23 @@ export default {
         seperator1 +
         strDate +
         " " +
-        date.getHours() +
+        hours +
         seperator2 +
-        date.getMinutes() +
+        Minutes +
         seperator2 +
-        date.getSeconds();
+        Seconds;
       return currentdate;
     },
     showPlugin() {
-      this.$vux.loading.show({
+      const self = this;
+      this.$vux.toast.show({
         text: "连接失败返回页面",
-        onShow() {
-          console.log("Plugin: I'm showing");
-        },
+        type: "text",
+        position: "middle",
+        width: "50%",
+        time: 2000,
         onHide() {
-          console.log("Plugin: I'm hiding now");
+          self.$router.go(-1);
         }
       });
     }
@@ -452,25 +472,23 @@ export default {
     // }
     //聊天记录中添加服务单详情
     MyordersData: {
-       handler(newV,oldV) {
-        if(newV.state == 0) {
-          this.chatList.push(
-            {
-              name: "服务单详情", 
-              list: [
-                {
-                  src: "./img/evaSheet.png",
-                  title: "",
-                  desc: "您有一张服务单待评价请点击进行评价>>>",
-                  id: 384
-                }
-              ]
-            },
-          )
+      handler(newV, oldV) {
+        if (newV.state == 0) {
+          this.chatList.push({
+            name: "服务单详情",
+            list: [
+              {
+                src: "./img/evaSheet.png",
+                title: "",
+                desc: "您有一张服务单待评价请点击进行评价>>>",
+                id: 384
+              }
+            ]
+          });
         }
-       },
-        immediate: true,
-       deep: true
+      },
+      immediate: true,
+      deep: true
     }
   },
   // 进入路由时,恢复列表状态
@@ -509,12 +527,12 @@ export default {
     const self = this;
     this.ID = this.$route.params.data;
     this.animationTime = Date.now();
-    // if (!this.websock) {
-    //   self.$vux.loading.show({
-    //     text: "正在连接中..."
-    //   });
-    //   this.initWebSocket();
-    // }
+    if (!this.websock) {
+      self.$vux.loading.show({
+        text: "正在连接中..."
+      });
+      this.initWebSocket();
+    }
   }
 };
 </script>

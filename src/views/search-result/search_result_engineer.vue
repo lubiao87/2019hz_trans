@@ -8,7 +8,7 @@
           <div class="text">查询结束</div>
         </div>
 
-        <acc-search :datas="datas"></acc-search>
+        <acc-search></acc-search>
       </div>
     </div>
   </div>
@@ -16,11 +16,11 @@
 <script>
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
 import BHead from "@/components/base/B-Head";
-import AccSearch from "@/views/look-engineer/ACCSearchEngineer";
+import AccSearch from "@/views/look-engineer/ACCSearch";
 import { listSearchMixin } from "@/mixin";
 import { api } from "@/api/api";
 export default {
-  mixins: [listSearchMixin],
+   mixins: [listSearchMixin],
   components: {
     BHead,
     AccSearch
@@ -33,8 +33,7 @@ export default {
         productName: Math.random(),
         price: new Date().getTime()
       },
-      showBack: false,
-      datas: []
+      showBack: false
     };
   },
   computed: {
@@ -50,44 +49,8 @@ export default {
     })
   },
   created() {},
-  methods: {
-    engineerList() {
-      console.log("111");
-      const self = this;
-      let params = {
-        url:
-          api.findenginnerByOtherCode +
-          "?phone=" +
-          self.data.valuePhone +
-          "&card=" +
-          self.data.code
-      };
-      console.log(params);
-      self.sendReq(params, res => {
-        console.log(res);
-        if (res.respHeader.resultCode == 0) {
-          console.log("000");
-          let datas = res.respBody.data;
-          let arr = [];
-          datas.map((item, index) => {
-            arr.push(item.enginner);
-            item.enginner = arr;
-            item.enginner[0].src = item.enginner[0].repairoperPhoto;
-            item.enginner[0].title = item.enginner[0].repairoperName;
-            item.enginner[0].desc = item.enginner[0].branchName;
-            item.enginner[0].id = item.enginner[0].id;
-          });
-          console.log(arr);
-          console.log(datas);
-          self.datas = datas;
-        }
-      });
-    }
-  },
+  methods: {},
   mounted() {
-    this.data = this.$route.params;
-    console.log(this.data);
-    this.engineerList();
     // console.log(this.$store.state);
   }
 };
@@ -95,16 +58,12 @@ export default {
 <style lang="scss" scoped="">
 @import "@/assets/scss/base.scss"; /*引入配置*/
 .search-result {
-  // .engineer-list{
-
-  // }
   .base-box {
     position: relative;
   }
   .content {
     padding: 25px;
     background-color: $background-color-themesec;
-    height: 100%;
     .content-in {
       background-color: $background-color-theme;
       border-radius: 10px;

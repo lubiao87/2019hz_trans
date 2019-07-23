@@ -21,7 +21,7 @@
       <search
         style="position: flex;"
         :results="results"
-        v-model="value"
+        v-model="valuePhone"
         auto-scroll-to-top
         @on-focus="onFocus"
         @on-cancel="onCancel"
@@ -31,9 +31,7 @@
         placeholder="手机号/宽带/固话/IPTV接入号"
       ></search>
     </div>
-    <div class="submit-btn" :disabled="false" @click="showInputBox">
-      查询
-    </div>
+    <div class="submit-btn" :disabled="false" @click="showInputBox">查询</div>
   </div>
 </template>
 <script>
@@ -45,8 +43,10 @@
 // import Panel from "vux/src/components/panel";
 import Search from "vux/src/components/search";
 import Popover from "vux/src/components/popover";
-
+import { listSearchMixin } from "@/mixin";
+import { api } from "@/api/api";
 export default {
+  mixins: [listSearchMixin],
   components: {
     Search,
     Popover
@@ -57,7 +57,7 @@ export default {
     return {
       title: "其它方式查",
       results: [],
-      value: ""
+      valuePhone: ""
     };
   },
   created() {
@@ -76,7 +76,8 @@ export default {
     },
     showInputBox() {
       let data = {
-        showInputBox: true
+        showInputBox: true,
+        valuePhone:this.valuePhone
       };
       this.$emit("childrenData", data);
     }

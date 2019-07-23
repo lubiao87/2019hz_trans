@@ -2,11 +2,12 @@
   <div class="tou-su">
     <b-head :showBack="true" :title="title"></b-head>
     <div class="content">
-      <tab :line-width="0">
+      <tab :line-width="0" >
         <tab-item active-class="active-1" @on-item-click="onTabClick('0')" selected>处理中</tab-item>
         <tab-item active-class="active-1" @on-item-click="onTabClick('1')">待评价</tab-item>
         <tab-item active-class="active-1" @on-item-click="onTabClick('2')">已完成</tab-item>
       </tab>
+
       <div
         ref="myscrollfull"
         class="scroll-top"
@@ -188,10 +189,14 @@ export default {
 <style lang="scss">
 @import "@/assets/scss/base.scss"; /*引入配置*/
 .tou-su {
+  .scroll-top{
+    padding-top: 20px !important;
+  }
   .router-box {
     height: 100%;
     background-color: $background-color-themesec;
     padding: 20px;
+    // padding-top: 20px;
     .list {
       background-color: $background-color-theme;
       margin-bottom: 20px;

@@ -78,7 +78,7 @@
 import { mapState, mapGetters, mapActions } from "vuex"; //先要引入
 import BHead from "@/components/base/B-Head";
 import ImgUploader from "@/components/imgUploader/imgUploader";
-import { XInput, Group, XTextarea } from "vux";
+import { XInput, Group, XTextarea, Toast } from "vux";
 import FloatBtn from "@/components/dragBox/floatBtn";
 import complaintState from "./complaint_state";
 import { listSearchMixin } from "@/mixin";
@@ -86,6 +86,7 @@ import { api } from "@/api/api";
 export default {
   mixins: [listSearchMixin],
   components: {
+    Toast,
     BHead,
     XInput,
     FloatBtn,
@@ -187,31 +188,46 @@ export default {
 
       self.sendReq(params, res => {
         console.log(res);
-        // if (res.respHeader.resultCode == 9999) {
-        //   console.log("000");
-        // this.$router.push({
-        //   name: "adviceList",
-        //   params: {
-        //     data: self.floatText
-        //   }
-        // });
-        // }
-      });
-      this.$router.push({
-        name: "adviceList",
-        params: {
-          data: self.floatText
+        if (res.respHeader.resultCode == 0) {
+          console.log("000");
+          this.$router.push({
+            name: "adviceList",
+            params: {
+              data: self.floatText
+            }
+          });
         }
       });
     },
     submit() {
-      // if (this.files.length === 0) {
-      //   console.log("no file!");
-      //   return;
-      // }
+      console.log(111);
       this.formData = new FormData();
-      if (this.formData.length > 3) {
-        alert("最多选择三张");
+      //  console.log(this.formData.length)
+      if (this.files) {
+        if (this.files.length > 3) {
+          // console.log(this.formData.length)
+          this.$vux.toast.show({
+            text: "图片不能超过三张",
+            type: "text",
+            position: "middle",
+            width: "50%",
+            time: 2000
+          });
+
+          return;
+        }
+      }
+
+      if (this.textContent == "") {
+        // console.log(this.formData.length)
+        this.$vux.toast.show({
+          text: "投诉建议内容不能为空",
+          type: "text",
+          position: "middle",
+          width: "50%",
+          time: 2000
+        });
+
         return;
       }
 
@@ -222,9 +238,14 @@ export default {
           this.formData.append("content", item.name);
         });
       }
-  
+      let type = 0;
+      if (this.checkedValue === "投诉") {
+        type = 0;
+      } else {
+        type = 1;
+      }
       this.formData.append("complainId", this.menuList[0].value);
-      this.formData.append("type", this.checkedValue);
+      this.formData.append("type", type);
       this.formData.append("custId", this.menuList[3].value);
       this.formData.append("linkname", this.menuList[5].value);
       this.formData.append("linkphone", this.menuList[6].value);
@@ -395,7 +416,7 @@ export default {
           width: 32px;
           height: 32px;
           border-radius: 50%;
-          border: 1px solid $background-color-theme1;
+          border: 2px solid $background-color-theme1;
           margin-right: 12px;
           margin-top: 6px;
           position: absolute;

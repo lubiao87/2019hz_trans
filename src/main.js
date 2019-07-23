@@ -11,7 +11,7 @@ import "@/assets/scss/index.scss"; // 全局样式
 import infiniteScroll from "vue-infinite-scroll";
 Vue.use(infiniteScroll);
 
-Vue.prototype.GLOBAL = "ws://192.168.12.71:50087/chatlineDev/chat/";
+Vue.prototype.GLOBAL = "ws://192.168.12.118:8099/transApp/chat/";
 // Vue.prototype.IMGURL = "ws://192.168.12.71:50087/chatlineDev/chat/";
 // const FastClick = require("fastclick");
 // FastClick.attach(document.body);
